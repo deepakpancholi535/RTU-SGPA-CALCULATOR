@@ -356,14 +356,16 @@ analyzeBtn.addEventListener("click", async (event) => {
 
     if (!response.ok) {
       let message = `Request failed with ${response.status}`;
-      try {
-        const errorData = await response.json();
-        if (errorData?.error) {
-          message = errorData.error;
-        }
-      } catch (err) {
-        const text = await response.text();
-        if (text) {
+      const text = await response.text();
+      if (text) {
+        try {
+          const errorData = JSON.parse(text);
+          if (errorData?.error) {
+            message = errorData.error;
+          } else {
+            message = text;
+          }
+        } catch (err) {
           message = text;
         }
       }
