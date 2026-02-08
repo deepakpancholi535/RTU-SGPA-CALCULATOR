@@ -1,0 +1,5658 @@
+[
+    {
+        "_id": "66368c159cfc189ff18dce6f",
+        "Course_Title": "Engineering Mathematics-I",
+        "Credits": 4
+    },
+    {
+        "_id": "66368c159cfc189ff18dce7b",
+        "Course_Title": "Engineering Physics",
+        "Credits": 4
+    },
+    {
+        "_id": "66368c159cfc189ff18dce7f",
+        "Course_Title": "Engineering Physics Lab",
+        "Credits": 1
+    },
+    {
+        "_id": "66368c159cfc189ff18dce72",
+        "Course_Title": "Basic Mechanical Engineering",
+        "Credits": 2
+    },
+    {
+        "_id": "66368c159cfc189ff18dce7c",
+        "Course_Title": "Communication Skills",
+        "Credits": 2
+    },
+    {
+        "_id": "66368c159cfc189ff18dce73",
+        "Course_Title": "Basic Civil Engineering",
+        "Credits": 2
+    },
+    {
+        "_id": "66368c159cfc189ff18dce78",
+        "Course_Title": "Computer Aided Machine Drawing",
+        "Credits": 1.5
+    },
+    {
+        "_id": "66368c159cfc189ff18dce82",
+        "Course_Title": "Basic Electrical Engineering Lab",
+        "Credits": 1
+    },
+    {
+        "_id": "66368c159cfc189ff18dce70",
+        "Course_Title": "Engineering Chemistry",
+        "Credits": 4
+    },
+    {
+        "_id": "66368c159cfc189ff18dce71",
+        "Course_Title": "Human Values",
+        "Credits": 2
+    },
+    {
+        "_id": "66368c159cfc189ff18dce74",
+        "Course_Title": "Engineering Chemistry Lab",
+        "Credits": 1
+    },
+    {
+        "_id": "66368c159cfc189ff18dce80",
+        "Course_Title": "Language Lab",
+        "Credits": 1
+    },
+    {
+        "_id": "66368c159cfc189ff18dce75",
+        "Course_Title": "Human Values Activities",
+        "Credits": 1
+    },
+    {
+        "_id": "66368c159cfc189ff18dce77",
+        "Course_Title": "Basic Civil Engineering Lab",
+        "Credits": 1
+    },
+    {
+        "_id": "66368c159cfc189ff18dce81",
+        "Course_Title": "Computer Programming Lab",
+        "Credits": 1.5
+    },
+    {
+        "_id": "66368c159cfc189ff18dce76",
+        "Course_Title": "Manufacturing Practices Workshop",
+        "Credits": 1.5
+    },
+    {
+        "_id": "66368c159cfc189ff18dce7d",
+        "Course_Title": "Programming for Problem Solving",
+        "Credits": 2
+    },
+    {
+        "_id": "66368c159cfc189ff18dce7e",
+        "Course_Title": "Basic Electrical Engineering",
+        "Credits": 2
+    },
+    {
+        "_id": "66368c159cfc189ff18dce83",
+        "Course_Title": "Computer Aided Engineering Graphics",
+        "Credits": 1.5
+    },
+    {
+        "_id": "66368c1d9cfc189ff18dce89",
+        "Course_Title": "Data Structures and Algorithms",
+        "Duration": 3,
+        "Marks": {
+            "L": 30,
+            "IA": 120,
+            "ETE": 150
+        },
+        "Credits": 3
+    },
+    {
+        "_id": "66368c1d9cfc189ff18dce86",
+        "Course_Title": "Technical Communication",
+        "Duration": 2,
+        "Marks": {
+            "L": 20,
+            "IA": 80,
+            "ETE": 100
+        },
+        "Credits": 2
+    },
+    {
+        "_id": "66368c1d9cfc189ff18dce8f",
+        "Course_Title": "Digital Electronics Lab",
+        "Duration": 3,
+        "Practical Marks": {
+            "P": 45,
+            "IA": 30,
+            "Total": 75
+        },
+        "Credits": 1.5
+    },
+    {
+        "_id": "66368c1d9cfc189ff18dce87",
+        "Course_Title": "Managerial Economics and Financial Accounting",
+        "Duration": 2,
+        "Marks": {
+            "L": 20,
+            "IA": 80,
+            "ETE": 100
+        },
+        "Credits": 2
+    },
+    {
+        "_id": "66368c1d9cfc189ff18dce88",
+        "Course_Title": "Digital Electronics",
+        "Duration": 3,
+        "Marks": {
+            "L": 30,
+            "IA": 120,
+            "ETE": 150
+        },
+        "Credits": 3
+    },
+    {
+        "_id": "66368c1d9cfc189ff18dce8e",
+        "Course_Title": "Software Engineering Lab",
+        "Duration": 3,
+        "Practical Marks": {
+            "P": 45,
+            "IA": 30,
+            "Total": 75
+        },
+        "Credits": 1.5
+    },
+    {
+        "_id": "66368c1d9cfc189ff18dce90",
+        "Course_Title": "Industrial Training",
+        "Duration": 1,
+        "Practical Marks": {
+            "Total": 50
+        },
+        "Credits": 1
+    },
+    {
+        "_id": "66368c1d9cfc189ff18dce8a",
+        "Course_Title": "Object Oriented Programming",
+        "Duration": 3,
+        "Marks": {
+            "L": 30,
+            "IA": 120,
+            "ETE": 150
+        },
+        "Credits": 3
+    },
+    {
+        "_id": "66368c1d9cfc189ff18dce8c",
+        "Course_Title": "Data Structures and Algorithms Lab",
+        "Duration": 3,
+        "Practical Marks": {
+            "P": 45,
+            "IA": 30,
+            "Total": 75
+        },
+        "Credits": 1.5
+    },
+    {
+        "_id": "66368c1d9cfc189ff18dce8b",
+        "Course_Title": "Software Engineering",
+        "Duration": 3,
+        "Marks": {
+            "L": 30,
+            "IA": 120,
+            "ETE": 150
+        },
+        "Credits": 3
+    },
+    {
+        "_id": "66368c1d9cfc189ff18dce85",
+        "Course_Title": "Advanced Engineering Mathematics",
+        "Duration": 3,
+        "Marks": {
+            "L": 30,
+            "IA": 120,
+            "ETE": 150
+        },
+        "Credits": 3
+    },
+    {
+        "_id": "66368c1d9cfc189ff18dce8d",
+        "Course_Title": "Object Oriented Programming Lab",
+        "Duration": 3,
+        "Practical Marks": {
+            "P": 45,
+            "IA": 30,
+            "Total": 75
+        },
+        "Credits": 1.5
+    },
+    {
+        "_id": "66368c1d9cfc189ff18dce91",
+        "Course_Title": "Social Outreach, Discipline & Extra Curricular Activities",
+        "Marks": {
+            "Total": 25
+        },
+        "Credits": 0.5
+    },
+    {
+        "_id": "66368c239cfc189ff18dce95",
+        "Course_Title": "Database Management System",
+        "Duration": 3,
+        "Marks": {
+            "L": 30,
+            "IA": 120,
+            "ETE": 150
+        },
+        "Credits": 3
+    },
+    {
+        "_id": "66368c239cfc189ff18dce92",
+        "Course_Title": "Discrete Mathematics Structure",
+        "Duration": 3,
+        "Marks": {
+            "L": 30,
+            "IA": 120,
+            "ETE": 150
+        },
+        "Credits": 3
+    },
+    {
+        "_id": "66368c239cfc189ff18dce9a",
+        "Course_Title": "Network Programming Lab",
+        "Duration": 0,
+        "Marks": {
+            "P": 45,
+            "IA": 30,
+            "Total": 75
+        },
+        "Credits": 1.5
+    },
+    {
+        "_id": "66368c239cfc189ff18dce9d",
+        "Course_Title": "Social Outreach, Discipline & Extra Curricular Activities",
+        "Marks": {
+            "Total": 25
+        },
+        "Credits": 0.5
+    },
+    {
+        "_id": "66368c239cfc189ff18dce97",
+        "Course_Title": "Data Communication and Computer Networks",
+        "Duration": 3,
+        "Marks": {
+            "L": 30,
+            "IA": 120,
+            "ETE": 150
+        },
+        "Credits": 3
+    },
+    {
+        "_id": "66368c239cfc189ff18dce99",
+        "Course_Title": "Database Management System Lab",
+        "Duration": 0,
+        "Marks": {
+            "P": 45,
+            "IA": 30,
+            "Total": 75
+        },
+        "Credits": 1.5
+    },
+    {
+        "_id": "66368c239cfc189ff18dce93",
+        "Course_Title": "Managerial Economics and Financial Accounting",
+        "Duration": 2,
+        "Marks": {
+            "L": 20,
+            "IA": 80,
+            "ETE": 100
+        },
+        "Credits": 2
+    },
+    {
+        "_id": "66368c239cfc189ff18dce94",
+        "Course_Title": "Microprocessor & Interfaces",
+        "Duration": 3,
+        "Marks": {
+            "L": 30,
+            "IA": 120,
+            "ETE": 150
+        },
+        "Credits": 3
+    },
+    {
+        "_id": "66368c239cfc189ff18dce96",
+        "Course_Title": "Theory of Computation",
+        "Duration": 3,
+        "Marks": {
+            "L": 30,
+            "IA": 120,
+            "ETE": 150
+        },
+        "Credits": 3
+    },
+    {
+        "_id": "66368c239cfc189ff18dce9c",
+        "Course_Title": "Java Lab",
+        "Duration": 0,
+        "Marks": {
+            "P": 30,
+            "IA": 20,
+            "Total": 50
+        },
+        "Credits": 1
+    },
+    {
+        "_id": "66368d349cfc189ff18dcea0",
+        "Course_Title": "Operating System",
+        "Duration": 3,
+        "Marks": {
+            "L": 30,
+            "T": 0,
+            "P": 0,
+            "IA": 120,
+            "ETE": 150
+        },
+        "Credits": 3
+    },
+    {
+        "_id": "66368d349cfc189ff18dcea7",
+        "Course_Title": "Computer Graphics & Multimedia Lab",
+        "Duration": 0,
+        "Marks": {
+            "P": 30,
+            "IA": 20,
+            "Total": 50
+        },
+        "Credits": 1
+    },
+    {
+        "_id": "66368d349cfc189ff18dcea6",
+        "Course_Title": "Bioinformatics",
+        "Duration": 2,
+        "Marks": {
+            "L": 20,
+            "T": 0,
+            "P": 0,
+            "IA": 80,
+            "ETE": 100
+        },
+        "Credits": 2
+    },
+    {
+        "_id": "66368d349cfc189ff18dcea3",
+        "Course_Title": "Professional Elective 1: (any one)",
+        "Duration": 2,
+        "Marks": {
+            "L": 20,
+            "T": 0,
+            "P": 0,
+            "IA": 80,
+            "ETE": 100
+        },
+        "Credits": 2
+    },
+    {
+        "_id": "66368d349cfc189ff18dcea4",
+        "Course_Title": "Wireless Communication",
+        "Duration": 2,
+        "Marks": {
+            "L": 20,
+            "T": 0,
+            "P": 0,
+            "IA": 80,
+            "ETE": 100
+        },
+        "Credits": 2
+    },
+    {
+        "_id": "66368d349cfc189ff18dcea5",
+        "Course_Title": "Human-Computer Interaction",
+        "Duration": 2,
+        "Marks": {
+            "L": 20,
+            "T": 0,
+            "P": 0,
+            "IA": 80,
+            "ETE": 100
+        },
+        "Credits": 2
+    },
+    {
+        "_id": "66368d349cfc189ff18dcea8",
+        "Course_Title": "Compiler Design Lab",
+        "Duration": 0,
+        "Marks": {
+            "P": 30,
+            "IA": 20,
+            "Total": 50
+        },
+        "Credits": 1
+    },
+    {
+        "_id": "66368d349cfc189ff18dceac",
+        "Course_Title": "Social Outreach, Discipline & Extra Curricular Activities",
+        "Marks": {
+            "Total": 25
+        },
+        "Credits": 0.5
+    },
+    {
+        "_id": "66368d349cfc189ff18dcea2",
+        "Course_Title": "Analysis Of Algorithms",
+        "Duration": 3,
+        "Marks": {
+            "L": 30,
+            "T": 0,
+            "P": 0,
+            "IA": 120,
+            "ETE": 150
+        },
+        "Credits": 3
+    },
+    {
+        "_id": "66368d349cfc189ff18dce9e",
+        "Course_Title": "Information Theory & Coding",
+        "Duration": 2,
+        "Marks": {
+            "L": 20,
+            "T": 0,
+            "P": 0,
+            "IA": 80,
+            "ETE": 100
+        },
+        "Credits": 2
+    },
+    {
+        "_id": "66368d349cfc189ff18dceaa",
+        "Course_Title": "Advance Java Lab",
+        "Duration": 0,
+        "Marks": {
+            "P": 30,
+            "IA": 20,
+            "Total": 50
+        },
+        "Credits": 1
+    },
+    {
+        "_id": "66368d349cfc189ff18dce9f",
+        "Course_Title": "Compiler Design",
+        "Duration": 3,
+        "Marks": {
+            "L": 30,
+            "T": 0,
+            "P": 0,
+            "IA": 120,
+            "ETE": 150
+        },
+        "Credits": 3
+    },
+    {
+        "_id": "66368d349cfc189ff18dcea1",
+        "Course_Title": "Computer Graphics & Multimedia",
+        "Duration": 3,
+        "Marks": {
+            "L": 30,
+            "T": 0,
+            "P": 0,
+            "IA": 120,
+            "ETE": 150
+        },
+        "Credits": 3
+    },
+    {
+        "_id": "66368d349cfc189ff18dcea9",
+        "Course_Title": "Analysis Of Algorithms Lab",
+        "Duration": 0,
+        "Marks": {
+            "P": 30,
+            "IA": 20,
+            "Total": 50
+        },
+        "Credits": 1
+    },
+    {
+        "_id": "66368da09cfc189ff18dceaf",
+        "Course_Title": "Open Elective -I",
+        "Duration": 3,
+        "Marks": {
+            "L": 30,
+            "T": 0,
+            "P": 0,
+            "IA": 120,
+            "ETE": 150
+        },
+        "Credits": 3
+    },
+    {
+        "_id": "66368da09cfc189ff18dceb3",
+        "Course_Title": "Seminar",
+        "Duration": 2,
+        "Marks": {
+            "L": 20,
+            "T": 0,
+            "P": 0,
+            "IA": 100,
+            "ETE": 100
+        },
+        "Credits": 2
+    },
+    {
+        "_id": "66368da09cfc189ff18dceae",
+        "Course_Title": "Internet of Things",
+        "Duration": 3,
+        "Marks": {
+            "L": 30,
+            "T": 0,
+            "P": 0,
+            "IA": 120,
+            "ETE": 150
+        },
+        "Credits": 3
+    },
+    {
+        "_id": "66368da09cfc189ff18dceb0",
+        "Course_Title": "Internet of Things Lab",
+        "Duration": 0,
+        "Marks": {
+            "P": 40,
+            "IA": 26,
+            "Total": 100
+        },
+        "Credits": 2
+    },
+    {
+        "_id": "66368da09cfc189ff18dceb1",
+        "Course_Title": "CyberSecurity Lab",
+        "Duration": 0,
+        "Marks": {
+            "P": 40,
+            "IA": 26,
+            "Total": 100
+        },
+        "Credits": 2
+    },
+    {
+        "_id": "66368da09cfc189ff18dceb4",
+        "Course_Title": "Social Outreach, Discipline & Extra Curricular Activities",
+        "Marks": {
+            "Total": 25
+        },
+        "Credits": 0.5
+    },
+    {
+        "_id": "66368da49cfc189ff18dceb5",
+        "Course_Title": "Big Data Analytics",
+        "Duration": 3,
+        "Marks": {
+            "L": 30,
+            "T": 0,
+            "P": 0,
+            "IA": 120,
+            "ETE": 150
+        },
+        "Credits": 3
+    },
+    {
+        "_id": "66368da49cfc189ff18dceb6",
+        "Course_Title": "Open Elective -II",
+        "Duration": 3,
+        "Marks": {
+            "L": 30,
+            "T": 0,
+            "P": 0,
+            "IA": 120,
+            "ETE": 150
+        },
+        "Credits": 3
+    },
+    {
+        "_id": "66368da49cfc189ff18dceba",
+        "Course_Title": "Social Outreach, Discipline & Extra Curricular Activities",
+        "Marks": {
+            "Total": 25
+        },
+        "Credits": 0.5
+    },
+    {
+        "_id": "66368da49cfc189ff18dceb8",
+        "Course_Title": "Software Testing and Validation Lab",
+        "Duration": 0,
+        "Marks": {
+            "P": 20,
+            "IA": 30,
+            "Total": 50
+        },
+        "Credits": 1
+    },
+    {
+        "_id": "66368da49cfc189ff18dceb9",
+        "Course_Title": "Project",
+        "Duration": 3,
+        "Marks": {
+            "L": 300,
+            "IA": 450,
+            "Total": 450
+        },
+        "Credits": 7
+    },
+    {
+        "_id": "66368da49cfc189ff18dceb7",
+        "Course_Title": "Big Data Analytics Lab",
+        "Duration": 0,
+        "Marks": {
+            "P": 20,
+            "IA": 30,
+            "Total": 50
+        },
+        "Credits": 1
+    },
+    {
+        "_id": "66368f759cfc189ff18dcebb",
+        "Course_Title": "Human Values Activities And Sports",
+        "Credits": 1
+    },
+    {
+        "_id": "66368f759cfc189ff18dcebc",
+        "Course_Title": "Engineering Mathematics-II",
+        "Credits": 4
+    },
+    {
+        "_id": "663690759cfc189ff18dcebf",
+        "Course_Title": "Microprocessor & Interfaces Lab",
+        "Credits": 1
+    },
+    {
+        "_id": "663690759cfc189ff18dcec0",
+        "Course_Title": "Database Management System Lab",
+        "Credits": 1.5
+    },
+    {
+        "_id": "663690759cfc189ff18dcebd",
+        "Course_Title": "Managerial Economics & Financial Accounting",
+        "Credits": 2
+    },
+    {
+        "_id": "663690759cfc189ff18dcec2",
+        "Course_Title": "Linux Shell  Programming Lab",
+        "Credits": 1
+    },
+    {
+        "_id": "663695689cfc189ff18dcec6",
+        "Course_Title": "Digital Image Processing",
+        "Duration": 2,
+        "Marks": {
+            "L": 20,
+            "T": 0,
+            "P": 0,
+            "IA": 80,
+            "ETE": 100
+        },
+        "Credits": 2
+    },
+    {
+        "_id": "663695689cfc189ff18dcec7",
+        "Course_Title": "Machine Learning",
+        "Duration": 3,
+        "Marks": {
+            "L": 30,
+            "T": 0,
+            "P": 0,
+            "IA": 120,
+            "ETE": 150
+        },
+        "Credits": 3
+    },
+    {
+        "_id": "663695689cfc189ff18dcecf",
+        "Course_Title": "E-commerce and ERP",
+        "Duration": 2,
+        "Marks": {
+            "L": 20,
+            "T": 0,
+            "P": 0,
+            "IA": 80,
+            "ETE": 100
+        },
+        "Credits": 2
+    },
+    {
+        "_id": "663695689cfc189ff18dced4",
+        "Course_Title": "Social Outreach, Discipline & Extra Curricular Activities",
+        "Marks": {
+            "Total": 25
+        },
+        "Credits": 0.5
+    },
+    {
+        "_id": "663695689cfc189ff18dced3",
+        "Course_Title": "Mobile Application Development Lab",
+        "Duration": 0,
+        "Marks": {
+            "P": 30,
+            "IA": 24,
+            "Total": 75
+        },
+        "Credits": 1.5
+    },
+    {
+        "_id": "663695689cfc189ff18dced1",
+        "Course_Title": "Machine Learning Lab",
+        "Duration": 0,
+        "Marks": {
+            "P": 30,
+            "IA": 24,
+            "Total": 75
+        },
+        "Credits": 1.5
+    },
+    {
+        "_id": "663695689cfc189ff18dcec8",
+        "Course_Title": "Information Security System",
+        "Duration": 2,
+        "Marks": {
+            "L": 20,
+            "T": 0,
+            "P": 0,
+            "IA": 80,
+            "ETE": 100
+        },
+        "Credits": 2
+    },
+    {
+        "_id": "663695689cfc189ff18dcec9",
+        "Course_Title": "Computer Architecture And Organization",
+        "Duration": 3,
+        "Marks": {
+            "L": 30,
+            "T": 0,
+            "P": 0,
+            "IA": 120,
+            "ETE": 150
+        },
+        "Credits": 3
+    },
+    {
+        "_id": "663695689cfc189ff18dcecb",
+        "Course_Title": "Cloud Computing",
+        "Duration": 3,
+        "Marks": {
+            "L": 30,
+            "T": 0,
+            "P": 0,
+            "IA": 120,
+            "ETE": 150
+        },
+        "Credits": 3
+    },
+    {
+        "_id": "663695689cfc189ff18dcecc",
+        "Course_Title": "Professional Elective 1 (any one)",
+        "Duration": 2,
+        "Marks": {
+            "L": 20,
+            "T": 0,
+            "P": 0,
+            "IA": 80,
+            "ETE": 100
+        },
+        "Credits": 2
+    },
+    {
+        "_id": "663695689cfc189ff18dceca",
+        "Course_Title": "Artificial Intelligence",
+        "Duration": 2,
+        "Marks": {
+            "L": 20,
+            "T": 0,
+            "P": 0,
+            "IA": 80,
+            "ETE": 100
+        },
+        "Credits": 2
+    },
+    {
+        "_id": "663695689cfc189ff18dcecd",
+        "Course_Title": "Distributed System",
+        "Duration": 2,
+        "Marks": {
+            "L": 20,
+            "T": 0,
+            "P": 0,
+            "IA": 80,
+            "ETE": 100
+        },
+        "Credits": 2
+    },
+    {
+        "_id": "663695689cfc189ff18dcece",
+        "Course_Title": "Software Defined Network",
+        "Duration": 2,
+        "Marks": {
+            "L": 20,
+            "T": 0,
+            "P": 0,
+            "IA": 80,
+            "ETE": 100
+        },
+        "Credits": 2
+    },
+    {
+        "_id": "663695689cfc189ff18dced0",
+        "Course_Title": "Digital Image Processing Lab",
+        "Duration": 0,
+        "Marks": {
+            "P": 30,
+            "IA": 24,
+            "Total": 75
+        },
+        "Credits": 1.5
+    },
+    {
+        "_id": "663695689cfc189ff18dced2",
+        "Course_Title": "Python Lab",
+        "Duration": 0,
+        "Marks": {
+            "P": 30,
+            "IA": 24,
+            "Total": 75
+        },
+        "Credits": 1.5
+    },
+    {
+        "_id": "663735259cfc189ff18dced9",
+        "Course_Title": "Network Programming  Lab",
+        "Credits": 1.5
+    },
+    {
+        "_id": "6637358a9cfc189ff18dcedc",
+        "Course_Title": "Microprocessor &  Interfaces Lab",
+        "Credits": 1
+    },
+    {
+        "_id": "6637358a9cfc189ff18dcedd",
+        "Course_Title": "Database Management  System Lab",
+        "Credits": 1.5
+    },
+    {
+        "_id": "663736d19cfc189ff18dcedf",
+        "Course_Title": "Linux Shell Programming Lab",
+        "Credits": 1
+    },
+    {
+        "_id": "663691c49cfc189ff18dcec5",
+        "Course_Title": "Linux Shell Programming Lab ",
+        "Credits": 1
+    },
+    {
+        "_id": "663743679cfc189ff18dcee2",
+        "Course_Title": "Cyber Security Lab",
+        "Credits": 2
+    },
+    {
+        "_id": "664c8748d7a09b43f7204f9a",
+        "Contact hrs/week": 1.5,
+        "Marks": {
+            "L": 30,
+            "IA": 120,
+            "ETE": 150
+        },
+        "Credits": 1.5,
+        "Course_Title": "Data Structures & Algorithms Lab"
+    },
+    {
+        "_id": "664c88f0d7a09b43f7204f9c",
+        "Course_Title": "Data Structures & Algorithms",
+        "Credits": 3
+    },
+    {
+        "_id": "6654a76a51770e98bf785237",
+        "Course_Title": "Human Values Activities & Sports",
+        "Credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f0dd",
+        "code": "1FY2-01",
+        "credits": 4
+    },
+    {
+        "_id": "665f5bacef1a824df590f0de",
+        "code": "1FY2-02",
+        "credits": 4
+    },
+    {
+        "_id": "665f5bacef1a824df590f0df",
+        "code": "1FY2-03",
+        "credits": 4
+    },
+    {
+        "_id": "665f5bacef1a824df590f0e0",
+        "code": "1FY1-04",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f0e1",
+        "code": "1FY1-05",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f0e2",
+        "code": "1FY3-06",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f0e3",
+        "code": "1FY3-07",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f0e4",
+        "code": "1FY3-08",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f0e5",
+        "code": "1FY3-09",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f0e6",
+        "code": "1FY2-20",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f0e7",
+        "code": "1FY2-21",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f0e8",
+        "code": "1FY1-22",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f0e9",
+        "code": "1FY1-23",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f0ea",
+        "code": "1FY3-24",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f0eb",
+        "code": "1FY3-25",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f0ec",
+        "code": "1FY3-26",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f0ed",
+        "code": "1FY3-27",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f0ee",
+        "code": "1FY3-28",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f0ef",
+        "code": "1FY3-29",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f0f0",
+        "code": "1FY8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f0f1",
+        "code": "2FY2-01",
+        "credits": 4
+    },
+    {
+        "_id": "665f5bacef1a824df590f0f2",
+        "code": "2FY2-03",
+        "credits": 4
+    },
+    {
+        "_id": "665f5bacef1a824df590f0f3",
+        "code": "2FY2-02",
+        "credits": 4
+    },
+    {
+        "_id": "665f5bacef1a824df590f0f4",
+        "code": "2FY1-05",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f0f5",
+        "code": "2FY1-04",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f0f6",
+        "code": "2FY3-07",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f0f7",
+        "code": "2FY3-06",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f0f8",
+        "code": "2FY3-09",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f0f9",
+        "code": "2FY3-08",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f0fa",
+        "code": "2FY2-21",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f0fb",
+        "code": "2FY2-20",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f0fc",
+        "code": "2FY1-23",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f0fd",
+        "code": "2FY1-22",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f0fe",
+        "code": "2FY3-25",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f0ff",
+        "code": "2FY3-24",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f100",
+        "code": "2FY3-27",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f101",
+        "code": "2FY3-26",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f102",
+        "code": "2FY3-29",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f103",
+        "code": "2FY3-28",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f104",
+        "code": "3CS2-01",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f105",
+        "code": "3CS1-02",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f106",
+        "code": "3CS1-03",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f107",
+        "code": "3CS3-04",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f108",
+        "code": "3CS4-05",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f109",
+        "code": "3CS4-06",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f10a",
+        "code": "3CS4-07",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f10b",
+        "code": "3CS4-21",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f10c",
+        "code": "3CS4-22",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f10d",
+        "code": "3CS4-23",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f10e",
+        "code": "3CS4-24",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f10f",
+        "code": "3CS7-30",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f110",
+        "code": "3CS8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f111",
+        "code": "4CS2-01",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f112",
+        "code": "4CS1-03",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f113",
+        "code": "4CS1-02",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f114",
+        "code": "4CS3-04",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f115",
+        "code": "4CS4-05",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f116",
+        "code": "4CS4-06",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f117",
+        "code": "4CS4-07",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f118",
+        "code": "4CS4-21",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f119",
+        "code": "4CS4-22",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f11a",
+        "code": "4CS4-23",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f11b",
+        "code": "4CS4-24",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f11c",
+        "code": "4CS4-25",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f11d",
+        "code": "4CS8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f11e",
+        "code": "5CS3-01",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f11f",
+        "code": "5CS4-02",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f120",
+        "code": "5CS4-03",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f121",
+        "code": "5CS4-04",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f122",
+        "code": "5CS4-05",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f123",
+        "code": "5CS5-11",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f124",
+        "code": "5CS5-12",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f125",
+        "code": "5CS5-13",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f126",
+        "code": "5CS4-21",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f127",
+        "code": "5CS4-22",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f128",
+        "code": "5CS4-23",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f129",
+        "code": "5CS4-24",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f12a",
+        "code": "5CS7-30",
+        "credits": 2.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f12b",
+        "code": "5CS8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f12c",
+        "code": "6CS3-01",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f12d",
+        "code": "6CS4-02",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f12e",
+        "code": "6CS4-03",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f12f",
+        "code": "6CS4-04",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f130",
+        "code": "6CS4-05",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f131",
+        "code": "6CS4-06",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f132",
+        "code": "6CS5-11",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f133",
+        "code": "6CS5-12",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f134",
+        "code": "6CS5-13",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f135",
+        "code": "6CS4-21",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f136",
+        "code": "6CS4-22",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f137",
+        "code": "6CS4-23",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f138",
+        "code": "6CS4-24",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f139",
+        "code": "6CS8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f13a",
+        "code": "7CS4-01",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f13b",
+        "code": "7CS4-21",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f13c",
+        "code": "7CS4-22",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f13d",
+        "code": "7CS7-30",
+        "credits": 2.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f13e",
+        "code": "7CS7-40",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f13f",
+        "code": "7CS8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f140",
+        "code": "8CS4-01",
+        "credits": 6
+    },
+    {
+        "_id": "665f5bacef1a824df590f141",
+        "code": "8CS4-02",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f142",
+        "code": "8CS4-21",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f143",
+        "code": "8CS4-22",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f144",
+        "code": "8CS7-00",
+        "credits": 7.6
+    },
+    {
+        "_id": "665f5bacef1a824df590f145",
+        "code": "8CS8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f146",
+        "code": "3IT2-01",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f147",
+        "code": "3IT1-02",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f148",
+        "code": "3IT3-04",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f149",
+        "code": "3IT4-05",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f14a",
+        "code": "3IT4-06",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f14b",
+        "code": "3IT4-07",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f14c",
+        "code": "3IT4-21",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f14d",
+        "code": "3IT4-22",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f14e",
+        "code": "3IT4-23",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f14f",
+        "code": "3IT4-24",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f150",
+        "code": "3IT7-30",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f151",
+        "code": "3IT8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f152",
+        "code": "5IT3-01",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f153",
+        "code": "5IT4-02",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f154",
+        "code": "5IT4-03",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f155",
+        "code": "5IT4-04",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f156",
+        "code": "5IT4-05",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f157",
+        "code": "5IT5-11",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f158",
+        "code": "5IT5-12",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f159",
+        "code": "5IT5-13",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f15a",
+        "code": "5IT4-21",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f15b",
+        "code": "5IT4-22",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f15c",
+        "code": "5IT4-23",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f15d",
+        "code": "5IT4-24",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f15e",
+        "code": "5IT7-30",
+        "credits": 2.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f15f",
+        "code": "5IT8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f160",
+        "code": "4IT2-01",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f161",
+        "code": "4IT1-03",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f162",
+        "code": "4IT3-04",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f163",
+        "code": "4IT4-05",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f164",
+        "code": "4IT4-06",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f165",
+        "code": "4IT4-07",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f166",
+        "code": "4IT4-21",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f167",
+        "code": "4IT4-22",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f168",
+        "code": "4IT4-23",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f169",
+        "code": "4IT4-24",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f16a",
+        "code": "4IT4-25",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f16b",
+        "code": "4IT8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f16c",
+        "code": "6IT3-01",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f16d",
+        "code": "6IT4-02",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f16e",
+        "code": "6IT4-03",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f16f",
+        "code": "6IT4-04",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f170",
+        "code": "6IT4-05",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f171",
+        "code": "6IT4-06",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f172",
+        "code": "6IT5-11",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f173",
+        "code": "6IT4-21",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f174",
+        "code": "6IT4-22",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f175",
+        "code": "6IT4-23",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f176",
+        "code": "6IT4-24",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f177",
+        "code": "7IT4-01",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f178",
+        "code": "7IT4-02",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f179",
+        "code": "7IT4-21",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f17a",
+        "code": "7IT4-22",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f17b",
+        "code": "7IT7-30",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f17c",
+        "code": "7IT7-40",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f17d",
+        "code": "7IT8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f17e",
+        "code": "8IT4-01",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f17f",
+        "code": "8IT4-02",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f180",
+        "code": "8IT4-21",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f181",
+        "code": "8IT4-22",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f182",
+        "code": "8IT7-50",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f183",
+        "code": "8IT8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f184",
+        "code": "3CE2-01",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f185",
+        "code": "3CE1-02",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f186",
+        "code": "3CE1-03",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f187",
+        "code": "3CE3-04",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f188",
+        "code": "3CE4-05",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f189",
+        "code": "3CE4-06",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f18a",
+        "code": "3CE4-07",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f18b",
+        "code": "3CE4-08",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f18c",
+        "code": "3CE4-21",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f18d",
+        "code": "3CE4-22",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f18e",
+        "code": "3CE4-23",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f18f",
+        "code": "3CE4-24",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f190",
+        "code": "3CE4-25",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f191",
+        "code": "3CE7-30",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f192",
+        "code": "3CE8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f193",
+        "code": "4CE2-01",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f194",
+        "code": "4CE1-03",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f195",
+        "code": "4CE1-02",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f196",
+        "code": "4CE3-04",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f197",
+        "code": "4CE4-05",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f198",
+        "code": "4CE4-06",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f199",
+        "code": "4CE4-07",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f19a",
+        "code": "4CE4-08",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f19b",
+        "code": "4CE4-21",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f19c",
+        "code": "4CE4-22",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f19d",
+        "code": "4CE4-23",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f19e",
+        "code": "4CE4-24",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f19f",
+        "code": "4CE8-60",
+        "credits": 0.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f1a0",
+        "code": "5CE3-01",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f1a1",
+        "code": "5CE4-02",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f1a2",
+        "code": "5CE4-03",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f1a3",
+        "code": "5CE4-04",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f1a4",
+        "code": "5CE4-05",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f1a5",
+        "code": "5CE5-11",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f1a6",
+        "code": "5CE5-12",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f1a7",
+        "code": "5CE5-13",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f1a8",
+        "code": "5CE5-14",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f1a9",
+        "code": "5CE5-15",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f1aa",
+        "code": "5CE5-16",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f1ab",
+        "code": "5CE4-21",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f1ac",
+        "code": "5CE4-22",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f1ad",
+        "code": "5CE4-23",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f1ae",
+        "code": "5CE7-30",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f1af",
+        "code": "5CE8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f1b0",
+        "code": "6CE3-01",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f1b1",
+        "code": "6CE4-02",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f1b2",
+        "code": "6CE4-03",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f1b3",
+        "code": "6CE4-04",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f1b4",
+        "code": "6CE4-05",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f1b5",
+        "code": "6CE5-11",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f1b6",
+        "code": "6CE5-12",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f1b7",
+        "code": "6CE5-13",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f1b8",
+        "code": "6CE5-14",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f1b9",
+        "code": "6CE5-15",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f1ba",
+        "code": "6CE5-16",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f1bb",
+        "code": "6CE4-21",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f1bc",
+        "code": "6CE4-22",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f1bd",
+        "code": "6CE4-23",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f1be",
+        "code": "6CE4-24",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f1bf",
+        "code": "6CE4-25",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f1c0",
+        "code": "6CE8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f1c1",
+        "code": "7CE4-01",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f1c2",
+        "code": "7CE4-21",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f1c3",
+        "code": "7CE4-22",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f1c4",
+        "code": "7CE4-23",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f1c5",
+        "code": "7CE4-24",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f1c6",
+        "code": "7CE7-30",
+        "credits": 2.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f1c7",
+        "code": "7CE7-40",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f1c8",
+        "code": "7CE8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f1c9",
+        "code": "8CE4-01",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f1ca",
+        "code": "8CE4-21",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f1cb",
+        "code": "8CE4-22",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f1cc",
+        "code": "8CE7-50",
+        "credits": 7
+    },
+    {
+        "_id": "665f5bacef1a824df590f1cd",
+        "code": "8CE8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f1ce",
+        "code": "3ME2-01",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f1cf",
+        "code": "3ME1-02",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f1d0",
+        "code": "3ME1-03",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f1d1",
+        "code": "3ME3-04",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f1d2",
+        "code": "3ME4-05",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f1d3",
+        "code": "3ME4-06",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f1d4",
+        "code": "3ME4-07",
+        "credits": 4
+    },
+    {
+        "_id": "665f5bacef1a824df590f1d5",
+        "code": "3ME4-21",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f1d6",
+        "code": "3ME4-22",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f1d7",
+        "code": "3ME4-23",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f1d8",
+        "code": "3ME4-24",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f1d9",
+        "code": "3ME7-30",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f1da",
+        "code": "3ME8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f1db",
+        "code": "4ME2-01",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f1dc",
+        "code": "4ME1-03",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f1dd",
+        "code": "4ME1-02",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f1de",
+        "code": "4ME3-04",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f1df",
+        "code": "4ME4-05",
+        "credits": 4
+    },
+    {
+        "_id": "665f5bacef1a824df590f1e0",
+        "code": "4ME4-06",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f1e1",
+        "code": "4ME4-07",
+        "credits": 4
+    },
+    {
+        "_id": "665f5bacef1a824df590f1e2",
+        "code": "4ME3-21",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f1e3",
+        "code": "4ME4-22",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f1e4",
+        "code": "4ME4-23",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f1e5",
+        "code": "4ME4-24",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f1e6",
+        "code": "4ME8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f1e7",
+        "code": "5ME3-01",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f1e8",
+        "code": "5ME4-02",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f1e9",
+        "code": "5ME4-03",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f1ea",
+        "code": "5ME4-04",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f1eb",
+        "code": "5ME4-05",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f1ec",
+        "code": "5ME5-11",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f1ed",
+        "code": "5ME5-12",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f1ee",
+        "code": "5ME5-13",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f1ef",
+        "code": "5ME3-21",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f1f0",
+        "code": "5ME4-22",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f1f1",
+        "code": "5ME4-23",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f1f2",
+        "code": "5ME4-24",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f1f3",
+        "code": "5ME7-30",
+        "credits": 2.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f1f4",
+        "code": "5ME8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f1f5",
+        "code": "6ME3-01",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f1f6",
+        "code": "6ME4-02",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f1f7",
+        "code": "6ME4-03",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f1f8",
+        "code": "6ME4-04",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f1f9",
+        "code": "6ME4-05",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f1fa",
+        "code": "6ME5-11",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f1fb",
+        "code": "6ME5-12",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f1fc",
+        "code": "6ME5-13",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f1fd",
+        "code": "6ME4-21",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f1fe",
+        "code": "6ME4-22",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f1ff",
+        "code": "6ME4-23",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f200",
+        "code": "6ME4-24",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f201",
+        "code": "6ME8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f202",
+        "code": "7ME5-11",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f203",
+        "code": "7ME5-12",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f204",
+        "code": "7ME5-13",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f205",
+        "code": "7ME4-21",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f206",
+        "code": "7ME4-22",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f207",
+        "code": "7ME4-23",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f208",
+        "code": "7ME7-30",
+        "credits": 2.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f209",
+        "code": "7ME7-40",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f20a",
+        "code": "7ME8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f20b",
+        "code": "8ME5-11",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f20c",
+        "code": "8ME5-12",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f20d",
+        "code": "8ME5-13",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f20e",
+        "code": "8ME4-21",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f20f",
+        "code": "8ME4-22",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f210",
+        "code": "8ME7-50",
+        "credits": 7
+    },
+    {
+        "_id": "665f5bacef1a824df590f211",
+        "code": "8ME8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f212",
+        "code": "3EE2-01",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f213",
+        "code": "3EE1-02",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f214",
+        "code": "3EE1-03",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f215",
+        "code": "3EE3-04",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f216",
+        "code": "3EE4-05",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f217",
+        "code": "3EE4-06",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f218",
+        "code": "3EE4-07",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f219",
+        "code": "3EE4-08",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f21a",
+        "code": "3EE4-21",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f21b",
+        "code": "3EE4-22",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f21c",
+        "code": "3EE4-23",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f21d",
+        "code": "3EE7-30",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f21e",
+        "code": "3EE8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f21f",
+        "code": "4EE2-01",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f220",
+        "code": "4EE1-02",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f221",
+        "code": "4EE1-03",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f222",
+        "code": "4EE3-04",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f223",
+        "code": "4EE4-05",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f224",
+        "code": "4EE4-06",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f225",
+        "code": "4EE4-07",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f226",
+        "code": "4EE4-08",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f227",
+        "code": "4EE4-21",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f228",
+        "code": "4EE4-22",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f229",
+        "code": "4EE4-23",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f22a",
+        "code": "4EE3-24",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f22b",
+        "code": "4EE8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f22c",
+        "code": "5EE3-01",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f22d",
+        "code": "5EE4-02",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f22e",
+        "code": "5EE4-03",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f22f",
+        "code": "5EE4-04",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f230",
+        "code": "5EE4-05",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f231",
+        "code": "5EE5-11",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f232",
+        "code": "5EE5-12",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f233",
+        "code": "5EE5-13",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f234",
+        "code": "5EE4-21",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f235",
+        "code": "5EE4-22",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f236",
+        "code": "5EE4-23",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f237",
+        "code": "5EE4-24",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f238",
+        "code": "5EE7-30",
+        "credits": 2.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f239",
+        "code": "5EE8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f23a",
+        "code": "6EE3-01",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f23b",
+        "code": "6EE4-02",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f23c",
+        "code": "6EE4-03",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f23d",
+        "code": "6EE4-04",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f23e",
+        "code": "6EE4-05",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f23f",
+        "code": "6EE5-11",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f240",
+        "code": "6EE5-12",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f241",
+        "code": "6EE5-13",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f242",
+        "code": "6EE4-21",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f243",
+        "code": "6EE4-22",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f244",
+        "code": "6EE4-23",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f245",
+        "code": "6EE4-24",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f246",
+        "code": "6EE8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f247",
+        "code": "7EE5-11",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f248",
+        "code": "7EE5-12",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f249",
+        "code": "7EE5-13",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f24a",
+        "code": "7EE4-21",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f24b",
+        "code": "7EE4-22",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f24c",
+        "code": "7EE7-30",
+        "credits": 2.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f24d",
+        "code": "7EE7-40",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f24e",
+        "code": "7EE8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f24f",
+        "code": "8EE4-11",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f250",
+        "code": "8EE4-12",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f251",
+        "code": "8EE4-13",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f252",
+        "code": "8EE4-21",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f253",
+        "code": "8EE7-50",
+        "credits": 7
+    },
+    {
+        "_id": "665f5bacef1a824df590f254",
+        "code": "8EE8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f255",
+        "code": "3EC2-01",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f256",
+        "code": "3EC1-02",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f257",
+        "code": "3EC1-03",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f258",
+        "code": "3EC4-04",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f259",
+        "code": "3EC4-05",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f25a",
+        "code": "3EC4-06",
+        "credits": 4
+    },
+    {
+        "_id": "665f5bacef1a824df590f25b",
+        "code": "3EC4-07",
+        "credits": 4
+    },
+    {
+        "_id": "665f5bacef1a824df590f25c",
+        "code": "3EC4-21",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f25d",
+        "code": "3EC4-22",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f25e",
+        "code": "3EC4-23",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f25f",
+        "code": "3EC3-24",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f260",
+        "code": "3EC7-30",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f261",
+        "code": "3EC8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f262",
+        "code": "4EC2-01",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f263",
+        "code": "4EC1-03",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f264",
+        "code": "4EC4-04",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f265",
+        "code": "4EC4-05",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f266",
+        "code": "4EC3-06",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f267",
+        "code": "4EC4-07",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f268",
+        "code": "4EC4-21",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f269",
+        "code": "4EC4-22",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f26a",
+        "code": "4EC4-23",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f26b",
+        "code": "4EC4-24",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f26c",
+        "code": "4EC18-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f26d",
+        "code": "5EC3-01",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f26e",
+        "code": "5EC4-02",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f26f",
+        "code": "5EC4-03",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f270",
+        "code": "5EC4-04",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f271",
+        "code": "5EC4-05",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f272",
+        "code": "5EC4-21",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f273",
+        "code": "5EC4-22",
+        "credits": 1.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f274",
+        "code": "5EC4-23",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f275",
+        "code": "5EC7-30",
+        "credits": 2.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f276",
+        "code": "5EC8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f277",
+        "code": "6EC3-01",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f278",
+        "code": "6EC4-02",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f279",
+        "code": "6EC4-03",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f27a",
+        "code": "6EC4-04",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f27b",
+        "code": "6EC4-05",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f27c",
+        "code": "6EC4-21",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f27d",
+        "code": "6EC4-22",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f27e",
+        "code": "6EC4-23",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f27f",
+        "code": "6EC4-24",
+        "credits": 1
+    },
+    {
+        "_id": "665f5bacef1a824df590f280",
+        "code": "6EC8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f281",
+        "code": "7EC5-11",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f282",
+        "code": "7EC5-12",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f283",
+        "code": "7EC5-13",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f284",
+        "code": "7EC4-21",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f285",
+        "code": "7EC4-22",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f286",
+        "code": "7EC4-23",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f287",
+        "code": "7EC7-30",
+        "credits": 2.57
+    },
+    {
+        "_id": "665f5bacef1a824df590f288",
+        "code": "7EC7-40",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f289",
+        "code": "7EC8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f28a",
+        "code": "8EC5-11",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f28b",
+        "code": "8EC5-12",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f28c",
+        "code": "8EC5-13",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f28d",
+        "code": "8EC4-21",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f28e",
+        "code": "8EC4-22",
+        "credits": 2
+    },
+    {
+        "_id": "665f5bacef1a824df590f28f",
+        "code": "8EC7-50",
+        "credits": 7
+    },
+    {
+        "_id": "665f5bacef1a824df590f290",
+        "code": "8EC8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "665f5bacef1a824df590f291",
+        "code": "7AG6-60.1",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f292",
+        "code": "8AG6-60.1",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f293",
+        "code": "7AG6-60.2",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f294",
+        "code": "8AG6-60.2",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f295",
+        "code": "7AN6-60.1",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f296",
+        "code": "8AN6-60.1",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f297",
+        "code": "7AN6-60.2",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f298",
+        "code": "8AN6-60.2",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f299",
+        "code": "7CH6-60.1",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f29a",
+        "code": "8CH6-60.1",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f29b",
+        "code": "7CH6-60.2",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f29c",
+        "code": "8CH6-60.2",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f29d",
+        "code": "7CR6-60.1",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f29e",
+        "code": "8CR6-60.1",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f29f",
+        "code": "7CR6-60.2",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f2a0",
+        "code": "8CR6-60.2",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f2a1",
+        "code": "7CE6-60.1",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f2a2",
+        "code": "8CE6-60.1",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f2a3",
+        "code": "7CE6-60.2",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f2a4",
+        "code": "8CE6-60.2",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f2a5",
+        "code": "7EE6-60.1",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f2a6",
+        "code": "8EE6-60.1",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f2a7",
+        "code": "7EE6-60.2",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f2a8",
+        "code": "8EE6-60.2",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f2a9",
+        "code": "7EC6-60.1",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f2aa",
+        "code": "8EC6-60.1",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f2ab",
+        "code": "7EC6-60.2",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f2ac",
+        "code": "8EC6-60.2",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f2ad",
+        "code": "7ME6-60.1",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f2ae",
+        "code": "8ME6-60.1",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f2af",
+        "code": "7ME6-60.2",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f2b0",
+        "code": "8ME6-60.2",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f2b1",
+        "code": "7MI6-60.1",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f2b2",
+        "code": "8MI6-60.1",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f2b3",
+        "code": "7MI6-60.2",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f2b4",
+        "code": "8MI6-60.2",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f2b5",
+        "code": "7PE6-60.1",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f2b6",
+        "code": "8PE6-60.1",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f2b7",
+        "code": "7PE6-60.2",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f2b8",
+        "code": "8PE6-60.2",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f2b9",
+        "code": "7TT6-60.1",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f2ba",
+        "code": "8TT6-60.1",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f2bb",
+        "code": "7TT6-60.2",
+        "credits": 3
+    },
+    {
+        "_id": "665f5bacef1a824df590f2bc",
+        "code": "8TT6-60.2",
+        "credits": 3
+    },
+    {
+        "_id": "665f5f8a47ba9cf80a6d0980",
+        "credits": 2,
+        "code": "4EC1-02",
+        "__v": 0
+    },
+    {
+        "_id": "665f698a1623b71f0654bf28",
+        "credits": 2,
+        "code": "3IT1-03",
+        "__v": 0
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797d9",
+        "code": "4CY1-03",
+        "credits": 2
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797db",
+        "code": "4CY3-04",
+        "credits": 3
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797cc",
+        "code": "3CY1-02",
+        "credits": 2
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797d8",
+        "code": "4CY2-01",
+        "credits": 3
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797dc",
+        "code": "4CY4-05",
+        "credits": 3
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797dd",
+        "code": "4CY4-06",
+        "credits": 3
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797e1",
+        "code": "4CY4-23",
+        "credits": 1.5
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797e3",
+        "code": "4CY4-25",
+        "credits": 1
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797ec",
+        "code": "5CY5-13",
+        "credits": 2
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797ee",
+        "code": "5CY4-22",
+        "credits": 1
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797f1",
+        "code": "5CY7-30",
+        "credits": 2.5
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797fa",
+        "code": "6CY5-12",
+        "credits": 2
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797ff",
+        "code": "6CY4-24",
+        "credits": 1.5
+    },
+    {
+        "_id": "6660357b12b9adf8e2a79805",
+        "code": "7CY7-40",
+        "credits": 2
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797ce",
+        "code": "3CY3-04",
+        "credits": 3
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797d0",
+        "code": "3CY4-06",
+        "credits": 3
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797e0",
+        "code": "4CY4-22",
+        "credits": 1.5
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797e4",
+        "code": "4CY8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797f7",
+        "code": "6CY4-05",
+        "credits": 2
+    },
+    {
+        "_id": "6660357b12b9adf8e2a7980b",
+        "code": "8CY7-00",
+        "credits": 7.6
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797de",
+        "code": "4CY4-07",
+        "credits": 3
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797df",
+        "code": "4CY4-21",
+        "credits": 1
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797e6",
+        "code": "5CY4-02",
+        "credits": 3
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797e8",
+        "code": "5CY4-04",
+        "credits": 3
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797f3",
+        "code": "6CY3-01",
+        "credits": 2
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797e7",
+        "code": "5CY4-03",
+        "credits": 3
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797e9",
+        "code": "5CY4-05",
+        "credits": 3
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797ed",
+        "code": "5CY4-21",
+        "credits": 1
+    },
+    {
+        "_id": "6660357b12b9adf8e2a79801",
+        "code": "7CY4-01",
+        "credits": 3
+    },
+    {
+        "_id": "6660357b12b9adf8e2a79802",
+        "code": "7CY4-21",
+        "credits": 2
+    },
+    {
+        "_id": "6660357b12b9adf8e2a79804",
+        "code": "7CY7-30",
+        "credits": 2.5
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797d1",
+        "code": "3CY4-07",
+        "credits": 3
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797cb",
+        "code": "3CY2-01",
+        "credits": 3
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797d6",
+        "code": "3CY7-30",
+        "credits": 1
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797d3",
+        "code": "3CY4-22",
+        "credits": 1.5
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797e5",
+        "code": "5CY3-01",
+        "credits": 2
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797ea",
+        "code": "5CY5-11",
+        "credits": 2
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797ef",
+        "code": "5CY4-23",
+        "credits": 1
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797fb",
+        "code": "6CY5-13",
+        "credits": 2
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797cd",
+        "code": "3CY1-03",
+        "credits": 2
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797d5",
+        "code": "3CY4-24",
+        "credits": 1.5
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797eb",
+        "code": "5CY5-12",
+        "credits": 2
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797f2",
+        "code": "5CY8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797f6",
+        "code": "6CY4-04",
+        "credits": 3
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797f8",
+        "code": "6CY4-06",
+        "credits": 3
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797fc",
+        "code": "6CY4-21",
+        "credits": 1.5
+    },
+    {
+        "_id": "6660357b12b9adf8e2a79800",
+        "code": "6CY8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "6660357b12b9adf8e2a79806",
+        "code": "7CY8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "6660357b12b9adf8e2a79807",
+        "code": "8CY4-01",
+        "credits": 6
+    },
+    {
+        "_id": "6660357b12b9adf8e2a7980a",
+        "code": "8CY4-22",
+        "credits": 1
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797d7",
+        "code": "3CY8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797f0",
+        "code": "5CY4-24",
+        "credits": 1
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797fd",
+        "code": "6CY4-22",
+        "credits": 1.5
+    },
+    {
+        "_id": "6660357b12b9adf8e2a79803",
+        "code": "7CY4-22",
+        "credits": 2
+    },
+    {
+        "_id": "6660357b12b9adf8e2a79808",
+        "code": "8CY4-02",
+        "credits": 3
+    },
+    {
+        "_id": "6660357b12b9adf8e2a79809",
+        "code": "8CY4-21",
+        "credits": 1
+    },
+    {
+        "_id": "6660357b12b9adf8e2a7980c",
+        "code": "8CY8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797cf",
+        "code": "3CY4-05",
+        "credits": 3
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797d2",
+        "code": "3CY4-21",
+        "credits": 1.5
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797d4",
+        "code": "3CY4-23",
+        "credits": 1.5
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797da",
+        "code": "4CY1-02",
+        "credits": 2
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797e2",
+        "code": "4CY4-24",
+        "credits": 1
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797f4",
+        "code": "6CY4-02",
+        "credits": 3
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797f5",
+        "code": "6CY4-03",
+        "credits": 2
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797f9",
+        "code": "6CY5-11",
+        "credits": 2
+    },
+    {
+        "_id": "6660357b12b9adf8e2a797fe",
+        "code": "6CY4-23",
+        "credits": 1.5
+    },
+    {
+        "_id": "666035b312b9adf8e2a7980e",
+        "code": "3CX2-01",
+        "credits": 3
+    },
+    {
+        "_id": "666035b312b9adf8e2a79814",
+        "code": "3CX4-07",
+        "credits": 3
+    },
+    {
+        "_id": "666035b312b9adf8e2a7980f",
+        "code": "3CX1-02",
+        "credits": 2
+    },
+    {
+        "_id": "666035b312b9adf8e2a79810",
+        "code": "3CX1-03",
+        "credits": 2
+    },
+    {
+        "_id": "666035b312b9adf8e2a7982d",
+        "code": "5CX5-11",
+        "credits": 2
+    },
+    {
+        "_id": "666035b312b9adf8e2a79832",
+        "code": "5CX4-23",
+        "credits": 1
+    },
+    {
+        "_id": "666035b312b9adf8e2a79834",
+        "code": "5CX7-30",
+        "credits": 2.5
+    },
+    {
+        "_id": "666035b312b9adf8e2a79835",
+        "code": "5CX8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "666035b312b9adf8e2a79837",
+        "code": "6CX4-02",
+        "credits": 3
+    },
+    {
+        "_id": "666035b312b9adf8e2a79838",
+        "code": "6CX4-03",
+        "credits": 2
+    },
+    {
+        "_id": "666035b312b9adf8e2a79844",
+        "code": "7CX4-01",
+        "credits": 3
+    },
+    {
+        "_id": "666035b312b9adf8e2a79812",
+        "code": "3CX4-05",
+        "credits": 3
+    },
+    {
+        "_id": "666035b312b9adf8e2a7981e",
+        "code": "4CX3-04",
+        "credits": 3
+    },
+    {
+        "_id": "666035b312b9adf8e2a79820",
+        "code": "4CX4-06",
+        "credits": 3
+    },
+    {
+        "_id": "666035b312b9adf8e2a79821",
+        "code": "4CX4-07",
+        "credits": 3
+    },
+    {
+        "_id": "666035b312b9adf8e2a79830",
+        "code": "5CX4-21",
+        "credits": 1
+    },
+    {
+        "_id": "666035b312b9adf8e2a7983a",
+        "code": "6CX4-05",
+        "credits": 2
+    },
+    {
+        "_id": "666035b312b9adf8e2a7983e",
+        "code": "6CX5-13",
+        "credits": 2
+    },
+    {
+        "_id": "666035b312b9adf8e2a7984c",
+        "code": "8CX4-21",
+        "credits": 1
+    },
+    {
+        "_id": "666035b312b9adf8e2a79815",
+        "code": "3CX4-21",
+        "credits": 1.5
+    },
+    {
+        "_id": "666035b312b9adf8e2a7981c",
+        "code": "4CX1-03",
+        "credits": 2
+    },
+    {
+        "_id": "666035b312b9adf8e2a7981d",
+        "code": "4CX1-02",
+        "credits": 2
+    },
+    {
+        "_id": "666035b312b9adf8e2a7982b",
+        "code": "5CX4-04",
+        "credits": 3
+    },
+    {
+        "_id": "666035b312b9adf8e2a7982c",
+        "code": "5CX4-05",
+        "credits": 3
+    },
+    {
+        "_id": "666035b312b9adf8e2a7982e",
+        "code": "5CX5-12",
+        "credits": 2
+    },
+    {
+        "_id": "666035b312b9adf8e2a79833",
+        "code": "5CX4-24",
+        "credits": 1
+    },
+    {
+        "_id": "666035b312b9adf8e2a79839",
+        "code": "6CX4-04",
+        "credits": 3
+    },
+    {
+        "_id": "666035b312b9adf8e2a7983c",
+        "code": "6CX5-11",
+        "credits": 2
+    },
+    {
+        "_id": "666035b312b9adf8e2a79811",
+        "code": "3CX3-04",
+        "credits": 3
+    },
+    {
+        "_id": "666035b312b9adf8e2a79816",
+        "code": "3CX4-22",
+        "credits": 1.5
+    },
+    {
+        "_id": "666035b312b9adf8e2a79823",
+        "code": "4CX4-22",
+        "credits": 1.5
+    },
+    {
+        "_id": "666035b312b9adf8e2a79818",
+        "code": "3CX4-24",
+        "credits": 1.5
+    },
+    {
+        "_id": "666035b312b9adf8e2a79813",
+        "code": "3CX4-06",
+        "credits": 3
+    },
+    {
+        "_id": "666035b312b9adf8e2a79817",
+        "code": "3CX4-23",
+        "credits": 1.5
+    },
+    {
+        "_id": "666035b312b9adf8e2a7981a",
+        "code": "3CX8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "666035b312b9adf8e2a79826",
+        "code": "4CX4-25",
+        "credits": 1
+    },
+    {
+        "_id": "666035b312b9adf8e2a79827",
+        "code": "4CX8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "666035b312b9adf8e2a7982f",
+        "code": "5CX5-13",
+        "credits": 2
+    },
+    {
+        "_id": "666035b312b9adf8e2a7983d",
+        "code": "6CX5-12",
+        "credits": 2
+    },
+    {
+        "_id": "666035b312b9adf8e2a79847",
+        "code": "7CX7-30",
+        "credits": 2.5
+    },
+    {
+        "_id": "666035b312b9adf8e2a79824",
+        "code": "4CX4-23",
+        "credits": 1.5
+    },
+    {
+        "_id": "666035b312b9adf8e2a79831",
+        "code": "5CX4-22",
+        "credits": 1
+    },
+    {
+        "_id": "666035b312b9adf8e2a79836",
+        "code": "6CX3-01",
+        "credits": 2
+    },
+    {
+        "_id": "666035b312b9adf8e2a7983b",
+        "code": "6CX4-06",
+        "credits": 3
+    },
+    {
+        "_id": "666035b312b9adf8e2a7984a",
+        "code": "8CX4-01",
+        "credits": 6
+    },
+    {
+        "_id": "666035b312b9adf8e2a7984d",
+        "code": "8CX4-22",
+        "credits": 1
+    },
+    {
+        "_id": "666035b312b9adf8e2a79819",
+        "code": "3CX7-30",
+        "credits": 1
+    },
+    {
+        "_id": "666035b312b9adf8e2a7981b",
+        "code": "4CX2-01",
+        "credits": 3
+    },
+    {
+        "_id": "666035b312b9adf8e2a7981f",
+        "code": "4CX4-05",
+        "credits": 3
+    },
+    {
+        "_id": "666035b312b9adf8e2a79829",
+        "code": "5CX4-02",
+        "credits": 3
+    },
+    {
+        "_id": "666035b312b9adf8e2a79845",
+        "code": "7CX4-21",
+        "credits": 2
+    },
+    {
+        "_id": "666035b312b9adf8e2a79849",
+        "code": "7CX8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "666035b312b9adf8e2a79822",
+        "code": "4CX4-21",
+        "credits": 1
+    },
+    {
+        "_id": "666035b312b9adf8e2a79825",
+        "code": "4CX4-24",
+        "credits": 1
+    },
+    {
+        "_id": "666035b312b9adf8e2a7982a",
+        "code": "5CX4-03",
+        "credits": 3
+    },
+    {
+        "_id": "666035b312b9adf8e2a79840",
+        "code": "6CX4-22",
+        "credits": 1.5
+    },
+    {
+        "_id": "666035b312b9adf8e2a79841",
+        "code": "6CX4-23",
+        "credits": 1.5
+    },
+    {
+        "_id": "666035b312b9adf8e2a79843",
+        "code": "6CX8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "666035b312b9adf8e2a79848",
+        "code": "7CX7-40",
+        "credits": 2
+    },
+    {
+        "_id": "666035b312b9adf8e2a7984b",
+        "code": "8CX4-02",
+        "credits": 3
+    },
+    {
+        "_id": "666035b312b9adf8e2a79828",
+        "code": "5CX3-01",
+        "credits": 2
+    },
+    {
+        "_id": "666035b312b9adf8e2a7983f",
+        "code": "6CX4-21",
+        "credits": 1.5
+    },
+    {
+        "_id": "666035b312b9adf8e2a79842",
+        "code": "6CX4-24",
+        "credits": 1.5
+    },
+    {
+        "_id": "666035b312b9adf8e2a79846",
+        "code": "7CX4-22",
+        "credits": 2
+    },
+    {
+        "_id": "666035b312b9adf8e2a7984f",
+        "code": "8CX8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "666035b312b9adf8e2a7984e",
+        "code": "8CX7-00",
+        "credits": 7.6
+    },
+    {
+        "_id": "666035f812b9adf8e2a7985e",
+        "code": "4CA2-01",
+        "credits": 3
+    },
+    {
+        "_id": "666035f812b9adf8e2a7985a",
+        "code": "3CA4-23",
+        "credits": 1.5
+    },
+    {
+        "_id": "666035f812b9adf8e2a79853",
+        "code": "3CA1-03",
+        "credits": 2
+    },
+    {
+        "_id": "666035f812b9adf8e2a79863",
+        "code": "4CA4-06",
+        "credits": 3
+    },
+    {
+        "_id": "666035f812b9adf8e2a79869",
+        "code": "4CA4-25",
+        "credits": 1
+    },
+    {
+        "_id": "666035f812b9adf8e2a7986a",
+        "code": "4CA8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "666035f812b9adf8e2a7986d",
+        "code": "5CA4-03",
+        "credits": 3
+    },
+    {
+        "_id": "666035f812b9adf8e2a7986e",
+        "code": "5CA4-04",
+        "credits": 3
+    },
+    {
+        "_id": "666035f812b9adf8e2a79871",
+        "code": "5CA5-12",
+        "credits": 2
+    },
+    {
+        "_id": "666035f812b9adf8e2a7987d",
+        "code": "6CA4-05",
+        "credits": 2
+    },
+    {
+        "_id": "666035f812b9adf8e2a7987e",
+        "code": "6CA4-06",
+        "credits": 3
+    },
+    {
+        "_id": "666035f812b9adf8e2a79888",
+        "code": "7CA4-21",
+        "credits": 2
+    },
+    {
+        "_id": "666035f812b9adf8e2a7988a",
+        "code": "7CA7-30",
+        "credits": 2.5
+    },
+    {
+        "_id": "666035f812b9adf8e2a7988c",
+        "code": "7CA8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "666035f812b9adf8e2a7988e",
+        "code": "8CA4-02",
+        "credits": 3
+    },
+    {
+        "_id": "666035f812b9adf8e2a79890",
+        "code": "8CA4-22",
+        "credits": 1
+    },
+    {
+        "_id": "666035f812b9adf8e2a79862",
+        "code": "4CA4-05",
+        "credits": 3
+    },
+    {
+        "_id": "666035f812b9adf8e2a79865",
+        "code": "4CA4-21",
+        "credits": 1
+    },
+    {
+        "_id": "666035f812b9adf8e2a79867",
+        "code": "4CA4-23",
+        "credits": 1.5
+    },
+    {
+        "_id": "666035f812b9adf8e2a7986b",
+        "code": "5CA3-01",
+        "credits": 2
+    },
+    {
+        "_id": "666035f812b9adf8e2a7987b",
+        "code": "6CA4-03",
+        "credits": 2
+    },
+    {
+        "_id": "666035f812b9adf8e2a7987f",
+        "code": "6CA5-11",
+        "credits": 2
+    },
+    {
+        "_id": "666035f812b9adf8e2a79854",
+        "code": "3CA3-04",
+        "credits": 3
+    },
+    {
+        "_id": "666035f812b9adf8e2a7986c",
+        "code": "5CA4-02",
+        "credits": 3
+    },
+    {
+        "_id": "666035f812b9adf8e2a79872",
+        "code": "5CA5-13",
+        "credits": 2
+    },
+    {
+        "_id": "666035f812b9adf8e2a79878",
+        "code": "5CA8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "666035f812b9adf8e2a79889",
+        "code": "7CA4-22",
+        "credits": 2
+    },
+    {
+        "_id": "666035f812b9adf8e2a7985b",
+        "code": "3CA4-24",
+        "credits": 1.5
+    },
+    {
+        "_id": "666035f812b9adf8e2a79852",
+        "code": "3CA1-02",
+        "credits": 2
+    },
+    {
+        "_id": "666035f812b9adf8e2a79859",
+        "code": "3CA4-22",
+        "credits": 1.5
+    },
+    {
+        "_id": "666035f812b9adf8e2a79851",
+        "code": "3CA2-01",
+        "credits": 3
+    },
+    {
+        "_id": "666035f812b9adf8e2a79868",
+        "code": "4CA4-24",
+        "credits": 1
+    },
+    {
+        "_id": "666035f812b9adf8e2a79875",
+        "code": "5CA4-23",
+        "credits": 1
+    },
+    {
+        "_id": "666035f812b9adf8e2a79881",
+        "code": "6CA5-13",
+        "credits": 2
+    },
+    {
+        "_id": "666035f812b9adf8e2a79887",
+        "code": "7CA4-01",
+        "credits": 3
+    },
+    {
+        "_id": "666035f812b9adf8e2a7985f",
+        "code": "4CA1-03",
+        "credits": 2
+    },
+    {
+        "_id": "666035f812b9adf8e2a79860",
+        "code": "4CA1-02",
+        "credits": 2
+    },
+    {
+        "_id": "666035f812b9adf8e2a7986f",
+        "code": "5CA4-05",
+        "credits": 3
+    },
+    {
+        "_id": "666035f812b9adf8e2a79879",
+        "code": "6CA3-01",
+        "credits": 2
+    },
+    {
+        "_id": "666035f812b9adf8e2a7987c",
+        "code": "6CA4-04",
+        "credits": 3
+    },
+    {
+        "_id": "666035f812b9adf8e2a79880",
+        "code": "6CA5-12",
+        "credits": 2
+    },
+    {
+        "_id": "666035f812b9adf8e2a79883",
+        "code": "6CA4-22",
+        "credits": 1.5
+    },
+    {
+        "_id": "666035f812b9adf8e2a79886",
+        "code": "6CA8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "666035f812b9adf8e2a7988b",
+        "code": "7CA7-40",
+        "credits": 2
+    },
+    {
+        "_id": "666035f812b9adf8e2a79866",
+        "code": "4CA4-22",
+        "credits": 1.5
+    },
+    {
+        "_id": "666035f812b9adf8e2a7988d",
+        "code": "8CA4-01",
+        "credits": 6
+    },
+    {
+        "_id": "666035f812b9adf8e2a79855",
+        "code": "3CA4-05",
+        "credits": 3
+    },
+    {
+        "_id": "666035f812b9adf8e2a79857",
+        "code": "3CA4-07",
+        "credits": 3
+    },
+    {
+        "_id": "666035f812b9adf8e2a79858",
+        "code": "3CA4-21",
+        "credits": 1.5
+    },
+    {
+        "_id": "666035f812b9adf8e2a7985c",
+        "code": "3CA7-30",
+        "credits": 1
+    },
+    {
+        "_id": "666035f812b9adf8e2a79861",
+        "code": "4CA3-04",
+        "credits": 3
+    },
+    {
+        "_id": "666035f812b9adf8e2a79864",
+        "code": "4CA4-07",
+        "credits": 3
+    },
+    {
+        "_id": "666035f812b9adf8e2a79877",
+        "code": "5CA7-30",
+        "credits": 2.5
+    },
+    {
+        "_id": "666035f812b9adf8e2a79882",
+        "code": "6CA4-21",
+        "credits": 1.5
+    },
+    {
+        "_id": "666035f812b9adf8e2a79884",
+        "code": "6CA4-23",
+        "credits": 1.5
+    },
+    {
+        "_id": "666035f812b9adf8e2a7988f",
+        "code": "8CA4-21",
+        "credits": 1
+    },
+    {
+        "_id": "666035f812b9adf8e2a79856",
+        "code": "3CA4-06",
+        "credits": 3
+    },
+    {
+        "_id": "666035f812b9adf8e2a7985d",
+        "code": "3CA8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "666035f812b9adf8e2a79870",
+        "code": "5CA5-11",
+        "credits": 2
+    },
+    {
+        "_id": "666035f812b9adf8e2a79873",
+        "code": "5CA4-21",
+        "credits": 1
+    },
+    {
+        "_id": "666035f812b9adf8e2a79874",
+        "code": "5CA4-22",
+        "credits": 1
+    },
+    {
+        "_id": "666035f812b9adf8e2a79876",
+        "code": "5CA4-24",
+        "credits": 1
+    },
+    {
+        "_id": "666035f812b9adf8e2a7987a",
+        "code": "6CA4-02",
+        "credits": 3
+    },
+    {
+        "_id": "666035f812b9adf8e2a79885",
+        "code": "6CA4-24",
+        "credits": 1.5
+    },
+    {
+        "_id": "666035f812b9adf8e2a79892",
+        "code": "8CA8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "666035f812b9adf8e2a79891",
+        "code": "8CA7-00",
+        "credits": 7.6
+    },
+    {
+        "_id": "666036d512b9adf8e2a7989c",
+        "code": "3CAI4-22",
+        "credits": 1.5
+    },
+    {
+        "_id": "666036d512b9adf8e2a798ab",
+        "code": "4CAI4-24",
+        "credits": 1
+    },
+    {
+        "_id": "666036d512b9adf8e2a7989f",
+        "code": "3CAI7-30",
+        "credits": 1
+    },
+    {
+        "_id": "666036d512b9adf8e2a79895",
+        "code": "3CAI1-02",
+        "credits": 2
+    },
+    {
+        "_id": "666036d512b9adf8e2a798b0",
+        "code": "5CAI4-03",
+        "credits": 3
+    },
+    {
+        "_id": "666036d512b9adf8e2a798b3",
+        "code": "5CAI5-11",
+        "credits": 2
+    },
+    {
+        "_id": "666036d512b9adf8e2a798ba",
+        "code": "5CAI7-30",
+        "credits": 2.5
+    },
+    {
+        "_id": "666036d512b9adf8e2a798c2",
+        "code": "6CAI5-11",
+        "credits": 2
+    },
+    {
+        "_id": "666036d512b9adf8e2a798ce",
+        "code": "7CAI7-40",
+        "credits": 2
+    },
+    {
+        "_id": "666036d512b9adf8e2a7989e",
+        "code": "3CAI4-24",
+        "credits": 1.5
+    },
+    {
+        "_id": "666036d512b9adf8e2a798a2",
+        "code": "4CAI1-03",
+        "credits": 2
+    },
+    {
+        "_id": "666036d512b9adf8e2a798a6",
+        "code": "4CAI4-06",
+        "credits": 3
+    },
+    {
+        "_id": "666036d512b9adf8e2a798a9",
+        "code": "4CAI4-22",
+        "credits": 1.5
+    },
+    {
+        "_id": "666036d512b9adf8e2a798aa",
+        "code": "4CAI4-23",
+        "credits": 1.5
+    },
+    {
+        "_id": "666036d512b9adf8e2a798bd",
+        "code": "6CAI4-02",
+        "credits": 3
+    },
+    {
+        "_id": "666036d512b9adf8e2a798ca",
+        "code": "7CAI4-01",
+        "credits": 3
+    },
+    {
+        "_id": "666036d512b9adf8e2a798cb",
+        "code": "7CAI4-21",
+        "credits": 2
+    },
+    {
+        "_id": "666036d512b9adf8e2a798d5",
+        "code": "8CAI8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "666036d512b9adf8e2a798ac",
+        "code": "4CAI4-25",
+        "credits": 1
+    },
+    {
+        "_id": "666036d512b9adf8e2a798b1",
+        "code": "5CAI4-04",
+        "credits": 3
+    },
+    {
+        "_id": "666036d512b9adf8e2a798b4",
+        "code": "5CAI5-12",
+        "credits": 2
+    },
+    {
+        "_id": "666036d512b9adf8e2a798c3",
+        "code": "6CAI5-12",
+        "credits": 2
+    },
+    {
+        "_id": "666036d512b9adf8e2a798c4",
+        "code": "6CAI5-13",
+        "credits": 2
+    },
+    {
+        "_id": "666036d512b9adf8e2a798c5",
+        "code": "6CAI4-21",
+        "credits": 1.5
+    },
+    {
+        "_id": "666036d512b9adf8e2a7989b",
+        "code": "3CAI4-21",
+        "credits": 1.5
+    },
+    {
+        "_id": "666036d512b9adf8e2a798ad",
+        "code": "4CAI8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "666036d512b9adf8e2a798b2",
+        "code": "5CAI4-05",
+        "credits": 3
+    },
+    {
+        "_id": "666036d512b9adf8e2a798b5",
+        "code": "5CAI5-13",
+        "credits": 2
+    },
+    {
+        "_id": "666036d512b9adf8e2a798bc",
+        "code": "6CAI3-01",
+        "credits": 2
+    },
+    {
+        "_id": "666036d512b9adf8e2a798c9",
+        "code": "6CAI8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "666036d512b9adf8e2a798d3",
+        "code": "8CAI4-22",
+        "credits": 1
+    },
+    {
+        "_id": "666036d512b9adf8e2a79894",
+        "code": "3CAI2-01",
+        "credits": 3
+    },
+    {
+        "_id": "666036d512b9adf8e2a798a7",
+        "code": "4CAI4-07",
+        "credits": 3
+    },
+    {
+        "_id": "666036d512b9adf8e2a79896",
+        "code": "3CAI1-03",
+        "credits": 2
+    },
+    {
+        "_id": "666036d512b9adf8e2a79897",
+        "code": "3CAI3-04",
+        "credits": 3
+    },
+    {
+        "_id": "666036d512b9adf8e2a7989d",
+        "code": "3CAI4-23",
+        "credits": 1.5
+    },
+    {
+        "_id": "666036d512b9adf8e2a798a1",
+        "code": "4CAI2-01",
+        "credits": 3
+    },
+    {
+        "_id": "666036d512b9adf8e2a798ae",
+        "code": "5CAI3-01",
+        "credits": 2
+    },
+    {
+        "_id": "666036d512b9adf8e2a798af",
+        "code": "5CAI4-02",
+        "credits": 3
+    },
+    {
+        "_id": "666036d512b9adf8e2a798bb",
+        "code": "5CAI8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "666036d512b9adf8e2a798bf",
+        "code": "6CAI4-04",
+        "credits": 3
+    },
+    {
+        "_id": "666036d512b9adf8e2a798c0",
+        "code": "6CAI4-05",
+        "credits": 2
+    },
+    {
+        "_id": "666036d512b9adf8e2a798b7",
+        "code": "5CAI4-22",
+        "credits": 1
+    },
+    {
+        "_id": "666036d512b9adf8e2a798c6",
+        "code": "6CAI4-22",
+        "credits": 1.5
+    },
+    {
+        "_id": "666036d512b9adf8e2a798c7",
+        "code": "6CAI4-23",
+        "credits": 1.5
+    },
+    {
+        "_id": "666036d512b9adf8e2a798cc",
+        "code": "7CAI4-22",
+        "credits": 2
+    },
+    {
+        "_id": "666036d512b9adf8e2a798d4",
+        "code": "8CAI7-00",
+        "credits": 7
+    },
+    {
+        "_id": "666036d512b9adf8e2a79898",
+        "code": "3CAI4-05",
+        "credits": 3
+    },
+    {
+        "_id": "666036d512b9adf8e2a79899",
+        "code": "3CAI4-06",
+        "credits": 3
+    },
+    {
+        "_id": "666036d512b9adf8e2a7989a",
+        "code": "3CAI4-07",
+        "credits": 3
+    },
+    {
+        "_id": "666036d512b9adf8e2a798a3",
+        "code": "4CAI1-02",
+        "credits": 2
+    },
+    {
+        "_id": "666036d512b9adf8e2a798a4",
+        "code": "4CAI3-04",
+        "credits": 3
+    },
+    {
+        "_id": "666036d512b9adf8e2a798a5",
+        "code": "4CAI4-05",
+        "credits": 3
+    },
+    {
+        "_id": "666036d512b9adf8e2a798b9",
+        "code": "5CAI4-24",
+        "credits": 1
+    },
+    {
+        "_id": "666036d512b9adf8e2a798be",
+        "code": "6CAI4-03",
+        "credits": 2
+    },
+    {
+        "_id": "666036d512b9adf8e2a798c1",
+        "code": "6CAI4-06",
+        "credits": 3
+    },
+    {
+        "_id": "666036d512b9adf8e2a798d1",
+        "code": "8CAI4-02",
+        "credits": 3
+    },
+    {
+        "_id": "666036d512b9adf8e2a798a0",
+        "code": "3CAI8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "666036d512b9adf8e2a798a8",
+        "code": "4CAI4-21",
+        "credits": 1
+    },
+    {
+        "_id": "666036d512b9adf8e2a798b6",
+        "code": "5CAI4-21",
+        "credits": 1
+    },
+    {
+        "_id": "666036d512b9adf8e2a798b8",
+        "code": "5CAI4-23",
+        "credits": 1
+    },
+    {
+        "_id": "666036d512b9adf8e2a798c8",
+        "code": "6CAI4-24",
+        "credits": 1.5
+    },
+    {
+        "_id": "666036d512b9adf8e2a798cd",
+        "code": "7CAI7-30",
+        "credits": 2.5
+    },
+    {
+        "_id": "666036d512b9adf8e2a798cf",
+        "code": "7CAI8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "666036d512b9adf8e2a798d0",
+        "code": "8CAI4-01",
+        "credits": 6
+    },
+    {
+        "_id": "666036d512b9adf8e2a798d2",
+        "code": "8CAI4-21",
+        "credits": 1
+    },
+    {
+        "_id": "6660519e5c8cfbf4c4580cc4",
+        "credits": 7,
+        "code": "8CS7-50",
+        "__v": 0
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccf7f",
+        "code": "5CDS7-30",
+        "credits": 2.5
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccf89",
+        "code": "5CDS4-05",
+        "credits": 3
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccf88",
+        "code": "3CDS4-21",
+        "credits": 1.5
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccf79",
+        "code": "4CDS4-05",
+        "credits": 3
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccf72",
+        "code": "4CDS4-07",
+        "credits": 3
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccf8e",
+        "code": "5CDS4-22",
+        "credits": 1
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccf99",
+        "code": "4CDS1-03",
+        "credits": 2
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccf73",
+        "code": "6CDS4-02",
+        "credits": 3
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccf74",
+        "code": "5CDS4-04",
+        "credits": 3
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccf77",
+        "code": "3CDS4-23",
+        "credits": 1.5
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccf86",
+        "code": "6CDS8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccf81",
+        "code": "6CDSY5-11",
+        "credits": 2
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccf71",
+        "code": "3CDS4-07",
+        "credits": 3
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccf7a",
+        "code": "5CDS8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccfb1",
+        "code": "8CDS4-22",
+        "credits": 1
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccf7c",
+        "code": "6CDSY4-03",
+        "credits": 2
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccf75",
+        "code": "5CDS5-13",
+        "credits": 2
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccf76",
+        "code": "4CDS1-02",
+        "credits": 2
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccf78",
+        "code": "3CDS7-30",
+        "credits": 1
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccf84",
+        "code": "6CDS4-04",
+        "credits": 3
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccf90",
+        "code": "5CDS4-02",
+        "credits": 3
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccf94",
+        "code": "3CDS4-22",
+        "credits": 1.5
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccf97",
+        "code": "7CDS7-30",
+        "credits": 2.5
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccfc6",
+        "code": "8CDS4-24",
+        "credits": 1.5
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccfc7",
+        "code": "4CDSY5-13",
+        "credits": 2
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccfcb",
+        "code": "6CDSY4-23",
+        "credits": 1
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccfb4",
+        "code": "3CDS4-06",
+        "credits": 3
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccfb7",
+        "code": "4CDS4-24",
+        "credits": 1.5
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccf7e",
+        "code": "3CDS2-01",
+        "credits": 3
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccf82",
+        "code": "6CDS5-13",
+        "credits": 2
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccf9c",
+        "code": "6CDS4-03",
+        "credits": 2
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccfa7",
+        "code": "3CDS4-02",
+        "credits": 3
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccfab",
+        "code": "3CDS3-05",
+        "credits": 3
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccfb2",
+        "code": "4CDSY4-23",
+        "credits": 1
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccfbf",
+        "code": "6CDS4-03",
+        "credits": 2
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccf8d",
+        "code": "8CDS4-21",
+        "credits": 1
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccf8f",
+        "code": "8CDS4-22",
+        "credits": 1
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccf9a",
+        "code": "6CDSY4-02",
+        "credits": 3
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccf9d",
+        "code": "3CDS3-04",
+        "credits": 3
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccfad",
+        "code": "6CDS7-30",
+        "credits": 2.5
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccfbd",
+        "code": "8CDS4-22",
+        "credits": 1.5
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccfc3",
+        "code": "5CDS4-25",
+        "credits": 1
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccfcd",
+        "code": "3CDS4-03",
+        "credits": 3
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccfa8",
+        "code": "7CDS4-05",
+        "credits": 3
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccfb9",
+        "code": "8CDS5-11",
+        "credits": 2
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccfb3",
+        "code": "4CDSY4-24",
+        "credits": 1
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccfb8",
+        "code": "3CDS4-03",
+        "credits": 3
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccfc4",
+        "code": "8CDS4-24",
+        "credits": 1.5
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccf8b",
+        "code": "3CDS4-24",
+        "credits": 1.5
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccf98",
+        "code": "4CDS4-23",
+        "credits": 1.5
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccf9b",
+        "code": "5CDS4-23",
+        "credits": 1
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccfa5",
+        "code": "6CDS4-24",
+        "credits": 1.5
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccfb0",
+        "code": "4CDSY4-22",
+        "credits": 1.5
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccfbc",
+        "code": "8CDS4-23",
+        "credits": 1
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccfc8",
+        "code": "4CDSY4-22",
+        "credits": 1
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccf83",
+        "code": "4CDS4-06",
+        "credits": 3
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccfa1",
+        "code": "5CDS4-24",
+        "credits": 1
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccfaa",
+        "code": "5CDS4-03",
+        "credits": 2
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccfb5",
+        "code": "8CDS4-25",
+        "credits": 1
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccf7d",
+        "code": "4CDSY4-24",
+        "credits": 1
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccf87",
+        "code": "4CDS3-04",
+        "credits": 3
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccf8a",
+        "code": "6CDS5-11",
+        "credits": 2
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccf93",
+        "code": "4CDSY1-02",
+        "credits": 2
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccf9f",
+        "code": "6CDS5-12",
+        "credits": 2
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccfa0",
+        "code": "5CDS4-21",
+        "credits": 1
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccfa2",
+        "code": "3CDS4-05",
+        "credits": 3
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccf92",
+        "code": "4CDS2-01",
+        "credits": 3
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccfc0",
+        "code": "6CDSY4-01",
+        "credits": 3
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccfc1",
+        "code": "4CDSY4-21",
+        "credits": 1.5
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccfca",
+        "code": "6CDSY5-12",
+        "credits": 2
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccf7b",
+        "code": "3CDS1-03",
+        "credits": 2
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccfa3",
+        "code": "7CDS4-21",
+        "credits": 2
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccfa9",
+        "code": "6CDS4-22",
+        "credits": 1
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccfac",
+        "code": "7CDS5-11",
+        "credits": 2
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccfcc",
+        "code": "6CDS4-21",
+        "credits": 1
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccf8c",
+        "code": "4CDS4-21",
+        "credits": 1
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccf91",
+        "code": "6CDSY4-23",
+        "credits": 1.5
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccf95",
+        "code": "4CDS4-25",
+        "credits": 1
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccf9e",
+        "code": "4CDS4-22",
+        "credits": 1.5
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccfaf",
+        "code": "8CDS4-23",
+        "credits": 1.5
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccfc9",
+        "code": "4CDSY1-03",
+        "credits": 2
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccf96",
+        "code": "4CDS8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccfa6",
+        "code": "4CDSY4-05",
+        "credits": 3
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccfbb",
+        "code": "8CDS4-24",
+        "credits": 1.5
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccfc5",
+        "code": "4CDSY4-24",
+        "credits": 1
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccfbe",
+        "code": "6CDSY4-21",
+        "credits": 1.5
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccf80",
+        "code": "3CDS1-02",
+        "credits": 2
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccf85",
+        "code": "5CDS5-12",
+        "credits": 2
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccfa4",
+        "code": "6CDS4-23",
+        "credits": 1.5
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccfae",
+        "code": "4CDSY4-21",
+        "credits": 1.5
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccfba",
+        "code": "3CDS4-04",
+        "credits": 3
+    },
+    {
+        "_id": "66c4cebd2e51084ccb1ccfc2",
+        "code": "4CDS1-02",
+        "credits": 2
+    },
+    {
+        "_id": "6718d524f371bbdfa62a42f9",
+        "code": "4IT1-02",
+        "credits": 2
+    },
+    {
+        "_id": "6719d4b18e57d073bd820bf7",
+        "code": "4CIT8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "6719d4b18e57d073bd820bed",
+        "code": "4CIT2-01",
+        "credits": 3
+    },
+    {
+        "_id": "6719d4b18e57d073bd820bf5",
+        "code": "4CIT4-24",
+        "credits": 1
+    },
+    {
+        "_id": "6719d4b18e57d073bd820bf1",
+        "code": "4CIT4-07",
+        "credits": 3
+    },
+    {
+        "_id": "6719d4b18e57d073bd820bf0",
+        "code": "4CIT4-06",
+        "credits": 3
+    },
+    {
+        "_id": "6719d4b18e57d073bd820bec",
+        "code": "4CIT1-03",
+        "credits": 2
+    },
+    {
+        "_id": "6719d4b18e57d073bd820bf6",
+        "code": "4CIT4-25",
+        "credits": 1
+    },
+    {
+        "_id": "6719d4b18e57d073bd820bee",
+        "code": "4CIT3-04",
+        "credits": 3
+    },
+    {
+        "_id": "6719d4b18e57d073bd820bef",
+        "code": "4CIT4-05",
+        "credits": 3
+    },
+    {
+        "_id": "6719d4b18e57d073bd820bf2",
+        "code": "4CIT4-21",
+        "credits": 1
+    },
+    {
+        "_id": "6719d4b18e57d073bd820bf3",
+        "code": "4CIT4-22",
+        "credits": 1.5
+    },
+    {
+        "_id": "6719d4b18e57d073bd820bf4",
+        "code": "4CIT4-23",
+        "credits": 1.5
+    },
+    {
+        "_id": "67a9f545e29034b6837f4fb2",
+        "code": "7AG6-60.2",
+        "credits": 2
+    },
+    {
+        "_id": "6807c8a9866e561e7cf0e639",
+        "code": "5CDS-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "6807c8a9866e561e7cf0e63a",
+        "code": "5CDS-01",
+        "credits": 2
+    },
+    {
+        "_id": "6807c8a9866e561e7cf0e63b",
+        "code": "5CDS-02",
+        "credits": 3
+    },
+    {
+        "_id": "6807c8a9866e561e7cf0e63c",
+        "code": "5CDS-03",
+        "credits": 3
+    },
+    {
+        "_id": "6807c8a9866e561e7cf0e63d",
+        "code": "5CDS-04",
+        "credits": 3
+    },
+    {
+        "_id": "6807c8a9866e561e7cf0e63e",
+        "code": "5CDS-05",
+        "credits": 3
+    },
+    {
+        "_id": "6807c8a9866e561e7cf0e63f",
+        "code": "5CDS-11",
+        "credits": 2
+    },
+    {
+        "_id": "6807c8a9866e561e7cf0e640",
+        "code": "5CDS-21",
+        "credits": 1
+    },
+    {
+        "_id": "6807c8a9866e561e7cf0e641",
+        "code": "5CDS-22",
+        "credits": 1
+    },
+    {
+        "_id": "6807c8a9866e561e7cf0e642",
+        "code": "5CDS-23",
+        "credits": 1
+    },
+    {
+        "_id": "6807c8a9866e561e7cf0e643",
+        "code": "5CDS-24",
+        "credits": 1
+    },
+    {
+        "_id": "6807c8a9866e561e7cf0e644",
+        "code": "5CDS-30",
+        "credits": 2.5
+    },
+    {
+        "_id": "6807cad8866e561e7cf0e649",
+        "code": "5CIT3-01",
+        "credits": 2
+    },
+    {
+        "_id": "6807cad8866e561e7cf0e64a",
+        "code": "5CIT4-02",
+        "credits": 3
+    },
+    {
+        "_id": "6807cad8866e561e7cf0e64b",
+        "code": "5CIT4-03",
+        "credits": 3
+    },
+    {
+        "_id": "6807cad8866e561e7cf0e64c",
+        "code": "5CIT4-04",
+        "credits": 3
+    },
+    {
+        "_id": "6807cad8866e561e7cf0e64d",
+        "code": "5CIT4-05",
+        "credits": 3
+    },
+    {
+        "_id": "6807cad8866e561e7cf0e64e",
+        "code": "5CIT4-11",
+        "credits": 2
+    },
+    {
+        "_id": "6807cad8866e561e7cf0e64f",
+        "code": "5CIT4-21",
+        "credits": 1
+    },
+    {
+        "_id": "6807cad8866e561e7cf0e650",
+        "code": "5CIT4-22",
+        "credits": 1
+    },
+    {
+        "_id": "6807cad8866e561e7cf0e651",
+        "code": "5CIT4-23",
+        "credits": 1
+    },
+    {
+        "_id": "6807cad8866e561e7cf0e652",
+        "code": "5CIT4-24",
+        "credits": 1
+    },
+    {
+        "_id": "6807cad8866e561e7cf0e653",
+        "code": "5CIT7-30",
+        "credits": 2.5
+    },
+    {
+        "_id": "6807cad8866e561e7cf0e654",
+        "code": "5CIT8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "6807cc84866e561e7cf0e659",
+        "code": "5AID3-01",
+        "credits": 2
+    },
+    {
+        "_id": "6807cc84866e561e7cf0e65a",
+        "code": "5AID4-02",
+        "credits": 3
+    },
+    {
+        "_id": "6807cc84866e561e7cf0e65b",
+        "code": "5AID4-03",
+        "credits": 3
+    },
+    {
+        "_id": "6807cc84866e561e7cf0e65c",
+        "code": "5AID4-04",
+        "credits": 2
+    },
+    {
+        "_id": "6807cc84866e561e7cf0e65d",
+        "code": "5AID4-05",
+        "credits": 3
+    },
+    {
+        "_id": "6807cc84866e561e7cf0e65e",
+        "code": "5AID4-21",
+        "credits": 1
+    },
+    {
+        "_id": "6807cc84866e561e7cf0e65f",
+        "code": "5AID4-22",
+        "credits": 1
+    },
+    {
+        "_id": "6807cc84866e561e7cf0e660",
+        "code": "5AID4-23",
+        "credits": 1
+    },
+    {
+        "_id": "6807cc84866e561e7cf0e661",
+        "code": "5AID4-24",
+        "credits": 1
+    },
+    {
+        "_id": "6807cc84866e561e7cf0e662",
+        "code": "5AID5-11",
+        "credits": 3
+    },
+    {
+        "_id": "6807cc84866e561e7cf0e663",
+        "code": "5AID7-30",
+        "credits": 2.5
+    },
+    {
+        "_id": "6807cc84866e561e7cf0e664",
+        "code": "5AID8-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "683142ae2e5aa22d21103c36",
+        "code": "3IT4-07",
+        "credits": 3
+    },
+    {
+        "_id": "683142ae2e5aa22d21103c3a",
+        "code": "3IT4-24",
+        "credits": 1.5
+    },
+    {
+        "_id": "683142ae2e5aa22d21103c3c",
+        "code": "FEC23",
+        "credits": 0.5
+    },
+    {
+        "_id": "683142ae2e5aa22d21103c37",
+        "code": "3IT4-21",
+        "credits": 1.5
+    },
+    {
+        "_id": "683142ae2e5aa22d21103c38",
+        "code": "3IT4-22",
+        "credits": 1.5
+    },
+    {
+        "_id": "683142ae2e5aa22d21103c34",
+        "code": "3IT4-05",
+        "credits": 3
+    },
+    {
+        "_id": "683142ae2e5aa22d21103c35",
+        "code": "3IT4-06",
+        "credits": 3
+    },
+    {
+        "_id": "683142ae2e5aa22d21103c39",
+        "code": "3IT4-23",
+        "credits": 1.5
+    },
+    {
+        "_id": "683142ae2e5aa22d21103c31",
+        "code": "3IT1-03",
+        "credits": 2
+    },
+    {
+        "_id": "683142ae2e5aa22d21103c33",
+        "code": "3IT3-04",
+        "credits": 3
+    },
+    {
+        "_id": "683142ae2e5aa22d21103c3b",
+        "code": "3IT7-30",
+        "credits": 1
+    },
+    {
+        "_id": "683142ae2e5aa22d21103c32",
+        "code": "3IT2-01",
+        "credits": 3
+    },
+    {
+        "_id": "683142f22e5aa22d21103c43",
+        "code": "3CIT4-07",
+        "credits": 3
+    },
+    {
+        "_id": "683142f22e5aa22d21103c3e",
+        "code": "3CIT1-02",
+        "credits": 2
+    },
+    {
+        "_id": "683142f22e5aa22d21103c40",
+        "code": "3CIT3-04",
+        "credits": 3
+    },
+    {
+        "_id": "683142f22e5aa22d21103c46",
+        "code": "3CIT4-23",
+        "credits": 1.5
+    },
+    {
+        "_id": "683142f22e5aa22d21103c3f",
+        "code": "3CIT2-01",
+        "credits": 3
+    },
+    {
+        "_id": "683142f22e5aa22d21103c47",
+        "code": "3CIT4-24",
+        "credits": 1.5
+    },
+    {
+        "_id": "683142f22e5aa22d21103c44",
+        "code": "3CIT4-21",
+        "credits": 1.5
+    },
+    {
+        "_id": "683142f22e5aa22d21103c48",
+        "code": "3CIT7-30",
+        "credits": 1
+    },
+    {
+        "_id": "683142f22e5aa22d21103c41",
+        "code": "3CIT4-05",
+        "credits": 3
+    },
+    {
+        "_id": "683142f22e5aa22d21103c42",
+        "code": "3CIT4-06",
+        "credits": 3
+    },
+    {
+        "_id": "683142f22e5aa22d21103c49",
+        "code": "FEC20",
+        "credits": 0.5
+    },
+    {
+        "_id": "683142f22e5aa22d21103c45",
+        "code": "3CIT4-22",
+        "credits": 1.5
+    },
+    {
+        "_id": "6835feb8d0ca02143e25126a",
+        "code": "3AID4-06",
+        "credits": 3
+    },
+    {
+        "_id": "6835feb8d0ca02143e25126b",
+        "code": "3AID4-07",
+        "credits": 3
+    },
+    {
+        "_id": "6835feb8d0ca02143e251266",
+        "code": "3AID1-03",
+        "credits": 2
+    },
+    {
+        "_id": "6835feb8d0ca02143e251268",
+        "code": "3AID3-04",
+        "credits": 3
+    },
+    {
+        "_id": "6835feb8d0ca02143e25126c",
+        "code": "3AID4-21",
+        "credits": 1.5
+    },
+    {
+        "_id": "6835feb8d0ca02143e25126d",
+        "code": "3AID4-22",
+        "credits": 1.5
+    },
+    {
+        "_id": "6835feb8d0ca02143e25126f",
+        "code": "3AID4-24",
+        "credits": 1.5
+    },
+    {
+        "_id": "6835feb8d0ca02143e251269",
+        "code": "3AID4-05",
+        "credits": 3
+    },
+    {
+        "_id": "6835feb8d0ca02143e251270",
+        "code": "3AID7-30",
+        "credits": 1
+    },
+    {
+        "_id": "6835feb8d0ca02143e251271",
+        "code": "FEC28",
+        "credits": 0.5
+    },
+    {
+        "_id": "6835feb8d0ca02143e251267",
+        "code": "3AID2-01",
+        "credits": 3
+    },
+    {
+        "_id": "6835feb8d0ca02143e25126e",
+        "code": "3AID4-23",
+        "credits": 1.5
+    },
+    {
+        "_id": "68ca816353d0c4474790b4f9",
+        "code": "6CDS-03",
+        "credits": 2
+    },
+    {
+        "_id": "68ca816353d0c4474790b4fb",
+        "code": "6CDS-05",
+        "credits": 2
+    },
+    {
+        "_id": "68ca816353d0c4474790b4f7",
+        "code": "6CDS-01",
+        "credits": 2
+    },
+    {
+        "_id": "68ca816353d0c4474790b4f8",
+        "code": "6CDS-02",
+        "credits": 3
+    },
+    {
+        "_id": "68ca816353d0c4474790b4fe",
+        "code": "6CDS-21",
+        "credits": 1.5
+    },
+    {
+        "_id": "68ca816353d0c4474790b4f6",
+        "code": "6CDS-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "68ca816353d0c4474790b4fc",
+        "code": "6CDS-06",
+        "credits": 3
+    },
+    {
+        "_id": "68ca816353d0c4474790b500",
+        "code": "6CDS-23",
+        "credits": 1.5
+    },
+    {
+        "_id": "68ca816353d0c4474790b4fa",
+        "code": "6CDS-04",
+        "credits": 3
+    },
+    {
+        "_id": "68ca816353d0c4474790b4fd",
+        "code": "6CDS-13",
+        "credits": 2
+    },
+    {
+        "_id": "68ca816353d0c4474790b4ff",
+        "code": "6CDS-22",
+        "credits": 1.5
+    },
+    {
+        "_id": "68ca816353d0c4474790b501",
+        "code": "6CDS-24",
+        "credits": 1.5
+    },
+    {
+        "_id": "68ca837253d0c4474790b586",
+        "code": "6CIT4-24",
+        "credits": 1.5
+    },
+    {
+        "_id": "68ca837253d0c4474790b587",
+        "code": "6CIT5-11",
+        "credits": 2
+    },
+    {
+        "_id": "68ca837253d0c4474790b582",
+        "code": "6CIT4-06",
+        "credits": 3
+    },
+    {
+        "_id": "68ca837253d0c4474790b584",
+        "code": "6CIT4-22",
+        "credits": 1.5
+    },
+    {
+        "_id": "68ca837253d0c4474790b57d",
+        "code": "6CIT4-00",
+        "credits": 0.5
+    },
+    {
+        "_id": "68ca837253d0c4474790b57e",
+        "code": "6CIT4-02",
+        "credits": 3
+    },
+    {
+        "_id": "68ca837253d0c4474790b580",
+        "code": "6CIT4-04",
+        "credits": 3
+    },
+    {
+        "_id": "68ca837253d0c4474790b581",
+        "code": "6CIT4-05",
+        "credits": 2
+    },
+    {
+        "_id": "68ca837253d0c4474790b583",
+        "code": "6CIT4-21",
+        "credits": 1.5
+    },
+    {
+        "_id": "68ca837253d0c4474790b57c",
+        "code": "6CIT3-01",
+        "credits": 2
+    },
+    {
+        "_id": "68ca837253d0c4474790b57f",
+        "code": "6CIT4-03",
+        "credits": 2
+    },
+    {
+        "_id": "68ca837253d0c4474790b585",
+        "code": "6CIT4-23",
+        "credits": 1.5
+    }
+]

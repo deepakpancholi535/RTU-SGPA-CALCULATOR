@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RTU Result Analyzer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css?v=6" />
+  </head>
+  <body>
+    <div class="aurora" aria-hidden="true"></div>
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark">RTU</span>
+        <span class="brand-text">Result Analyzer</span>
+      </div>
+      <div class="top-actions">
+        <span class="pill">PDF + Image OCR</span>
+        <span class="pill">SGPA Accurate</span>
+      </div>
+    </header>
+
+    <main class="shell">
+      <section class="hero">
+        <div>
+          <p class="eyebrow">Rajasthan Technical University</p>
+          <h1>Turn marksheets into structured, verified results.</h1>
+          <p class="subtext">
+            Upload a marksheet PDF or image to extract subjects, grades, and SGPA with
+            credit-accurate logic.
+          </p>
+          <div class="hero-actions">
+            <a class="chip" href="#upload">Start Upload</a>
+            <span class="chip ghost-chip">Live SGPA Engine</span>
+          </div>
+        </div>
+        <div class="hero-card">
+          <div class="hero-metric">
+            <span class="hero-label">Accuracy Target</span>
+            <span class="hero-value">RTU Rules</span>
+          </div>
+          <div class="hero-metric">
+            <span class="hero-label">Input Types</span>
+            <span class="hero-value">PDF / JPG / PNG</span>
+          </div>
+          <div class="hero-metric">
+            <span class="hero-label">Output</span>
+            <span class="hero-value">JSON + Table</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="grid" id="upload">
+        <div class="card upload-card">
+          <div class="card-head">
+            <h2>Upload Marksheets</h2>
+            <p>Drag and drop or browse. We'll do the rest.</p>
+          </div>
+
+          <label class="dropzone" id="dropzone">
+            <input id="fileInput" type="file" accept=".pdf,image/*" />
+            <div class="drop-content">
+              <div class="drop-icon">+</div>
+              <div>
+                <strong>Drop your file here</strong>
+                <span>PDF, JPG, PNG up to 10MB</span>
+              </div>
+            </div>
+            <button type="button" class="ghost" id="pickBtn">Choose File</button>
+          </label>
+
+          <div class="file-meta" id="fileMeta">No file selected.</div>
+
+          <button type="button" class="primary" id="analyzeBtn">Analyze Result</button>
+          <div class="status" id="status"></div>
+        </div>
+
+        <div class="card result-card">
+          <div class="card-head">
+            <h2>Result Snapshot</h2>
+            <p>Parsed summary and computed SGPA.</p>
+          </div>
+
+          <div class="summary">
+            <div class="summary-item">
+              <span class="label">Roll No</span>
+              <span class="value" id="rollNo">-</span>
+            </div>
+            <div class="summary-item">
+              <span class="label">Name</span>
+              <span class="value" id="studentName">-</span>
+            </div>
+            <div class="summary-item">
+              <span class="label">Branch</span>
+              <span class="value" id="branch">-</span>
+            </div>
+            <div class="summary-item">
+              <span class="label">Semester</span>
+              <span class="value" id="semester">-</span>
+            </div>
+            <div class="summary-item highlight">
+              <span class="label">SGPA</span>
+              <span class="value" id="sgpa">-</span>
+            </div>
+            <div class="summary-item">
+              <span class="label">Credits</span>
+              <span class="value" id="credits">-</span>
+            </div>
+            <div class="summary-item">
+              <span class="label">Grade Points</span>
+              <span class="value" id="gradePoints">-</span>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Subject</th>
+                  <th>Code</th>
+                  <th>Credits</th>
+                  <th>Marks</th>
+                  <th>Grade</th>
+                  <th>Point</th>
+                  <th>Contribution</th>
+                </tr>
+              </thead>
+              <tbody id="subjectsBody">
+                <tr class="placeholder">
+                  <td colspan="7">Upload a file to see subject details.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="actions">
+            <button type="button" class="ghost" id="copyBtn">Copy JSON</button>
+            <button type="button" class="ghost" id="downloadBtn">Download JSON</button>
+            <button type="button" class="primary" id="pdfBtn">Download PDF</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div>
+        Built for RTU marksheets. Make sure the PDF/image is clear and un-cropped for
+        best accuracy.
+      </div>
+      <div class="status-dot">Live Parser Ready · Build v7</div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    <script src="app.js?v=7"></script>
+  </body>
+</html>
