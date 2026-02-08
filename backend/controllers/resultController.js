@@ -11,6 +11,7 @@ const {
 } = require("../utils/gradeCalculator");
 const { normalizeBranch, parseSemester, toTitleCase } = require("../utils/textNormalizer");
 const { loadCreditCatalog, normalizeCode, normalizeTitleKey } = require("../utils/creditCatalog");
+const { uploadResultFile } = require("../utils/cloudinary");
 
 const creditCatalog = loadCreditCatalog();
 
@@ -178,6 +179,13 @@ exports.calculateResult = async (req, res, next) => {
     const percentage = null;
     const division = null;
 
+    let cloudinaryInfo = null;
+    try {
+      cloudinaryInfo = await uploadResultFile(req.file.path, req.file.originalname);
+    } catch (err) {
+      cloudinaryInfo = null;
+    }
+
     if (rollNo && semester) {
       await StudentResult.findOneAndUpdate(
         { rollNo, semester },
@@ -195,7 +203,8 @@ exports.calculateResult = async (req, res, next) => {
           subjects: computedSubjects,
           sourceFile: {
             originalName: req.file.originalname,
-            mimeType: req.file.mimetype
+            mimeType: req.file.mimetype,
+            cloudinary: cloudinaryInfo
           }
         },
         { upsert: true, new: true }
@@ -213,7 +222,8 @@ exports.calculateResult = async (req, res, next) => {
       division,
       totalCredits,
       totalGradePoints,
-      subjects: computedSubjects
+      subjects: computedSubjects,
+      fileUrl: cloudinaryInfo ? cloudinaryInfo.secureUrl : null
     });
   } catch (err) {
     return next(err);

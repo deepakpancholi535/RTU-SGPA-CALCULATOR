@@ -27,7 +27,14 @@ const StudentResultSchema = new mongoose.Schema(
     subjects: { type: [SubjectResultSchema], default: [] },
     sourceFile: {
       originalName: { type: String, default: null },
-      mimeType: { type: String, default: null }
+      mimeType: { type: String, default: null },
+      cloudinary: {
+        publicId: { type: String, default: null },
+        secureUrl: { type: String, default: null },
+        resourceType: { type: String, default: null },
+        format: { type: String, default: null },
+        bytes: { type: Number, default: null }
+      }
     }
   },
   { timestamps: true }

@@ -22,6 +22,7 @@ const {
   normalizeCode,
   normalizeTitleKey
 } = require("../../backend/utils/creditCatalog");
+const { uploadResultFile } = require("../../backend/utils/cloudinary");
 const { connectToDatabase } = require("../_lib/db");
 
 const creditCatalog = loadCreditCatalog();
@@ -231,6 +232,13 @@ async function handleCalculate(req, res) {
       const percentage = null;
       const division = null;
 
+      let cloudinaryInfo = null;
+      try {
+        cloudinaryInfo = await uploadResultFile(filePath, originalname);
+      } catch (error) {
+        cloudinaryInfo = null;
+      }
+
       if (rollNo && semester) {
         await StudentResult.findOneAndUpdate(
           { rollNo, semester },
@@ -248,7 +256,8 @@ async function handleCalculate(req, res) {
             subjects: computedSubjects,
             sourceFile: {
               originalName: originalname,
-              mimeType: mimetype
+              mimeType: mimetype,
+              cloudinary: cloudinaryInfo
             }
           },
           { upsert: true, new: true }
@@ -266,7 +275,8 @@ async function handleCalculate(req, res) {
         division,
         totalCredits,
         totalGradePoints,
-        subjects: computedSubjects
+        subjects: computedSubjects,
+        fileUrl: cloudinaryInfo ? cloudinaryInfo.secureUrl : null
       });
     } catch (error) {
       return sendJson(res, 500, { error: error.message || "Server error" });

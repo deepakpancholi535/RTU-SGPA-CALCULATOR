@@ -9,6 +9,7 @@
     "seed": "node seedSubjects.js"
   },
   "dependencies": {
+    "cloudinary": "^2.6.0",
     "dotenv": "^16.4.0",
     "express": "^4.19.0",
     "mongoose": "^8.0.0",
