@@ -124,11 +124,17 @@ function extractMetadata(text) {
     if (!rollNo) {
       const m = upper.match(/\bROLL\s*(?:NO|NUMBER)\b\s*[:\-]?\s*([A-Z0-9\/-]+)/);
       if (m) {
-        rollNo = m[1].replace(/ENROLL.*$/i, "");
+        let candidate = m[1];
+        candidate = candidate.replace(/NAME.*$/i, "");
+        candidate = candidate.replace(/FATHER.*$/i, "");
+        candidate = candidate.replace(/MOTHER.*$/i, "");
+        candidate = candidate.replace(/ENROLL.*$/i, "");
+        const rollMatch = candidate.match(/[0-9]{2}[A-Z]{3,5}\d{3}/);
+        rollNo = rollMatch ? rollMatch[0] : candidate;
       }
     }
 
-    if (!name && /\bNAME\b/.test(upper) && !/COLLEGE\s*NAME/.test(upper)) {
+    if (!name && upper.includes("NAME") && !/COLLEGE\s*NAME/.test(upper)) {
       const nameIdx = upper.indexOf("NAME");
       const fatherIdx = upper.indexOf("FATHER");
       const motherIdx = upper.indexOf("MOTHER");

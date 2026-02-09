@@ -73,9 +73,78 @@ function parseSubjectLine(line) {
   if (!hasLetter || !hasNumber) return null;
 
   const normalizedLine = line.replace(/I(?=[A-Z]{2,4}\d-\d{2})/g, "1");
-  const gradeMatch = normalizedLine.match(/(A\+\+|A\+|A|B\+|B|C\+|C|D\+|D|E\+|E|F)\s*$/);
-  const grade = gradeMatch ? gradeMatch[1] : null;
-  const workingLine = gradeMatch ? normalizedLine.slice(0, gradeMatch.index).trim() : normalizedLine;
+  const gradeTokenRegex = /(?:^|[^A-Z])((?:A\+\+|A\+|A|B\+|B|C\+|C|D\+|D|E\+|E|F))(?=\s*\d|$)/g;
+  let grade = null;
+  let gradeIndex = -1;
+  let gradeToken = null;
+  while ((gradeToken = gradeTokenRegex.exec(normalizedLine)) !== null) {
+    grade = gradeToken[1].toUpperCase();
+    gradeIndex = gradeToken.index + (gradeToken[0].length - gradeToken[1].length);
+  }
+  const workingLine = gradeIndex >= 0 ? normalizedLine.slice(0, gradeIndex).trim() : normalizedLine;
+
+  let trailingPoint = null;
+  let trailingContribution = null;
+  if (grade && gradeIndex >= 0) {
+    const tail = normalizedLine.slice(gradeIndex + grade.length).replace(/\s+/g, "");
+    const gradePointMap = {
+      "A++": 10,
+      "A+": 9,
+      A: 8.5,
+      "B+": 8,
+      B: 7.5,
+      "C+": 7,
+      C: 6.5,
+      "D+": 6,
+      D: 5.5,
+      "E+": 5,
+      E: 4,
+      F: 0
+    };
+    const expectedPoint = Object.prototype.hasOwnProperty.call(gradePointMap, grade)
+      ? gradePointMap[grade]
+      : null;
+
+    if (expectedPoint !== null) {
+      const pointStr = expectedPoint.toString();
+      if (tail.startsWith(pointStr)) {
+        trailingPoint = expectedPoint;
+        const contribStr = tail.slice(pointStr.length);
+        if (contribStr) {
+          const contribVal = parseFloat(contribStr);
+          if (!Number.isNaN(contribVal)) trailingContribution = contribVal;
+        }
+      }
+    }
+
+    if (expectedPoint !== null && trailingPoint === null) {
+      const tailNum = tail.match(/^\d+$/) ? parseInt(tail, 10) : null;
+      if (typeof tailNum === "number" && !Number.isNaN(tailNum) && tailNum > 0) {
+        if (tailNum <= expectedPoint * 6) {
+          trailingPoint = expectedPoint;
+          trailingContribution = tailNum;
+        }
+      }
+    }
+
+    if (trailingPoint === null) {
+      const tailMatch = tail.match(/^(\d{1,2}(?:\.\d)?)(\d{1,3}(?:\.\d{1,2})?)?$/);
+      if (tailMatch) {
+        const pointVal = parseFloat(tailMatch[1]);
+        const contribVal = tailMatch[2] ? parseFloat(tailMatch[2]) : null;
+        if (!Number.isNaN(pointVal)) trailingPoint = pointVal;
+        if (contribVal !== null && !Number.isNaN(contribVal)) trailingContribution = contribVal;
+      }
+    }
+  }
+
+  let creditsHint = null;
+  if (typeof trailingPoint === "number" && typeof trailingContribution === "number") {
+    const rawCredits = trailingContribution / trailingPoint;
+    if (!Number.isNaN(rawCredits) && rawCredits > 0) {
+      creditsHint = Math.round(rawCredits * 2) / 2;
+    }
+  }
 
   let totalMarks = null;
   let maxMarks = null;
@@ -148,12 +217,66 @@ function parseSubjectLine(line) {
     subjectName = workingLine
       .replace(codeRegex, " ")
       .replace(/\b\d{1,3}\s*\/\s*\d{1,3}\b/g, " ")
-      .replace(/\b\d{1,3}\b/g, " ")
+      .replace(/\b\d+(?:\.\d+)?\b/g, " ")
+      .replace(/\b[A-Z]*\d+[A-Z]*\b/g, " ")
       .replace(/\b[A-Z]{1,3}\d{2,4}\b/g, " ")
       .replace(/\b\d{1,2}[A-Z]{2,4}\d?[- ]?\d{2}\b/g, " ")
       .replace(/[|]/g, " ")
       .replace(/\s+/g, " ")
       .trim();
+  }
+
+  if (grade && gradeIndex >= 0) {
+    let marksCandidate = null;
+    let creditsCandidate = null;
+
+    const decimalPack = workingLine.match(/(\d{1,2}\.\d)(\d{2,3})$/);
+    if (decimalPack) {
+      const creditVal = parseFloat(decimalPack[1]);
+      const markVal = parseInt(decimalPack[2], 10);
+      if (!Number.isNaN(creditVal)) creditsCandidate = creditVal;
+      if (!Number.isNaN(markVal)) marksCandidate = markVal;
+    } else {
+      const trailingDigits = workingLine.match(/(\d{3,4})$/);
+      if (trailingDigits) {
+        const digits = trailingDigits[1];
+        marksCandidate = parseInt(digits.slice(-2), 10);
+        creditsCandidate = parseInt(digits.slice(0, -2), 10);
+
+        if (marksCandidate === 0 && digits.length >= 3) {
+          const marks3 = parseInt(digits.slice(-3), 10);
+          const credits3 = parseInt(digits.slice(0, -3), 10);
+          if (!Number.isNaN(marks3) && marks3 > 0 && marks3 <= 100 && credits3 > 0) {
+            marksCandidate = marks3;
+            creditsCandidate = credits3;
+          }
+        }
+      }
+    }
+
+    if (
+      (totalMarks === null || totalMarks > 100) &&
+      typeof marksCandidate === "number" &&
+      !Number.isNaN(marksCandidate) &&
+      marksCandidate >= 0 &&
+      marksCandidate <= 100
+    ) {
+      totalMarks = marksCandidate;
+    }
+
+    if (
+      creditsHint === null &&
+      typeof creditsCandidate === "number" &&
+      !Number.isNaN(creditsCandidate) &&
+      creditsCandidate > 0 &&
+      creditsCandidate <= 6
+    ) {
+      creditsHint = creditsCandidate;
+    }
+  }
+
+  if (subjectName) {
+    subjectName = subjectName.replace(/[-\s]+$/g, "").trim();
   }
 
   if (!subjectName || subjectName.length < 3) return null;
@@ -164,6 +287,7 @@ function parseSubjectLine(line) {
     totalMarks,
     maxMarks,
     grade,
+    creditsHint,
     isPercentage,
     rawLine: line
   };
@@ -176,6 +300,7 @@ function parseSubjects(text) {
 
   const codeRegex = /([1-8][A-Z]{2,4}\d-\d{2}|FEC\d{2})/;
   const gradeRegex = /(A\+\+|A\+|A|B\+|B|C\+|C|D\+|D|E\+|E|F)\s*$/;
+  const gradeInlineRegex = /(A\+\+|A\+|A|B\+|B|C\+|C|D\+|D|E\+|E|F)/;
 
   lines.forEach((line) => {
     const hasLetter = /[A-Za-z]/.test(line);
@@ -187,7 +312,10 @@ function parseSubjects(text) {
     }
 
     if (buffer) {
-      if (codeRegex.test(line) || gradeRegex.test(line)) {
+      const bufferIsNoise = isNoiseLine(buffer);
+      if (bufferIsNoise) {
+        combined.push(line);
+      } else if (codeRegex.test(line) || gradeRegex.test(line) || gradeInlineRegex.test(line)) {
         combined.push(`${buffer} ${line}`.trim());
       } else {
         combined.push(line);

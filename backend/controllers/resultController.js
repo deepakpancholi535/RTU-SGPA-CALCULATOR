@@ -125,6 +125,14 @@ exports.calculateResult = async (req, res, next) => {
         return creditCatalog.byTitle.get(titleKey);
       }
 
+      if (codeKey && codeKey.startsWith("FEC")) {
+        return 0.5;
+      }
+
+      if (typeof extracted.creditsHint === "number") {
+        return extracted.creditsHint;
+      }
+
       if (subject && typeof subject.credits === "number") {
         return subject.credits;
       }
