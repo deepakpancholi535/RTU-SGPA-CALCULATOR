@@ -1,55 +1,32 @@
-// =======================
-// Vercel API config
-// =======================
-export const config = {
-  api: {
-    bodyParser: false, // REQUIRED for formidable
-  },
-};
-
-// =======================
-// Node & libs (ESM)
-// =======================
-import fs from "fs";
-import os from "os";
-import path from "path";
-import formidable from "formidable";
-
-// =======================
-// Internal imports (ESM)
-// =======================
-import Subject from "../../backend/models/Subject.js";
-import StudentResult from "../../backend/models/StudentResult.js";
-
-import { extractResultData } from "../../backend/utils/pdfParser.js";
-import { matchSubjects } from "../../backend/utils/subjectMatcher.js";
-import {
+const fs = require("fs");
+const os = require("os");
+const path = require("path");
+const formidable = require("formidable");
+const Subject = require("../../backend/models/Subject");
+const StudentResult = require("../../backend/models/StudentResult");
+const { extractResultData } = require("../../backend/utils/pdfParser");
+const { matchSubjects } = require("../../backend/utils/subjectMatcher");
+const {
   gradeFromRelativeMarks,
   gradePointFromGrade,
   calculateSgpa,
-  round2,
-} from "../../backend/utils/gradeCalculator.js";
-import {
+  round2
+} = require("../../backend/utils/gradeCalculator");
+const {
   normalizeBranch,
   parseSemester,
-  toTitleCase,
-} from "../../backend/utils/textNormalizer.js";
-import {
+  toTitleCase
+} = require("../../backend/utils/textNormalizer");
+const {
   loadCreditCatalog,
   normalizeCode,
-  normalizeTitleKey,
-} from "../../backend/utils/creditCatalog.js";
-import { uploadResultFile } from "../../backend/utils/cloudinary.js";
-import { connectToDatabase } from "../_lib/db.js";
+  normalizeTitleKey
+} = require("../../backend/utils/creditCatalog");
+const { uploadResultFile } = require("../../backend/utils/cloudinary");
+const { connectToDatabase } = require("../_lib/db");
 
-// =======================
-// Preload catalog (cold start safe)
-// =======================
 const creditCatalog = loadCreditCatalog();
 
-// =======================
-// Helpers
-// =======================
 function sendJson(res, status, payload) {
   res.statusCode = status;
   res.setHeader("Content-Type", "application/json");
@@ -70,12 +47,12 @@ function computeRelativeMarks(extracted) {
 function pickMostCommon(counts) {
   let maxKey = null;
   let maxVal = 0;
-  for (const key of Object.keys(counts)) {
+  Object.keys(counts).forEach((key) => {
     if (counts[key] > maxVal) {
       maxVal = counts[key];
       maxKey = key;
     }
-  }
+  });
   return maxKey;
 }
 
@@ -91,25 +68,18 @@ function getUploadedFile(files) {
   return file;
 }
 
-// =======================
-// MAIN HANDLER (Vercel)
-// =======================
-export default async function handler(req, res) {
+async function handleCalculate(req, res) {
   if (req.method !== "POST") {
     return sendJson(res, 405, { error: "Method not allowed" });
   }
 
-  try {
-    await connectToDatabase();
-  } catch (err) {
-    return sendJson(res, 500, { error: "Database connection failed" });
-  }
+  await connectToDatabase();
 
   const form = formidable({
     multiples: false,
     keepExtensions: true,
     uploadDir: os.tmpdir(),
-    maxFileSize: 12 * 1024 * 1024,
+    maxFileSize: 12 * 1024 * 1024
   });
 
   form.parse(req, async (err, fields, files) => {
@@ -124,13 +94,9 @@ export default async function handler(req, res) {
 
     const filePath = file.filepath || file.path;
     const mimetype = file.mimetype || file.type || "";
-    const originalname =
-      file.originalFilename || file.name || path.basename(filePath);
+    const originalname = file.originalFilename || file.name || path.basename(filePath);
 
     try {
-      // =======================
-      // Parse PDF / Image
-      // =======================
       const parsed = await extractResultData(filePath, mimetype);
       const metadata = parsed.metadata || {};
 
@@ -138,59 +104,64 @@ export default async function handler(req, res) {
       let name = metadata.name || getFieldValue(fields, "name").trim() || null;
       if (name) name = toTitleCase(name);
 
-      let branch = normalizeBranch(
-        metadata.branch || getFieldValue(fields, "branch")
-      );
-      let semester = parseSemester(
-        metadata.semester || getFieldValue(fields, "semester")
-      );
+      let branch = normalizeBranch(metadata.branch || getFieldValue(fields, "branch"));
+      let semester = parseSemester(metadata.semester || getFieldValue(fields, "semester"));
 
-      // =======================
-      // Subject matching
-      // =======================
       const filters = [];
       if (branch && semester) {
         filters.push({ branch, semester });
         filters.push({ branch: "COMMON", semester });
-      } else if (semester) {
+      } else if (semester && !branch) {
         filters.push({ semester });
       }
 
-      let masterSubjects = await Subject.find(
-        filters.length ? { $or: filters } : {}
-      );
-
+      let masterSubjects = await Subject.find(filters.length ? { $or: filters } : {});
       let matchResult = matchSubjects(parsed.subjects, masterSubjects);
 
-      if (!parsed.subjects.length) {
-        return sendJson(res, 422, {
-          error: "No subjects could be parsed from the result file",
-        });
+      const coverage =
+        parsed.subjects.length > 0 ? matchResult.matched.length / parsed.subjects.length : 0;
+
+      if (filters.length && coverage < 0.8) {
+        let fallbackSubjects = [];
+        if (branch && semester) {
+          fallbackSubjects = await Subject.find({
+            $and: [{ semester }, { $or: [{ branch }, { branch: "COMMON" }] }]
+          });
+        } else if (semester) {
+          fallbackSubjects = await Subject.find({ semester });
+        } else if (branch) {
+          fallbackSubjects = await Subject.find({ $or: [{ branch }, { branch: "COMMON" }] });
+        } else {
+          fallbackSubjects = await Subject.find({});
+        }
+        const fallbackResult = matchSubjects(parsed.subjects, fallbackSubjects);
+        if (fallbackResult.matched.length > matchResult.matched.length) {
+          matchResult = fallbackResult;
+          masterSubjects = fallbackSubjects;
+        }
       }
 
-      // Infer branch/semester if missing
+      const { matched, unmatched } = matchResult;
+
+      if (!parsed.subjects.length) {
+        return sendJson(res, 422, { error: "No subjects could be parsed from the result file" });
+      }
+
       if (!branch || !semester) {
         const branchCounts = {};
         const semesterCounts = {};
-
-        matchResult.matched.forEach((m) => {
+        matched.forEach((m) => {
           if (m.subject.branch && m.subject.branch !== "COMMON") {
-            branchCounts[m.subject.branch] =
-              (branchCounts[m.subject.branch] || 0) + 1;
+            branchCounts[m.subject.branch] = (branchCounts[m.subject.branch] || 0) + 1;
           }
           if (m.subject.semester) {
-            semesterCounts[m.subject.semester] =
-              (semesterCounts[m.subject.semester] || 0) + 1;
+            semesterCounts[m.subject.semester] = (semesterCounts[m.subject.semester] || 0) + 1;
           }
         });
-
         if (!branch) branch = pickMostCommon(branchCounts);
         if (!semester) semester = parseSemester(pickMostCommon(semesterCounts));
       }
 
-      // =======================
-      // Compute SGPA
-      // =======================
       const computedSubjects = [];
       const seen = new Set();
 
@@ -208,6 +179,7 @@ export default async function handler(req, res) {
         if (subject && typeof subject.credits === "number") {
           return subject.credits;
         }
+
         return null;
       };
 
@@ -219,7 +191,6 @@ export default async function handler(req, res) {
         if (dedupeKey) seen.add(dedupeKey);
 
         const relativeMarks = computeRelativeMarks(extracted);
-
         let gradeInfo = null;
         if (extracted.grade) {
           gradeInfo = gradePointFromGrade(extracted.grade);
@@ -239,31 +210,35 @@ export default async function handler(req, res) {
           subject: subject ? subject.subjectName : extracted.subjectName,
           subjectCode: extracted.subjectCode || null,
           credits,
-          marks:
-            typeof extracted.totalMarks === "number"
-              ? extracted.totalMarks
-              : null,
+          marks: typeof extracted.totalMarks === "number" ? extracted.totalMarks : null,
           grade,
           gradePoint,
-          contribution,
+          contribution
         });
       };
 
-      matchResult.matched.forEach((m) =>
-        addComputed(m.extracted, m.subject)
-      );
-      matchResult.unmatched.forEach((u) => addComputed(u, null));
+      matched.forEach((m) => addComputed(m.extracted, m.subject));
+      unmatched.forEach((u) => addComputed(u, null));
 
       const sgpaCalc = calculateSgpa(
-        computedSubjects.map((s) => ({
-          credits: s.credits,
-          gradePoint: s.gradePoint,
-        }))
+        computedSubjects.map((s) => ({ credits: s.credits, gradePoint: s.gradePoint }))
       );
 
-      // =======================
-      // Persist (optional)
-      // =======================
+      const sgpa = sgpaCalc.sgpa;
+      const totalCredits = sgpaCalc.totalCredits;
+      const totalGradePoints = sgpaCalc.totalGradePoints;
+
+      const cgpa = null;
+      const percentage = null;
+      const division = null;
+
+      let cloudinaryInfo = null;
+      try {
+        cloudinaryInfo = await uploadResultFile(filePath, originalname);
+      } catch (error) {
+        cloudinaryInfo = null;
+      }
+
       if (rollNo && semester) {
         await StudentResult.findOneAndUpdate(
           { rollNo, semester },
@@ -272,32 +247,39 @@ export default async function handler(req, res) {
             name,
             branch,
             semester,
-            sgpa: sgpaCalc.sgpa,
-            totalCredits: sgpaCalc.totalCredits,
-            totalGradePoints: sgpaCalc.totalGradePoints,
+            sgpa,
+            cgpa,
+            percentage,
+            division,
+            totalCredits,
+            totalGradePoints,
             subjects: computedSubjects,
+            sourceFile: {
+              originalName: originalname,
+              mimeType: mimetype,
+              cloudinary: cloudinaryInfo
+            }
           },
           { upsert: true, new: true }
         );
       }
 
-      // =======================
-      // Response
-      // =======================
       return sendJson(res, 200, {
-        rollNo,
-        name,
-        branch,
-        semester,
-        sgpa: sgpaCalc.sgpa,
-        totalCredits: sgpaCalc.totalCredits,
-        totalGradePoints: sgpaCalc.totalGradePoints,
+        rollNo: rollNo || null,
+        name: name || null,
+        branch: branch || null,
+        semester: semester || null,
+        sgpa,
+        cgpa,
+        percentage,
+        division,
+        totalCredits,
+        totalGradePoints,
         subjects: computedSubjects,
+        fileUrl: cloudinaryInfo ? cloudinaryInfo.secureUrl : null
       });
     } catch (error) {
-      return sendJson(res, 500, {
-        error: error.message || "Server error",
-      });
+      return sendJson(res, 500, { error: error.message || "Server error" });
     } finally {
       if (filePath) {
         fs.unlink(filePath, () => {});
@@ -305,3 +287,10 @@ export default async function handler(req, res) {
     }
   });
 }
+
+module.exports = handleCalculate;
+module.exports.config = {
+  api: {
+    bodyParser: false
+  }
+};
