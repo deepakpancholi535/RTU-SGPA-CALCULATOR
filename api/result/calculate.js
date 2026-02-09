@@ -1,4 +1,4 @@
-/* const fs = require("fs");
+const fs = require("fs");
 const os = require("os");
 const path = require("path");
 const formidable = require("formidable");
@@ -294,7 +294,5 @@ module.exports.config = {
     bodyParser: false
   }
 };
-*/
-export default async function handler(req, res) {
-  res.status(200).json({ ok: true });
-}
+
+
