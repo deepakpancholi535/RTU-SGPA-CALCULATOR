@@ -20,7 +20,7 @@
         <span class="brand-text">Result Analyzer</span>
       </div>
       <div class="top-actions">
-        <span class="pill">PDF + Image OCR</span>
+        <span class="pill">PDF Parsing</span>
         <span class="pill">SGPA Accurate</span>
       </div>
     </header>
@@ -31,7 +31,7 @@
           <p class="eyebrow">Rajasthan Technical University</p>
           <h1>Turn marksheets into structured, verified results.</h1>
           <p class="subtext">
-            Upload a marksheet PDF or image to extract subjects, grades, and SGPA with
+            Upload a marksheet PDF to extract subjects, grades, and SGPA with
             credit-accurate logic.
           </p>
           <div class="hero-actions">
@@ -46,11 +46,11 @@
           </div>
           <div class="hero-metric">
             <span class="hero-label">Input Types</span>
-            <span class="hero-value">PDF / JPG / PNG</span>
+            <span class="hero-value">PDF</span>
           </div>
           <div class="hero-metric">
             <span class="hero-label">Output</span>
-            <span class="hero-value">JSON + Table</span>
+            <span class="hero-value">Summary + PDF</span>
           </div>
         </div>
       </section>
@@ -63,12 +63,12 @@
           </div>
 
           <label class="dropzone" id="dropzone">
-            <input id="fileInput" type="file" accept=".pdf,image/*" />
+            <input id="fileInput" type="file" accept=".pdf,application/pdf" />
             <div class="drop-content">
               <div class="drop-icon">+</div>
               <div>
                 <strong>Drop your file here</strong>
-                <span>PDF, JPG, PNG up to 10MB</span>
+                <span>PDF up to 10MB</span>
               </div>
             </div>
             <button type="button" class="ghost" id="pickBtn">Choose File</button>
@@ -139,8 +139,6 @@
           </div>
 
           <div class="actions">
-            <button type="button" class="ghost" id="copyBtn">Copy JSON</button>
-            <button type="button" class="ghost" id="downloadBtn">Download JSON</button>
             <button type="button" class="primary" id="pdfBtn">Download PDF</button>
           </div>
         </div>
@@ -149,7 +147,7 @@
 
     <footer class="footer">
       <div>
-        Built for RTU marksheets. Make sure the PDF/image is clear and un-cropped for
+        Built for RTU marksheets. Make sure the PDF is clear and un-cropped for
         best accuracy.
       </div>
       <div class="status-dot">Live Parser Ready · Build v7</div>

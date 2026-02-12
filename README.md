@@ -1,13 +1,13 @@
 # RTU Result Analyzer
 
-Production-grade RTU result processing system with OCR + PDF parsing, accurate SGPA logic, subject matching, and a modern frontend. Includes Vercel serverless API and Cloudinary uploads.
+Production-grade RTU result processing system with PDF parsing, accurate SGPA logic, subject matching, and a modern frontend. Includes Vercel serverless API and Cloudinary uploads.
 
 **Highlights**
-- Upload RTU marksheet PDFs or images
+- Upload RTU marksheet PDFs
 - Extract metadata, subjects, marks/grades
 - Match against master subjects and credit catalog
 - Compute SGPA using RTU rules
-- Export JSON and styled PDF
+- Export a styled PDF summary
 - Optional Cloudinary storage for uploaded files
 
 ---
@@ -15,7 +15,7 @@ Production-grade RTU result processing system with OCR + PDF parsing, accurate S
 ## Tech Stack
 - Node.js (CommonJS)
 - Express + Mongoose
-- pdf-parse + pdf2pic + tesseract.js
+- pdf-parse
 - Cloudinary (optional)
 - Frontend: HTML, CSS, JS (no framework)
 - Vercel serverless API
@@ -42,7 +42,6 @@ npm install
 ```
 MONGO_URI=mongodb://localhost:27017/rtu_results
 MIN_TEXT_LENGTH=120
-OCR_LANG=eng
 ```
 
 3. (Optional) Cloudinary
@@ -72,7 +71,7 @@ node server.js
 
 **POST** `/api/result/calculate`  
 **Body:** `multipart/form-data`  
-**Field:** `result` (PDF/JPG/PNG)
+**Field:** `result` (PDF)
 
 **Response**
 ```
@@ -116,7 +115,6 @@ CLOUDINARY_CLOUD_NAME=... (optional)
 CLOUDINARY_API_KEY=... (optional)
 CLOUDINARY_API_SECRET=... (optional)
 MIN_TEXT_LENGTH=120 (optional)
-OCR_LANG=eng (optional)
 ```
 
 **Frontend URL**
@@ -133,10 +131,9 @@ The frontend calls `/api/result/calculate` directly, so the backend host is hidd
 
 ---
 
-## OCR Notes
+## PDF Notes
 - Text-based PDFs work best.
-- Scanned PDFs rely on OCR and may require clearer scans.
-- Serverless environments can limit OCR binaries; Cloud OCR is recommended if accuracy is low.
+- Scanned PDFs are not supported. Please upload a text-based PDF.
 
 ---
 

@@ -22,10 +22,11 @@ const storage = multer.diskStorage({
 
 function fileFilter(req, file, cb) {
   const mime = file.mimetype || "";
-  if (mime === "application/pdf" || mime.startsWith("image/")) {
+  const isPdf = mime === "application/pdf" || /\.pdf$/i.test(file.originalname || "");
+  if (isPdf) {
     return cb(null, true);
   }
-  return cb(new Error("Only PDF, PNG, and JPG files are allowed"));
+  return cb(new Error("Only PDF files are allowed"));
 }
 
 const upload = multer({

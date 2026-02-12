@@ -96,6 +96,11 @@ async function handleCalculate(req, res) {
     const mimetype = file.mimetype || file.type || "";
     const originalname = file.originalFilename || file.name || path.basename(filePath);
 
+    const isPdf = mimetype === "application/pdf" || /\.pdf$/i.test(originalname || "");
+    if (!isPdf) {
+      return sendJson(res, 400, { error: "Only PDF files are allowed" });
+    }
+
     try {
       const parsed = await extractResultData(filePath, mimetype);
       const metadata = parsed.metadata || {};
@@ -279,7 +284,8 @@ async function handleCalculate(req, res) {
         fileUrl: cloudinaryInfo ? cloudinaryInfo.secureUrl : null
       });
     } catch (error) {
-      return sendJson(res, 500, { error: error.message || "Server error" });
+      const status = error.status || 500;
+      return sendJson(res, status, { error: error.message || "Server error" });
     } finally {
       if (filePath) {
         fs.unlink(filePath, () => {});
@@ -294,5 +300,3 @@ module.exports.config = {
     bodyParser: false
   }
 };
-
-

@@ -1,0 +1,50 @@
+CALCULATOR Project Structure
+============================
+
+.
+├── .gitignore
+├── package.json
+├── README.md
+├── vercel.json
+├── .vscode
+│   └── launch.json
+├── api
+│   ├── _lib
+│   │   └── db.js
+│   └── result
+│       └── calculate.js
+├── backend
+│   ├── .env
+│   ├── eng.traineddata
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── seedSubjects.js
+│   ├── server.js
+│   ├── controllers
+│   │   └── resultController.js
+│   ├── data
+│   │   ├── creditCatalog.json
+│   │   └── subjects.json
+│   ├── models
+│   │   ├── StudentResult.js
+│   │   └── Subject.js
+│   ├── node_modules
+│   │   └── [many files and directories - not listed]
+│   ├── routes
+│   │   └── resultRoutes.js
+│   ├── uploads
+│   │   └── ocr
+│   └── utils
+│       ├── cloudinary.js
+│       ├── creditCatalog.js
+│       ├── gradeCalculator.js
+│       ├── pdfParser.js
+│       ├── subjectMatcher.js
+│       └── textNormalizer.js
+├── docs
+│   ├── .project_structure_filter
+│   └── project_structure_filtered.txt
+└── frontend
+    ├── app.js
+    ├── index.html
+    └── styles.css

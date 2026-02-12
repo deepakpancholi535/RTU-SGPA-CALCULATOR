@@ -1,58 +1,18 @@
 const fs = require("fs");
-const path = require("path");
-const os = require("os");
 const pdfParse = require("pdf-parse");
-const Tesseract = require("tesseract.js");
-const { fromPath } = require("pdf2pic");
 const { normalizeText, extractMetadata } = require("./textNormalizer");
 
 const MIN_TEXT_LENGTH = parseInt(process.env.MIN_TEXT_LENGTH, 10) || 120;
-const OCR_LANG = process.env.OCR_LANG || "eng";
-const OCR_DEBUG = process.env.OCR_DEBUG === "1";
 
 function getFileType(mime) {
   if (!mime) return "unknown";
   if (mime === "application/pdf") return "pdf";
-  if (mime.startsWith("image/")) return "image";
   return "unknown";
-}
-
-function ensureDir(dirPath) {
-  if (!fs.existsSync(dirPath)) {
-    fs.mkdirSync(dirPath, { recursive: true });
-  }
 }
 
 async function extractPdfText(pdfPath) {
   const buffer = fs.readFileSync(pdfPath);
   const data = await pdfParse(buffer);
-  return data.text || "";
-}
-
-function getOcrOutputDir() {
-  if (process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME) {
-    return path.join(os.tmpdir(), "rtu-ocr");
-  }
-  return path.join(__dirname, "..", "uploads", "ocr");
-}
-
-async function convertPdfToImage(pdfPath) {
-  const outputDir = getOcrOutputDir();
-  ensureDir(outputDir);
-
-  const converter = fromPath(pdfPath, {
-    density: 200,
-    format: "png",
-    savePath: outputDir,
-    saveFilename: `page_${Date.now()}`
-  });
-
-  const result = await converter(1); // Assumption: subject table is on the first page for RTU results.
-  return result.path;
-}
-
-async function runOCR(imagePath) {
-  const { data } = await Tesseract.recognize(imagePath, OCR_LANG);
   return data.text || "";
 }
 
@@ -346,33 +306,23 @@ function parseSubjects(text) {
 
 async function extractResultData(filePath, mimeType) {
   const fileType = getFileType(mimeType);
-  let text = "";
-  let usedOcr = false;
-
-  if (fileType === "pdf") {
-    text = await extractPdfText(filePath);
-
-    if (!text || text.trim().length < MIN_TEXT_LENGTH) {
-      const imagePath = await convertPdfToImage(filePath);
-      text = await runOCR(imagePath);
-      usedOcr = true;
-    }
-  } else if (fileType === "image") {
-    text = await runOCR(filePath);
-    usedOcr = true;
-  } else {
-    throw new Error("Unsupported file type");
+  const isPdf = fileType === "pdf" || /\.pdf$/i.test(filePath || "");
+  if (!isPdf) {
+    const err = new Error("Only PDF files are supported");
+    err.status = 400;
+    throw err;
   }
 
-  if (OCR_DEBUG && usedOcr) {
-    console.log("===== OCR TEXT START =====");
-    console.log(text);
-    console.log("===== OCR TEXT END =====");
-  }
-
+  const text = await extractPdfText(filePath);
   const normalizedText = normalizeText(text);
   const metadata = extractMetadata(normalizedText);
   const subjects = parseSubjects(normalizedText);
+
+  if (!subjects.length && (!text || text.trim().length < MIN_TEXT_LENGTH)) {
+    const err = new Error("Scanned PDFs are not supported. Please upload a text-based PDF.");
+    err.status = 422;
+    throw err;
+  }
 
   return { text: normalizedText, metadata, subjects };
 }

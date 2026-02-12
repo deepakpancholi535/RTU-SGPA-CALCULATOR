@@ -12,8 +12,6 @@
     "dotenv": "^16.4.0",
     "formidable": "^3.5.1",
     "mongoose": "^8.0.0",
-    "pdf-parse": "^1.1.1",
-    "pdf2pic": "^3.0.0",
-    "tesseract.js": "^5.0.4"
+    "pdf-parse": "^1.1.1"
   }
 }

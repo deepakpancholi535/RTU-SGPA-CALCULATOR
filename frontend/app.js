@@ -5,8 +5,6 @@ const analyzeBtn = document.getElementById("analyzeBtn");
 const statusEl = document.getElementById("status");
 const fileMeta = document.getElementById("fileMeta");
 const subjectsBody = document.getElementById("subjectsBody");
-const copyBtn = document.getElementById("copyBtn");
-const downloadBtn = document.getElementById("downloadBtn");
 const pdfBtn = document.getElementById("pdfBtn");
 
 const rollNoEl = document.getElementById("rollNo");
@@ -19,9 +17,6 @@ const gradePointsEl = document.getElementById("gradePoints");
 
 let currentFile = null;
 let lastResponse = null;
-
-const STORAGE_KEY = "rtu-last-response";
-const STORAGE_TS_KEY = "rtu-last-response-ts";
 
 
 const API_URL =
@@ -38,10 +33,6 @@ document.addEventListener("submit", (event) => {
 window.__rtuDebug = {
   getCurrentFile: () => currentFile,
   getFileInputCount: () => (fileInput.files ? fileInput.files.length : 0),
-  dumpStorage: () => ({
-    session: sessionStorage.getItem(STORAGE_KEY),
-    local: localStorage.getItem(STORAGE_KEY),
-  }),
 };
 
 const setStatus = (message, state = "") => {
@@ -84,12 +75,25 @@ const formatFileSize = (bytes) => {
   return `${size.toFixed(1)} ${units[idx]}`;
 };
 
+const isPdfFile = (file) => {
+  if (!file) return false;
+  if (file.type === "application/pdf") return true;
+  return /\.pdf$/i.test(file.name || "");
+};
+
 const setFile = (file) => {
-  currentFile = file || null;
-  if (!currentFile) {
+  currentFile = null;
+  if (!file) {
     fileMeta.textContent = "No file selected.";
     return;
   }
+  if (!isPdfFile(file)) {
+    setStatus("Only PDF files are supported.", "error");
+    fileMeta.textContent = "No file selected.";
+    return;
+  }
+  currentFile = file;
+  setStatus("");
   fileMeta.textContent = `${currentFile.name} (${formatFileSize(
     currentFile.size
   )})`;
@@ -150,14 +154,6 @@ const renderSubjects = (subjects) => {
 
 const renderResult = (data) => {
   lastResponse = data;
-  try {
-    const payload = JSON.stringify(data);
-    sessionStorage.setItem(STORAGE_KEY, payload);
-    sessionStorage.setItem(STORAGE_TS_KEY, String(Date.now()));
-    localStorage.setItem(STORAGE_KEY, payload);
-  } catch (error) {
-    // ignore storage issues
-  }
   setSummary(data);
   renderSubjects(data?.subjects || []);
 };
@@ -307,6 +303,9 @@ fileInput.addEventListener("change", (event) => {
   if (!file) {
     return;
   }
+  if (!isPdfFile(file)) {
+    event.target.value = "";
+  }
   setFile(file);
 });
 
@@ -390,40 +389,6 @@ analyzeBtn.addEventListener("click", async (event) => {
   }
 });
 
-copyBtn.addEventListener("click", async (event) => {
-  event.preventDefault();
-  if (!lastResponse) {
-    setStatus("No data to copy yet.", "error");
-    return;
-  }
-  try {
-    await navigator.clipboard.writeText(JSON.stringify(lastResponse, null, 2));
-    setStatus("JSON copied to clipboard.", "success");
-  } catch (error) {
-    setStatus("Copy failed. Try download instead.", "error");
-  }
-});
-
-downloadBtn.addEventListener("click", (event) => {
-  event.preventDefault();
-  if (!lastResponse) {
-    setStatus("No data to download yet.", "error");
-    return;
-  }
-  const blob = new Blob([JSON.stringify(lastResponse, null, 2)], {
-    type: "application/json",
-  });
-  const url = URL.createObjectURL(blob);
-  const anchor = document.createElement("a");
-  anchor.href = url;
-  anchor.download = `${lastResponse.rollNo || "rtu-result"}.json`;
-  document.body.appendChild(anchor);
-  anchor.click();
-  anchor.remove();
-  URL.revokeObjectURL(url);
-  setStatus("JSON downloaded.", "success");
-});
-
 pdfBtn.addEventListener("click", (event) => {
   event.preventDefault();
   if (!lastResponse) {
@@ -439,20 +404,3 @@ pdfBtn.addEventListener("click", (event) => {
 });
 
 clearTable();
-
-(() => {
-  try {
-    const cached =
-      sessionStorage.getItem(STORAGE_KEY) || localStorage.getItem(STORAGE_KEY);
-    if (!cached) return;
-    const parsed = JSON.parse(cached);
-    renderResult(parsed);
-    const ts = sessionStorage.getItem(STORAGE_TS_KEY);
-    if (ts) {
-      const when = new Date(Number(ts));
-      setStatus(`Restored last result from ${when.toLocaleString()}.`, "success");
-    }
-  } catch (error) {
-    // ignore
-  }
-})();
