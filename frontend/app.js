@@ -19,9 +19,16 @@ const gradePointsEl = document.getElementById("gradePoints");
 
 let currentFile = null;
 let lastResponse = null;
+
 const STORAGE_KEY = "rtu-last-response";
 const STORAGE_TS_KEY = "rtu-last-response-ts";
-const API_URL = "/api/result/calculate";
+
+
+const API_URL =
+  window.location.hostname.includes("localhost")
+    ? "http://localhost:5000/api/result/calculate"
+    : "https://rtu-sgpa-calculator-production.up.railway.app/api/result/calculate";
+
 
 document.addEventListener("submit", (event) => {
   event.preventDefault();
