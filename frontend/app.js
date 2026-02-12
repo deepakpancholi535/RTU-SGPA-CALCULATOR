@@ -21,7 +21,7 @@ let lastResponse = null;
 
 const API_URL =
   window.location.hostname.includes("localhost")
-    ? "http://localhost:5000/api/result/calculate"
+    ? "http://localhost:8080/api/result/calculate"
     : "https://rtu-sgpa-calculator-production.up.railway.app/api/result/calculate";
 
 
