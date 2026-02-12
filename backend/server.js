@@ -50,6 +50,12 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 /* ===========================
    🚀 ROUTES
 =========================== */
+app.get("/", (req, res) => {
+  res.status(200).json({
+    status: "OK",
+    message: "RTU SGPA Backend Running"
+  });
+});
 
 app.use("/api/result", resultRoutes);
 
