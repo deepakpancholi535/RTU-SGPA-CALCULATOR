@@ -31,16 +31,23 @@ app.use((req, res, next) => {
 
 app.use("/api/result", resultRoutes);
 
-app.use((err, req, res, next) => {
-  const status = err.status || 500;
-  res.status(status).json({ error: err.message || "Server error" });
-});
-
 const PORT = process.env.PORT || 5000;
-const MONGO_URI = process.env.MONGO_URI;
+const MONGODB_URI = process.env.MONGODB_URI;
+const REQUIRED_ENV = [
+  "MONGODB_URI",
+  "CLOUDINARY_CLOUD_NAME",
+  "CLOUDINARY_API_KEY",
+  "CLOUDINARY_API_SECRET"
+];
 
-if (!MONGO_URI) {
-  console.error("MONGO_URI is missing in .env");
+const missing = REQUIRED_ENV.filter((key) => !process.env[key]);
+if (missing.length) {
+  console.error(`Missing required environment variables: ${missing.join(", ")}`);
+  process.exit(1);
+}
+
+if (!MONGODB_URI.startsWith("mongodb+srv://")) {
+  console.error("MONGODB_URI must start with mongodb+srv://");
   process.exit(1);
 }
 
@@ -54,4 +61,17 @@ mongoose.connection.once("open", () => {
   });
 });
 
-mongoose.connect(MONGO_URI, { autoIndex: true });
+mongoose.connect(MONGODB_URI, {
+  autoIndex: true,
+  tls: true,
+  tlsAllowInvalidCertificates: false
+});
+
+app.use((err, req, res, next) => {
+  console.error("Global Error:", err);
+
+  const status = err.status || 500;
+  const message = err.message || "Internal Server Error";
+
+  res.status(status).json({ error: message });
+});

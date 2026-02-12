@@ -32,7 +32,7 @@ function fileFilter(req, file, cb) {
 const upload = multer({
   storage,
   fileFilter,
-  limits: { fileSize: 12 * 1024 * 1024 }
+  limits: { fileSize: 10 * 1024 * 1024 }
 });
 
 router.post("/calculate", upload.single("result"), resultController.calculateResult);

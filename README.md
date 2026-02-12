@@ -8,7 +8,7 @@ Production-grade RTU result processing system with PDF parsing, accurate SGPA lo
 - Match against master subjects and credit catalog
 - Compute SGPA using RTU rules
 - Export a styled PDF summary
-- Optional Cloudinary storage for uploaded files
+- Cloudinary storage for uploaded files
 
 ---
 
@@ -40,11 +40,11 @@ npm install
 
 2. Create `backend/.env`
 ```
-MONGO_URI=mongodb://localhost:27017/rtu_results
+MONGODB_URI=mongodb+srv://<user>:<pass>@<cluster>/<db>?retryWrites=true&w=majority
 MIN_TEXT_LENGTH=120
 ```
 
-3. (Optional) Cloudinary
+3. Cloudinary
 ```
 CLOUDINARY_CLOUD_NAME=your_cloud
 CLOUDINARY_API_KEY=your_key
@@ -110,10 +110,10 @@ node server.js
 3. Root Directory: **repo root**
 4. Set Environment Variables:
 ```
-MONGO_URI=...
-CLOUDINARY_CLOUD_NAME=... (optional)
-CLOUDINARY_API_KEY=... (optional)
-CLOUDINARY_API_SECRET=... (optional)
+MONGODB_URI=...
+CLOUDINARY_CLOUD_NAME=...
+CLOUDINARY_API_KEY=...
+CLOUDINARY_API_SECRET=...
 MIN_TEXT_LENGTH=120 (optional)
 ```
 

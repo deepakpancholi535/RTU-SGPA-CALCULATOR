@@ -79,7 +79,7 @@ async function handleCalculate(req, res) {
     multiples: false,
     keepExtensions: true,
     uploadDir: os.tmpdir(),
-    maxFileSize: 12 * 1024 * 1024
+    maxFileSize: 10 * 1024 * 1024
   });
 
   form.parse(req, async (err, fields, files) => {

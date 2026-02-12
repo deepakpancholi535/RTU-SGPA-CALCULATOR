@@ -86,9 +86,13 @@ function ensureCoverage(list, map) {
 }
 
 async function seed() {
-  const uri = process.env.MONGO_URI;
+  const uri = process.env.MONGODB_URI;
   if (!uri) {
-    console.error("MONGO_URI is missing in .env");
+    console.error("MONGODB_URI is missing in .env");
+    process.exit(1);
+  }
+  if (!uri.startsWith("mongodb+srv://")) {
+    console.error("MONGODB_URI must start with mongodb+srv://");
     process.exit(1);
   }
 
@@ -101,7 +105,11 @@ async function seed() {
   base.forEach((entry) => addSubject(list, map, entry));
   ensureCoverage(list, map);
 
-  await mongoose.connect(uri, { autoIndex: true });
+  await mongoose.connect(uri, {
+    autoIndex: true,
+    tls: true,
+    tlsAllowInvalidCertificates: false
+  });
 
   const ops = list.map((s) => ({
     updateOne: {
