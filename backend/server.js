@@ -3,36 +3,16 @@ require("dotenv").config({ path: path.join(__dirname, ".env") });
 
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
+
 const resultRoutes = require("./routes/resultRoutes");
 
 const app = express();
 
-app.use(express.json({ limit: "2mb" }));
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-app.use(
-  "/",
-  express.static(path.join(__dirname, "..", "frontend"), { extensions: ["html"] })
-);
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET,POST,PUT,PATCH,DELETE,OPTIONS"
-  );
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "Content-Type, Authorization"
-  );
-  if (req.method === "OPTIONS") {
-    return res.sendStatus(204);
-  }
-  next();
-});
+/* ===========================
+   🔐 ENV VALIDATION
+=========================== */
 
-app.use("/api/result", resultRoutes);
-
-const PORT = process.env.PORT || 5000;
-const MONGODB_URI = process.env.MONGODB_URI;
 const REQUIRED_ENV = [
   "MONGODB_URI",
   "CLOUDINARY_CLOUD_NAME",
@@ -41,37 +21,82 @@ const REQUIRED_ENV = [
 ];
 
 const missing = REQUIRED_ENV.filter((key) => !process.env[key]);
+
 if (missing.length) {
-  console.error(`Missing required environment variables: ${missing.join(", ")}`);
+  console.error(
+    `❌ Missing required environment variables: ${missing.join(", ")}`
+  );
   process.exit(1);
 }
 
-if (!MONGODB_URI.startsWith("mongodb+srv://")) {
-  console.error("MONGODB_URI must start with mongodb+srv://");
+if (!process.env.MONGODB_URI.startsWith("mongodb+srv://")) {
+  console.error("❌ MONGODB_URI must start with mongodb+srv://");
   process.exit(1);
 }
 
-mongoose.connection.on("error", (err) => {
-  console.error("MongoDB connection error:", err);
-});
+/* ===========================
+   🧠 MIDDLEWARE
+=========================== */
 
-mongoose.connection.once("open", () => {
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+app.use(cors({
+  origin: "*", // You can restrict to your Vercel domain later
+}));
+
+app.use(express.json({ limit: "5mb" }));
+app.use(express.urlencoded({ extended: true }));
+
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+/* ===========================
+   🚀 ROUTES
+=========================== */
+
+app.use("/api/result", resultRoutes);
+
+/* ===========================
+   🌍 HEALTH CHECK
+=========================== */
+
+app.get("/", (req, res) => {
+  res.json({
+    status: "RTU SGPA Backend Running 🚀",
+    timestamp: new Date().toISOString()
   });
 });
 
-mongoose.connect(MONGODB_URI, {
-  autoIndex: true,
-  tls: true,
-  tlsAllowInvalidCertificates: false
-});
+/* ===========================
+   ❌ GLOBAL ERROR HANDLER
+=========================== */
 
 app.use((err, req, res, next) => {
   console.error("Global Error:", err);
 
-  const status = err.status || 500;
-  const message = err.message || "Internal Server Error";
-
-  res.status(status).json({ error: message });
+  res.status(err.status || 500).json({
+    error: err.message || "Internal Server Error"
+  });
 });
+
+/* ===========================
+   🟢 START SERVER FIRST
+=========================== */
+
+const PORT = process.env.PORT || 8080;
+
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+});
+
+/* ===========================
+   🗄 CONNECT MONGODB (NON-BLOCKING)
+=========================== */
+
+mongoose
+  .connect(process.env.MONGODB_URI, {
+    autoIndex: true
+  })
+  .then(() => {
+    console.log("✅ MongoDB Connected");
+  })
+  .catch((err) => {
+    console.error("❌ MongoDB Connection Error:", err.message);
+  });
