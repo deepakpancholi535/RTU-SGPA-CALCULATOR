@@ -1,7 +1,10 @@
 {
   "version": 2,
   "routes": [
+    { "src": "^/loaderio-f44f56fedc1505e62553adba25478423\\.txt$", "dest": "/api/loaderio" },
     { "src": "^/api/(.*)$", "dest": "/api/$1" },
     { "src": "^/(.*)$", "dest": "/frontend/$1" }
+    
+
   ]
 }
