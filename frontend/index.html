@@ -10,7 +10,7 @@
       href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css?v=6" />
+    <link rel="stylesheet" href="styles.css?v=8" />
   </head>
   <body>
     <div class="aurora" aria-hidden="true"></div>
@@ -146,15 +146,42 @@
     </main>
 
     <footer class="footer">
-      <div>
+      <div class="footer-note">
         Built for RTU marksheets. Make sure the PDF is clear and un-cropped for
         best accuracy.
       </div>
-      <div class="status-dot">Live Parser Ready · Build v7</div>
+      <div class="footer-actions">
+        <a
+          class="social-link"
+          href="https://www.linkedin.com/in/deepak-pancholi-b12833326/"
+          target="_blank"
+          rel="noopener"
+          aria-label="LinkedIn profile"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              fill="currentColor"
+              d="M20.45 20.45h-3.55v-5.4c0-1.29-.03-2.95-1.8-2.95-1.8 0-2.08 1.4-2.08 2.85v5.5H9.47V9h3.4v1.56h.05c.47-.9 1.63-1.85 3.35-1.85 3.58 0 4.24 2.36 4.24 5.42v6.32zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.11 20.45H3.57V9h3.54v11.45zM22.22 0H1.78C.8 0 0 .77 0 1.73v20.54C0 23.23.8 24 1.78 24h20.44c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"
+            />
+          </svg>
+          <span class="sr-only">LinkedIn</span>
+        </a>
+        <button
+          type="button"
+          class="feedback-btn"
+          id="feedbackBtn"
+          data-user="deepakpancholianuj"
+          data-domain="gmail.com"
+          data-subject="RTU Result Analyzer Feedback"
+        >
+          Feedback
+        </button>
+        <div class="status-dot">Live Parser Ready · Build v7</div>
+      </div>
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
-    <script src="app.js?v=7"></script>
+    <script src="app.js?v=8"></script>
   </body>
 </html>

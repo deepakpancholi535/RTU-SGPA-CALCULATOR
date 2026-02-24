@@ -6,6 +6,7 @@ const statusEl = document.getElementById("status");
 const fileMeta = document.getElementById("fileMeta");
 const subjectsBody = document.getElementById("subjectsBody");
 const pdfBtn = document.getElementById("pdfBtn");
+const feedbackBtn = document.getElementById("feedbackBtn");
 
 const rollNoEl = document.getElementById("rollNo");
 const nameEl = document.getElementById("studentName");
@@ -73,6 +74,25 @@ const formatFileSize = (bytes) => {
     idx += 1;
   }
   return `${size.toFixed(1)} ${units[idx]}`;
+};
+
+const buildFeedbackEmail = () => {
+  if (!feedbackBtn) return null;
+  const user = feedbackBtn.dataset.user;
+  const domain = feedbackBtn.dataset.domain;
+  if (!user || !domain) return null;
+  return `${user}@${domain}`;
+};
+
+const openFeedbackEmail = () => {
+  const email = buildFeedbackEmail();
+  if (!email) return;
+  const subject = feedbackBtn.dataset.subject || "RTU Result Analyzer Feedback";
+  const body = "Hi Deepak,\n\n";
+  const mailto = `mailto:${email}?subject=${encodeURIComponent(
+    subject
+  )}&body=${encodeURIComponent(body)}`;
+  window.location.href = mailto;
 };
 
 const isPdfFile = (file) => {
@@ -402,5 +422,12 @@ pdfBtn.addEventListener("click", (event) => {
     setStatus(error.message || "Unable to generate PDF.", "error");
   }
 });
+
+if (feedbackBtn) {
+  feedbackBtn.addEventListener("click", (event) => {
+    event.preventDefault();
+    openFeedbackEmail();
+  });
+}
 
 clearTable();
