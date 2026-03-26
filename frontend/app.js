@@ -30,6 +30,7 @@ const buildBadgeEl = document.getElementById("buildBadge");
 const HISTORY_KEY = "rtu_result_history_v1";
 const HISTORY_LIMIT = 10;
 const UI_BUILD = "v8";
+const RAILWAY_API_BASE = "https://rtu-sgpa-calculator-production.up.railway.app/api/result";
 
 let currentFile = null;
 let lastResponse = null;
@@ -38,7 +39,7 @@ let lastTrendPoints = [];
 const API_BASE = (() => {
   const host = window.location.hostname || "";
   if (!host) {
-    return "https://rtu-sgpa-calculator-production.up.railway.app/api/result";
+    return RAILWAY_API_BASE;
   }
   if (host.includes("localhost") || host === "127.0.0.1") {
     return "http://localhost:8080/api/result";
@@ -51,6 +52,47 @@ const API_ENDPOINTS = {
   history: `${API_BASE}/history`,
   health: `${API_BASE}/health`,
 };
+
+const FALLBACK_CALCULATE_URLS = (() => {
+  const urls = [API_ENDPOINTS.calculate];
+  const host = window.location.hostname || "";
+  const isLocal = host.includes("localhost") || host === "127.0.0.1";
+  if (!isLocal && API_BASE.startsWith("/")) {
+    urls.push(`${RAILWAY_API_BASE}/calculate`);
+  }
+  return Array.from(new Set(urls));
+})();
+
+async function postCalculateWithFallback(formData) {
+  let lastResponse = null;
+  let lastError = null;
+
+  for (const endpoint of FALLBACK_CALCULATE_URLS) {
+    try {
+      const response = await fetch(endpoint, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response.ok) {
+        return response;
+      }
+
+      lastResponse = response;
+      const retryable = response.status === 404 || response.status >= 500;
+      if (!retryable) {
+        return response;
+      }
+    } catch (error) {
+      lastError = error;
+    }
+  }
+
+  if (lastResponse) {
+    return lastResponse;
+  }
+  throw lastError || new Error("Unable to reach calculate endpoint.");
+}
 
 if (buildBadgeEl) {
   buildBadgeEl.textContent = `Build ${UI_BUILD}`;
@@ -731,10 +773,7 @@ analyzeBtn.addEventListener("click", async (event) => {
     const formData = new FormData();
     formData.append("result", currentFile);
 
-    const response = await fetch(API_ENDPOINTS.calculate, {
-      method: "POST",
-      body: formData,
-    });
+    const response = await postCalculateWithFallback(formData);
 
     if (!response.ok) {
       let message = `Request failed with ${response.status}`;
