@@ -16,15 +16,45 @@ const sgpaEl = document.getElementById("sgpa");
 const creditsEl = document.getElementById("credits");
 const gradePointsEl = document.getElementById("gradePoints");
 
+const historyListEl = document.getElementById("historyList");
+const clearHistoryBtn = document.getElementById("clearHistoryBtn");
+const confidenceBadgeEl = document.getElementById("confidenceBadge");
+const matchBadgeEl = document.getElementById("matchBadge");
+const creditsBadgeEl = document.getElementById("creditsBadge");
+const mismatchListEl = document.getElementById("mismatchList");
+const trendStatusEl = document.getElementById("trendStatus");
+const trendChartEl = document.getElementById("trendChart");
+const healthDotEl = document.getElementById("healthDot");
+const buildBadgeEl = document.getElementById("buildBadge");
+
+const HISTORY_KEY = "rtu_result_history_v1";
+const HISTORY_LIMIT = 10;
+const UI_BUILD = "v8";
+
 let currentFile = null;
 let lastResponse = null;
+let lastTrendPoints = [];
 
+const API_BASE = (() => {
+  const host = window.location.hostname || "";
+  if (!host) {
+    return "https://rtu-sgpa-calculator-production.up.railway.app/api/result";
+  }
+  if (host.includes("localhost") || host === "127.0.0.1") {
+    return "http://localhost:8080/api/result";
+  }
+  return "/api/result";
+})();
 
-const API_URL =
-  window.location.hostname.includes("localhost")
-    ? "http://localhost:8080/api/result/calculate"
-    : "https://rtu-sgpa-calculator-production.up.railway.app/api/result/calculate";
+const API_ENDPOINTS = {
+  calculate: `${API_BASE}/calculate`,
+  history: `${API_BASE}/history`,
+  health: `${API_BASE}/health`,
+};
 
+if (buildBadgeEl) {
+  buildBadgeEl.textContent = `Build ${UI_BUILD}`;
+}
 
 document.addEventListener("submit", (event) => {
   event.preventDefault();
@@ -34,6 +64,7 @@ document.addEventListener("submit", (event) => {
 window.__rtuDebug = {
   getCurrentFile: () => currentFile,
   getFileInputCount: () => (fileInput.files ? fileInput.files.length : 0),
+  getHistoryCount: () => loadHistory().length,
 };
 
 const setStatus = (message, state = "") => {
@@ -114,9 +145,7 @@ const setFile = (file) => {
   }
   currentFile = file;
   setStatus("");
-  fileMeta.textContent = `${currentFile.name} (${formatFileSize(
-    currentFile.size
-  )})`;
+  fileMeta.textContent = `${currentFile.name} (${formatFileSize(currentFile.size)})`;
 };
 
 const clearTable = () => {
@@ -172,15 +201,207 @@ const renderSubjects = (subjects) => {
   });
 };
 
-const renderResult = (data) => {
-  lastResponse = data;
-  setSummary(data);
-  renderSubjects(data?.subjects || []);
-};
-
 const toDisplayString = (value) => {
   if (value === null || value === undefined || value === "") return "-";
   return String(value);
+};
+
+const safeArray = (value) => (Array.isArray(value) ? value : []);
+
+const normalizeAnalysis = (data) => {
+  const subjects = safeArray(data?.subjects);
+  const analysis = data?.analysis || {};
+  const totalParsedRaw = Number(analysis.totalParsed);
+  const matchedRaw = Number(analysis.matched);
+  const unmatchedRaw = Number(analysis.unmatched);
+  const coverageRaw = Number(analysis.coverage);
+  const creditsMissingRaw = Number(analysis.creditsMissing);
+  const totalParsed = Number.isFinite(totalParsedRaw) ? totalParsedRaw : subjects.length;
+  const matched = Number.isFinite(matchedRaw)
+    ? matchedRaw
+    : Number.isFinite(unmatchedRaw)
+      ? Math.max(totalParsed - unmatchedRaw, 0)
+      : subjects.length;
+  const unmatched = Number.isFinite(unmatchedRaw) ? unmatchedRaw : Math.max(totalParsed - matched, 0);
+  const creditsMissing = Number.isFinite(creditsMissingRaw)
+    ? creditsMissingRaw
+    : subjects.filter((subject) => typeof subject.credits !== "number").length;
+  const coverage =
+    Number.isFinite(coverageRaw) && coverageRaw >= 0
+      ? coverageRaw
+      : totalParsed > 0
+        ? (matched / totalParsed) * 100
+        : 0;
+
+  return {
+    totalParsed,
+    matched,
+    unmatched,
+    creditsMissing,
+    coverage,
+    confidence: String(analysis.confidence || "low").toLowerCase(),
+  };
+};
+
+const renderConfidence = (data) => {
+  const analysis = normalizeAnalysis(data);
+  confidenceBadgeEl.textContent = `Confidence: ${analysis.confidence.toUpperCase()}`;
+  matchBadgeEl.textContent = `Matched: ${analysis.matched}/${analysis.totalParsed} (${formatNumber(
+    analysis.coverage,
+    1
+  )}%)`;
+  creditsBadgeEl.textContent = `Credits Missing: ${analysis.creditsMissing}`;
+  creditsBadgeEl.classList.toggle("warn", analysis.creditsMissing > 0);
+};
+
+const renderMismatch = (data) => {
+  const unmatched = safeArray(data?.unmatchedSubjects);
+  mismatchListEl.innerHTML = "";
+
+  if (!unmatched.length) {
+    mismatchListEl.innerHTML = '<div class="mismatch-empty">No unmatched subjects.</div>';
+    return;
+  }
+
+  unmatched.forEach((item, index) => {
+    const card = document.createElement("div");
+    card.className = "mismatch-item";
+
+    const heading = document.createElement("div");
+    heading.className = "mismatch-title";
+    const subjectLabel = item.subject || "Unknown Subject";
+    const code = item.subjectCode ? ` (${item.subjectCode})` : "";
+    heading.textContent = `${index + 1}. ${subjectLabel}${code}`;
+
+    const raw = document.createElement("div");
+    raw.className = "mismatch-raw";
+    raw.textContent = item.rawLine || "Raw line unavailable.";
+
+    card.appendChild(heading);
+    card.appendChild(raw);
+    mismatchListEl.appendChild(card);
+  });
+};
+
+const getTrendPoints = (historyResponse) => {
+  const trend = safeArray(historyResponse?.trend)
+    .filter((item) => typeof item.semester === "number" && typeof item.sgpa === "number")
+    .sort((a, b) => a.semester - b.semester);
+
+  const uniqueBySemester = new Map();
+  trend.forEach((entry) => {
+    if (!uniqueBySemester.has(entry.semester)) {
+      uniqueBySemester.set(entry.semester, entry);
+    }
+  });
+
+  return Array.from(uniqueBySemester.values());
+};
+
+const drawTrendChart = (points) => {
+  const canvas = trendChartEl;
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return;
+
+  const width = canvas.clientWidth || 640;
+  const height = canvas.clientHeight || 220;
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = Math.round(width * dpr);
+  canvas.height = Math.round(height * dpr);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.clearRect(0, 0, width, height);
+
+  const left = 36;
+  const right = width - 24;
+  const top = 18;
+  const bottom = height - 28;
+  const plotWidth = Math.max(right - left, 1);
+  const plotHeight = Math.max(bottom - top, 1);
+
+  ctx.strokeStyle = "rgba(28, 31, 38, 0.12)";
+  ctx.lineWidth = 1;
+  [0, 2.5, 5, 7.5, 10].forEach((mark) => {
+    const y = bottom - (mark / 10) * plotHeight;
+    ctx.beginPath();
+    ctx.moveTo(left, y);
+    ctx.lineTo(right, y);
+    ctx.stroke();
+  });
+
+  if (!points.length) {
+    ctx.fillStyle = "rgba(28, 31, 38, 0.56)";
+    ctx.font = "12px Space Grotesk, sans-serif";
+    ctx.fillText("No trend data available yet.", left, top + 20);
+    return;
+  }
+
+  const xForIndex = (index) => {
+    if (points.length === 1) return left + plotWidth / 2;
+    return left + (index / (points.length - 1)) * plotWidth;
+  };
+  const yForSgpa = (sgpa) => {
+    const normalized = Math.max(0, Math.min(10, Number(sgpa) || 0));
+    return bottom - (normalized / 10) * plotHeight;
+  };
+
+  ctx.strokeStyle = "#ff7a59";
+  ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  points.forEach((point, index) => {
+    const x = xForIndex(index);
+    const y = yForSgpa(point.sgpa);
+    if (index === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  });
+  ctx.stroke();
+
+  points.forEach((point, index) => {
+    const x = xForIndex(index);
+    const y = yForSgpa(point.sgpa);
+    ctx.fillStyle = "#2bbf9b";
+    ctx.beginPath();
+    ctx.arc(x, y, 4.2, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.fillStyle = "#1c1f26";
+    ctx.font = "11px Space Grotesk, sans-serif";
+    ctx.fillText(`S${point.semester}`, x - 10, bottom + 16);
+    if (typeof point.sgpa === "number") {
+      ctx.fillText(formatNumber(point.sgpa, 2), x - 12, y - 10);
+    }
+  });
+};
+
+const loadTrend = async (rollNo) => {
+  if (!rollNo) {
+    trendStatusEl.textContent = "Trend available after roll number detection.";
+    lastTrendPoints = [];
+    drawTrendChart([]);
+    return;
+  }
+
+  trendStatusEl.textContent = "Loading trend...";
+
+  try {
+    const response = await fetch(
+      `${API_ENDPOINTS.history}?rollNo=${encodeURIComponent(rollNo)}&limit=8`
+    );
+    if (!response.ok) {
+      throw new Error(`History request failed (${response.status})`);
+    }
+
+    const history = await response.json();
+    const points = getTrendPoints(history);
+    lastTrendPoints = points;
+    drawTrendChart(points);
+    trendStatusEl.textContent =
+      points.length > 0 ? `Loaded ${points.length} semester points.` : "No stored trend yet.";
+  } catch (error) {
+    lastTrendPoints = [];
+    drawTrendChart([]);
+    trendStatusEl.textContent = "Trend unavailable right now.";
+  }
 };
 
 const buildPdf = (data) => {
@@ -247,7 +468,7 @@ const buildPdf = (data) => {
     doc.text(toDisplayString(metric[1]), x + 12, metricY + 34);
   });
 
-  const tableBody = (data.subjects || []).map((subject) => [
+  const tableBody = safeArray(data.subjects).map((subject) => [
     subject.subject || subject.subjectName || "-",
     subject.subjectCode || subject.code || subject.courseCode || "-",
     toDisplayString(subject.credits),
@@ -260,15 +481,7 @@ const buildPdf = (data) => {
   if (doc.autoTable) {
     doc.autoTable({
       startY: metricY + 70,
-      head: [[
-        "Subject",
-        "Code",
-        "Credits",
-        "Marks",
-        "Grade",
-        "Point",
-        "Contribution",
-      ]],
+      head: [["Subject", "Code", "Credits", "Marks", "Grade", "Point", "Contribution"]],
       body: tableBody,
       theme: "striped",
       headStyles: {
@@ -304,14 +517,157 @@ const buildPdf = (data) => {
 
   doc.setFontSize(9);
   doc.setTextColor(90, 100, 116);
-  doc.text(
-    "Generated with RTU Result Analyzer",
-    40,
-    pageHeight - 20
-  );
+  doc.text("Generated with RTU Result Analyzer", 40, pageHeight - 20);
 
   const fileName = `${data.rollNo || "rtu-result"}.pdf`;
   doc.save(fileName);
+};
+
+const loadHistory = () => {
+  try {
+    const raw = localStorage.getItem(HISTORY_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (error) {
+    return [];
+  }
+};
+
+const saveHistory = (entries) => {
+  localStorage.setItem(HISTORY_KEY, JSON.stringify(entries));
+};
+
+const addToHistory = (data, fileName) => {
+  try {
+    const entries = loadHistory();
+    const entry = {
+      id: `${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+      fileName: fileName || null,
+      createdAt: new Date().toISOString(),
+      rollNo: data?.rollNo || null,
+      semester: data?.semester ?? null,
+      sgpa: data?.sgpa ?? null,
+      payload: data,
+    };
+
+    const nextEntries = [entry, ...entries].slice(0, HISTORY_LIMIT);
+    saveHistory(nextEntries);
+    return nextEntries;
+  } catch (error) {
+    return loadHistory();
+  }
+};
+
+const formatDateTime = (isoValue) => {
+  const date = new Date(isoValue);
+  if (Number.isNaN(date.getTime())) return "-";
+  return date.toLocaleString();
+};
+
+const renderHistory = () => {
+  if (!historyListEl) return;
+  const entries = loadHistory();
+  historyListEl.innerHTML = "";
+
+  if (!entries.length) {
+    historyListEl.innerHTML = '<div class="history-empty">No recent analyses yet.</div>';
+    return;
+  }
+
+  entries.forEach((entry, index) => {
+    const item = document.createElement("div");
+    item.className = "history-item";
+    item.dataset.id = entry.id;
+
+    const title = document.createElement("div");
+    title.className = "history-title";
+    const roll = entry.rollNo || "Unknown Roll";
+    const sem = entry.semester ? `Sem ${entry.semester}` : "Sem -";
+    title.textContent = `${index + 1}. ${roll} | ${sem}`;
+
+    const meta = document.createElement("div");
+    meta.className = "history-meta";
+    const filename = entry.fileName || "Uploaded PDF";
+    const sgpa = entry.sgpa !== null && entry.sgpa !== undefined ? formatNumber(entry.sgpa, 2) : "-";
+    meta.textContent = `${filename} | SGPA ${sgpa} | ${formatDateTime(entry.createdAt)}`;
+
+    const actions = document.createElement("div");
+    actions.className = "history-actions";
+
+    const loadBtn = document.createElement("button");
+    loadBtn.type = "button";
+    loadBtn.className = "ghost mini-btn";
+    loadBtn.dataset.action = "load";
+    loadBtn.dataset.id = entry.id;
+    loadBtn.textContent = "Load";
+
+    const pdfBtnInner = document.createElement("button");
+    pdfBtnInner.type = "button";
+    pdfBtnInner.className = "ghost mini-btn";
+    pdfBtnInner.dataset.action = "pdf";
+    pdfBtnInner.dataset.id = entry.id;
+    pdfBtnInner.textContent = "PDF";
+
+    actions.appendChild(loadBtn);
+    actions.appendChild(pdfBtnInner);
+    item.appendChild(title);
+    item.appendChild(meta);
+    item.appendChild(actions);
+    historyListEl.appendChild(item);
+  });
+};
+
+const renderResult = (data) => {
+  lastResponse = data;
+  setSummary(data);
+  renderSubjects(data?.subjects || []);
+  renderConfidence(data);
+  renderMismatch(data);
+};
+
+const openHistoryEntry = async (entryId) => {
+  const entry = loadHistory().find((item) => item.id === entryId);
+  if (!entry || !entry.payload) return;
+
+  renderResult(entry.payload);
+  setStatus("Loaded result from history.", "success");
+  await loadTrend(entry.payload.rollNo || entry.rollNo || null);
+};
+
+const exportHistoryEntryPdf = (entryId) => {
+  const entry = loadHistory().find((item) => item.id === entryId);
+  if (!entry || !entry.payload) {
+    setStatus("Unable to load selected history record.", "error");
+    return;
+  }
+  try {
+    buildPdf(entry.payload);
+    setStatus("History PDF downloaded.", "success");
+  } catch (error) {
+    setStatus(error.message || "Unable to generate PDF.", "error");
+  }
+};
+
+const checkHealth = async () => {
+  if (!healthDotEl) return;
+  try {
+    const response = await fetch(API_ENDPOINTS.health);
+    if (!response.ok) throw new Error("Health endpoint failed");
+    const payload = await response.json();
+    healthDotEl.textContent = "API: Live";
+    healthDotEl.dataset.state = "ok";
+    if (buildBadgeEl) {
+      const version = payload?.version ? `API ${payload.version}` : "API ?";
+      buildBadgeEl.textContent = `Build ${UI_BUILD} | ${version}`;
+    }
+  } catch (error) {
+    healthDotEl.textContent = "API: Unreachable";
+    healthDotEl.dataset.state = "error";
+    if (buildBadgeEl) {
+      buildBadgeEl.textContent = `Build ${UI_BUILD}`;
+    }
+  }
 };
 
 pickBtn.addEventListener("click", () => {
@@ -375,7 +731,7 @@ analyzeBtn.addEventListener("click", async (event) => {
     const formData = new FormData();
     formData.append("result", currentFile);
 
-    const response = await fetch(API_URL, {
+    const response = await fetch(API_ENDPOINTS.calculate, {
       method: "POST",
       body: formData,
     });
@@ -400,6 +756,9 @@ analyzeBtn.addEventListener("click", async (event) => {
 
     const data = await response.json();
     renderResult(data);
+    addToHistory(data, currentFile?.name || null);
+    renderHistory();
+    await loadTrend(data.rollNo || null);
     setStatus("Result parsed successfully.", "success");
   } catch (error) {
     setStatus(error.message || "Unable to parse the result.", "error");
@@ -423,6 +782,30 @@ pdfBtn.addEventListener("click", (event) => {
   }
 });
 
+if (historyListEl) {
+  historyListEl.addEventListener("click", async (event) => {
+    const target = event.target.closest("button[data-action]");
+    if (!target) return;
+    const action = target.dataset.action;
+    const entryId = target.dataset.id;
+    if (!entryId) return;
+
+    if (action === "load") {
+      await openHistoryEntry(entryId);
+    } else if (action === "pdf") {
+      exportHistoryEntryPdf(entryId);
+    }
+  });
+}
+
+if (clearHistoryBtn) {
+  clearHistoryBtn.addEventListener("click", () => {
+    localStorage.removeItem(HISTORY_KEY);
+    renderHistory();
+    setStatus("History cleared.", "success");
+  });
+}
+
 if (feedbackBtn) {
   feedbackBtn.addEventListener("click", (event) => {
     event.preventDefault();
@@ -430,4 +813,14 @@ if (feedbackBtn) {
   });
 }
 
+window.addEventListener("resize", () => {
+  drawTrendChart(lastTrendPoints);
+});
+
 clearTable();
+renderConfidence(null);
+renderMismatch(null);
+renderHistory();
+drawTrendChart([]);
+checkHealth();
+window.setInterval(checkHealth, 60000);

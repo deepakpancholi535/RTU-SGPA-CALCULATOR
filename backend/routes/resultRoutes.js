@@ -35,6 +35,8 @@ const upload = multer({
   limits: { fileSize: 10 * 1024 * 1024 }
 });
 
+router.get("/health", resultController.getHealth);
+router.get("/history", resultController.getHistory);
 router.post("/calculate", upload.single("result"), resultController.calculateResult);
 
 module.exports = router;

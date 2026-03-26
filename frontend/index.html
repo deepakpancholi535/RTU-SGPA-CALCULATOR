@@ -78,12 +78,28 @@
 
           <button type="button" class="primary" id="analyzeBtn">Analyze Result</button>
           <div class="status" id="status"></div>
+
+          <div class="history-panel">
+            <div class="section-head">
+              <h3>Recent Analyses</h3>
+              <button type="button" class="ghost mini-btn" id="clearHistoryBtn">Clear</button>
+            </div>
+            <div class="history-list" id="historyList">
+              <div class="history-empty">No recent analyses yet.</div>
+            </div>
+          </div>
         </div>
 
         <div class="card result-card">
           <div class="card-head">
             <h2>Result Snapshot</h2>
             <p>Parsed summary and computed SGPA.</p>
+          </div>
+
+          <div class="confidence-row" id="confidenceRow">
+            <span class="metric-pill" id="confidenceBadge">Confidence: -</span>
+            <span class="metric-pill" id="matchBadge">Matched: -</span>
+            <span class="metric-pill warn" id="creditsBadge">Credits Missing: -</span>
           </div>
 
           <div class="summary">
@@ -138,6 +154,21 @@
             </table>
           </div>
 
+          <div class="mismatch-panel" id="mismatchPanel">
+            <h3>Mismatch Review</h3>
+            <div class="mismatch-list" id="mismatchList">
+              <div class="mismatch-empty">No unmatched subjects.</div>
+            </div>
+          </div>
+
+          <div class="trend-panel">
+            <div class="trend-head">
+              <h3>SGPA Trend</h3>
+              <span id="trendStatus">Analyze a result to load trend.</span>
+            </div>
+            <canvas id="trendChart" width="640" height="220"></canvas>
+          </div>
+
           <div class="actions">
             <button type="button" class="primary" id="pdfBtn">Download PDF</button>
           </div>
@@ -176,7 +207,8 @@
         >
           Feedback
         </button>
-        <div class="status-dot">Live Parser Ready · Build v7</div>
+        <div class="status-dot" id="healthDot">API: Checking...</div>
+        <div class="build-badge" id="buildBadge">Build v8</div>
       </div>
     </footer>
 
@@ -185,3 +217,4 @@
     <script src="app.js?v=8"></script>
   </body>
 </html>
+

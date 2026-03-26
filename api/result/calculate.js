@@ -56,6 +56,44 @@ function pickMostCommon(counts) {
   return maxKey;
 }
 
+function buildConfidenceLabel(coverage, creditsMissing, totalParsed) {
+  if (!totalParsed) return "low";
+  const coverageScore = coverage / 100;
+  const creditsPenalty = creditsMissing / totalParsed;
+  const score = coverageScore - creditsPenalty * 0.5;
+
+  if (score >= 0.85) return "high";
+  if (score >= 0.65) return "medium";
+  return "low";
+}
+
+function buildAnalysis(parsedSubjects, matched, unmatched, computedSubjects) {
+  const totalParsed = parsedSubjects.length;
+  const matchedCount = matched.length;
+  const unmatchedCount = unmatched.length;
+  const coverage = totalParsed > 0 ? round2((matchedCount / totalParsed) * 100) : 0;
+  const creditsMissing = computedSubjects.filter((s) => typeof s.credits !== "number").length;
+  const gradePointMissing = computedSubjects.filter((s) => typeof s.gradePoint !== "number").length;
+
+  return {
+    totalParsed,
+    matched: matchedCount,
+    unmatched: unmatchedCount,
+    coverage,
+    creditsMissing,
+    gradePointMissing,
+    confidence: buildConfidenceLabel(coverage, creditsMissing, totalParsed)
+  };
+}
+
+function buildUnmatchedDetails(unmatched) {
+  return unmatched.map((item) => ({
+    subject: item.subjectName || null,
+    subjectCode: item.subjectCode || null,
+    rawLine: item.rawLine || null
+  }));
+}
+
 function getFieldValue(fields, key) {
   const value = fields[key];
   if (Array.isArray(value)) return value[0] || "";
@@ -181,6 +219,14 @@ async function handleCalculate(req, res) {
           return creditCatalog.byTitle.get(titleKey);
         }
 
+        if (codeKey && codeKey.startsWith("FEC")) {
+          return 0.5;
+        }
+
+        if (typeof extracted.creditsHint === "number") {
+          return extracted.creditsHint;
+        }
+
         if (subject && typeof subject.credits === "number") {
           return subject.credits;
         }
@@ -232,6 +278,8 @@ async function handleCalculate(req, res) {
       const sgpa = sgpaCalc.sgpa;
       const totalCredits = sgpaCalc.totalCredits;
       const totalGradePoints = sgpaCalc.totalGradePoints;
+      const analysis = buildAnalysis(parsed.subjects, matched, unmatched, computedSubjects);
+      const unmatchedDetails = buildUnmatchedDetails(unmatched);
 
       const cgpa = null;
       const percentage = null;
@@ -281,6 +329,8 @@ async function handleCalculate(req, res) {
         totalCredits,
         totalGradePoints,
         subjects: computedSubjects,
+        analysis,
+        unmatchedSubjects: unmatchedDetails,
         fileUrl: cloudinaryInfo ? cloudinaryInfo.secureUrl : null
       });
     } catch (error) {

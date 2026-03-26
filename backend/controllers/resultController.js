@@ -14,6 +14,7 @@ const { loadCreditCatalog, normalizeCode, normalizeTitleKey } = require("../util
 const { uploadResultFile } = require("../utils/cloudinary");
 
 const creditCatalog = loadCreditCatalog();
+const APP_VERSION = process.env.APP_VERSION || "1.0.0";
 
 function computeRelativeMarks(extracted) {
   if (typeof extracted.totalMarks !== "number") return null;
@@ -36,6 +37,48 @@ function pickMostCommon(counts) {
     }
   });
   return maxKey;
+}
+
+function escapeRegex(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function buildConfidenceLabel(coverage, creditsMissing, totalParsed) {
+  if (!totalParsed) return "low";
+  const coverageScore = coverage / 100;
+  const creditsPenalty = creditsMissing / totalParsed;
+  const score = coverageScore - creditsPenalty * 0.5;
+
+  if (score >= 0.85) return "high";
+  if (score >= 0.65) return "medium";
+  return "low";
+}
+
+function buildAnalysis(parsedSubjects, matched, unmatched, computedSubjects) {
+  const totalParsed = parsedSubjects.length;
+  const matchedCount = matched.length;
+  const unmatchedCount = unmatched.length;
+  const coverage = totalParsed > 0 ? round2((matchedCount / totalParsed) * 100) : 0;
+  const creditsMissing = computedSubjects.filter((s) => typeof s.credits !== "number").length;
+  const gradePointMissing = computedSubjects.filter((s) => typeof s.gradePoint !== "number").length;
+
+  return {
+    totalParsed,
+    matched: matchedCount,
+    unmatched: unmatchedCount,
+    coverage,
+    creditsMissing,
+    gradePointMissing,
+    confidence: buildConfidenceLabel(coverage, creditsMissing, totalParsed)
+  };
+}
+
+function buildUnmatchedDetails(unmatched) {
+  return unmatched.map((item) => ({
+    subject: item.subjectName || null,
+    subjectCode: item.subjectCode || null,
+    rawLine: item.rawLine || null
+  }));
 }
 
 exports.calculateResult = async (req, res, next) => {
@@ -163,6 +206,7 @@ exports.calculateResult = async (req, res, next) => {
 
       computedSubjects.push({
         subject: subject ? subject.subjectName : extracted.subjectName,
+        subjectCode: extracted.subjectCode || null,
         credits,
         marks: typeof extracted.totalMarks === "number" ? extracted.totalMarks : null,
         grade,
@@ -186,6 +230,8 @@ exports.calculateResult = async (req, res, next) => {
     const cgpa = null;
     const percentage = null;
     const division = null;
+    const analysis = buildAnalysis(parsed.subjects, matched, unmatched, computedSubjects);
+    const unmatchedDetails = buildUnmatchedDetails(unmatched);
 
     let cloudinaryInfo = null;
     try {
@@ -231,6 +277,8 @@ exports.calculateResult = async (req, res, next) => {
       totalCredits,
       totalGradePoints,
       subjects: computedSubjects,
+      analysis,
+      unmatchedSubjects: unmatchedDetails,
       fileUrl: cloudinaryInfo ? cloudinaryInfo.secureUrl : null
     });
   } catch (err) {
@@ -240,4 +288,48 @@ exports.calculateResult = async (req, res, next) => {
       fs.unlink(cleanupPath, () => {});
     }
   }
+};
+
+exports.getHistory = async (req, res, next) => {
+  try {
+    const rollNoRaw = (req.query.rollNo || "").toString().trim();
+    if (!rollNoRaw) {
+      return res.status(400).json({ error: "rollNo query parameter is required" });
+    }
+
+    const limitRaw = parseInt(req.query.limit, 10);
+    const limit = Number.isNaN(limitRaw) ? 8 : Math.min(Math.max(limitRaw, 1), 20);
+
+    const rollNoRegex = new RegExp(`^${escapeRegex(rollNoRaw)}$`, "i");
+    const records = await StudentResult.find({ rollNo: rollNoRegex })
+      .sort({ semester: 1, updatedAt: -1 })
+      .limit(limit)
+      .lean();
+
+    const trend = records
+      .sort((a, b) => (a.semester || 0) - (b.semester || 0))
+      .map((item) => ({
+        semester: item.semester || null,
+        sgpa: typeof item.sgpa === "number" ? item.sgpa : null,
+        totalCredits: typeof item.totalCredits === "number" ? item.totalCredits : null,
+        updatedAt: item.updatedAt || null
+      }));
+
+    return res.json({
+      rollNo: rollNoRaw,
+      count: trend.length,
+      trend
+    });
+  } catch (err) {
+    return next(err);
+  }
+};
+
+exports.getHealth = async (req, res) => {
+  return res.json({
+    status: "ok",
+    service: "rtu-result-api",
+    version: APP_VERSION,
+    timestamp: new Date().toISOString()
+  });
 };
