@@ -25,10 +25,14 @@ const trendStatusEl = document.getElementById("trendStatus");
 const trendChartEl = document.getElementById("trendChart");
 const healthDotEl = document.getElementById("healthDot");
 const buildBadgeEl = document.getElementById("buildBadge");
+const themeSwitchEl = document.getElementById("themeSwitch");
+const themeButtons = Array.from(document.querySelectorAll("[data-theme-choice]"));
 
 const HISTORY_KEY = "rtu_result_history_v1";
 const HISTORY_LIMIT = 10;
-const UI_BUILD = "v13";
+const UI_BUILD = "v14";
+const THEME_KEY = "rtu_ui_theme_v1";
+const THEME_CHOICES = ["light", "mid", "dark"];
 const RAILWAY_API_BASE = "https://rtu-sgpa-calculator-production.up.railway.app/api/result";
 
 let currentFile = null;
@@ -106,6 +110,64 @@ if (buildBadgeEl) {
   buildBadgeEl.textContent = `Build ${UI_BUILD}`;
 }
 
+function getSafeTheme(theme) {
+  if (THEME_CHOICES.includes(theme)) return theme;
+  return "mid";
+}
+
+function getStoredTheme() {
+  try {
+    return localStorage.getItem(THEME_KEY);
+  } catch (error) {
+    return null;
+  }
+}
+
+function saveTheme(theme) {
+  try {
+    localStorage.setItem(THEME_KEY, theme);
+  } catch (error) {
+    // Ignore storage failures in private mode.
+  }
+}
+
+function applyTheme(theme) {
+  const safeTheme = getSafeTheme(theme);
+  document.body.dataset.theme = safeTheme;
+  themeButtons.forEach((button) => {
+    const isActive = button.dataset.themeChoice === safeTheme;
+    button.classList.toggle("is-active", isActive);
+    button.setAttribute("aria-pressed", isActive ? "true" : "false");
+  });
+}
+
+function resolveInitialTheme() {
+  const savedTheme = getStoredTheme();
+  if (THEME_CHOICES.includes(savedTheme)) return savedTheme;
+
+  const bodyTheme = document.body?.dataset?.theme;
+  if (THEME_CHOICES.includes(bodyTheme)) return bodyTheme;
+
+  if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+    return "dark";
+  }
+  return "mid";
+}
+
+function initThemeToggle() {
+  applyTheme(resolveInitialTheme());
+
+  if (!themeSwitchEl) return;
+  themeSwitchEl.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-theme-choice]");
+    if (!button) return;
+    const selected = getSafeTheme(button.dataset.themeChoice);
+    applyTheme(selected);
+    saveTheme(selected);
+    drawTrendChart(lastTrendPoints);
+  });
+}
+
 document.addEventListener("submit", (event) => {
   event.preventDefault();
   event.stopPropagation();
@@ -116,6 +178,7 @@ window.__rtuDebug = {
   getFileInputCount: () => (fileInput.files ? fileInput.files.length : 0),
   getHistoryCount: () => loadHistory().length,
   getPreferredApiBase: () => preferredApiBase,
+  getTheme: () => document.body.dataset.theme || null,
 };
 
 const setStatus = (message, state = "") => {
@@ -340,8 +403,14 @@ const drawTrendChart = (points) => {
   const bottom = height - 28;
   const plotWidth = Math.max(right - left, 1);
   const plotHeight = Math.max(bottom - top, 1);
+  const chartStyles = getComputedStyle(document.body);
+  const gridColor = chartStyles.getPropertyValue("--chart-grid").trim() || "rgba(28, 31, 38, 0.12)";
+  const lineColor = chartStyles.getPropertyValue("--chart-line").trim() || "#ff7a59";
+  const pointColor = chartStyles.getPropertyValue("--chart-point").trim() || "#2bbf9b";
+  const textColor = chartStyles.getPropertyValue("--chart-text").trim() || "#1c1f26";
+  const mutedTextColor = chartStyles.getPropertyValue("--chart-muted").trim() || "rgba(28, 31, 38, 0.56)";
 
-  ctx.strokeStyle = "rgba(28, 31, 38, 0.12)";
+  ctx.strokeStyle = gridColor;
   ctx.lineWidth = 1;
   [0, 2.5, 5, 7.5, 10].forEach((mark) => {
     const y = bottom - (mark / 10) * plotHeight;
@@ -352,8 +421,8 @@ const drawTrendChart = (points) => {
   });
 
   if (!points.length) {
-    ctx.fillStyle = "rgba(28, 31, 38, 0.56)";
-    ctx.font = "12px Space Grotesk, sans-serif";
+    ctx.fillStyle = mutedTextColor;
+    ctx.font = '12px "Bricolage Grotesque", sans-serif';
     ctx.fillText("No trend data available yet.", left, top + 20);
     return;
   }
@@ -367,7 +436,7 @@ const drawTrendChart = (points) => {
     return bottom - (normalized / 10) * plotHeight;
   };
 
-  ctx.strokeStyle = "#ff7a59";
+  ctx.strokeStyle = lineColor;
   ctx.lineWidth = 2.5;
   ctx.beginPath();
   points.forEach((point, index) => {
@@ -381,13 +450,13 @@ const drawTrendChart = (points) => {
   points.forEach((point, index) => {
     const x = xForIndex(index);
     const y = yForSgpa(point.sgpa);
-    ctx.fillStyle = "#2bbf9b";
+    ctx.fillStyle = pointColor;
     ctx.beginPath();
     ctx.arc(x, y, 4.2, 0, Math.PI * 2);
     ctx.fill();
 
-    ctx.fillStyle = "#1c1f26";
-    ctx.font = "11px Space Grotesk, sans-serif";
+    ctx.fillStyle = textColor;
+    ctx.font = '11px "Bricolage Grotesque", sans-serif';
     ctx.fillText(`S${point.semester}`, x - 10, bottom + 16);
     if (typeof point.sgpa === "number") {
       ctx.fillText(formatNumber(point.sgpa, 2), x - 12, y - 10);
@@ -842,6 +911,7 @@ window.addEventListener("resize", () => {
 clearTable();
 renderConfidence(null);
 renderHistory();
+initThemeToggle();
 drawTrendChart([]);
 checkHealth();
 window.setInterval(checkHealth, 60000);

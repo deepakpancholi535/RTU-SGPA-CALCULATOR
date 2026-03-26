@@ -7,21 +7,29 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=IBM+Plex+Serif:wght@500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css?v=13" />
+    <link rel="stylesheet" href="styles.css?v=14" />
   </head>
-  <body>
+  <body data-theme="mid">
     <div class="aurora" aria-hidden="true"></div>
+    <div class="grid-noise" aria-hidden="true"></div>
     <header class="topbar">
       <div class="brand">
         <span class="brand-mark">RTU</span>
         <span class="brand-text">Result Analyzer</span>
       </div>
       <div class="top-actions">
-        <span class="pill">PDF Parsing</span>
-        <span class="pill">SGPA Accurate</span>
+        <div class="signal-pills">
+          <span class="pill">PDF Parsing</span>
+          <span class="pill">SGPA Accurate</span>
+        </div>
+        <div class="theme-switch" id="themeSwitch" aria-label="Theme toggle">
+          <button type="button" class="theme-btn" data-theme-choice="light">Light</button>
+          <button type="button" class="theme-btn" data-theme-choice="mid">Mid</button>
+          <button type="button" class="theme-btn" data-theme-choice="dark">Dark</button>
+        </div>
       </div>
     </header>
 
@@ -201,13 +209,13 @@
           Feedback
         </button>
         <div class="status-dot" id="healthDot">API: Checking...</div>
-        <div class="build-badge" id="buildBadge">Build v13</div>
+        <div class="build-badge" id="buildBadge">Build v14</div>
       </div>
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
-    <script src="app.js?v=13"></script>
+    <script src="app.js?v=14"></script>
   </body>
 </html>
 
