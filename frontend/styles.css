@@ -468,46 +468,6 @@ h1 {
   border-color: rgba(255, 122, 89, 0.35);
 }
 
-.mismatch-panel {
-  margin-top: 16px;
-}
-
-.mismatch-panel h3 {
-  margin: 0;
-  font-size: 1rem;
-}
-
-.mismatch-list {
-  margin-top: 10px;
-  display: grid;
-  gap: 10px;
-}
-
-.mismatch-empty {
-  color: var(--muted);
-  font-size: 0.9rem;
-}
-
-.mismatch-item {
-  border-radius: 12px;
-  border: 1px solid rgba(255, 122, 89, 0.25);
-  background: rgba(255, 122, 89, 0.08);
-  padding: 10px 12px;
-  display: grid;
-  gap: 4px;
-}
-
-.mismatch-title {
-  font-weight: 600;
-  font-size: 0.9rem;
-}
-
-.mismatch-raw {
-  color: #694a42;
-  font-size: 0.82rem;
-  line-height: 1.35;
-}
-
 .trend-panel {
   margin-top: 18px;
   border: 1px solid rgba(0, 0, 0, 0.08);

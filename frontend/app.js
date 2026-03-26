@@ -21,7 +21,6 @@ const clearHistoryBtn = document.getElementById("clearHistoryBtn");
 const confidenceBadgeEl = document.getElementById("confidenceBadge");
 const matchBadgeEl = document.getElementById("matchBadge");
 const creditsBadgeEl = document.getElementById("creditsBadge");
-const mismatchListEl = document.getElementById("mismatchList");
 const trendStatusEl = document.getElementById("trendStatus");
 const trendChartEl = document.getElementById("trendChart");
 const healthDotEl = document.getElementById("healthDot");
@@ -29,7 +28,7 @@ const buildBadgeEl = document.getElementById("buildBadge");
 
 const HISTORY_KEY = "rtu_result_history_v1";
 const HISTORY_LIMIT = 10;
-const UI_BUILD = "v10";
+const UI_BUILD = "v11";
 const RAILWAY_API_BASE = "https://rtu-sgpa-calculator-production.up.railway.app/api/result";
 
 let currentFile = null;
@@ -304,35 +303,6 @@ const renderConfidence = (data) => {
   )}%)`;
   creditsBadgeEl.textContent = `Credits Missing: ${analysis.creditsMissing}`;
   creditsBadgeEl.classList.toggle("warn", analysis.creditsMissing > 0);
-};
-
-const renderMismatch = (data) => {
-  const unmatched = safeArray(data?.unmatchedSubjects);
-  mismatchListEl.innerHTML = "";
-
-  if (!unmatched.length) {
-    mismatchListEl.innerHTML = '<div class="mismatch-empty">No unmatched subjects.</div>';
-    return;
-  }
-
-  unmatched.forEach((item, index) => {
-    const card = document.createElement("div");
-    card.className = "mismatch-item";
-
-    const heading = document.createElement("div");
-    heading.className = "mismatch-title";
-    const subjectLabel = item.subject || "Unknown Subject";
-    const code = item.subjectCode ? ` (${item.subjectCode})` : "";
-    heading.textContent = `${index + 1}. ${subjectLabel}${code}`;
-
-    const raw = document.createElement("div");
-    raw.className = "mismatch-raw";
-    raw.textContent = item.rawLine || "Raw line unavailable.";
-
-    card.appendChild(heading);
-    card.appendChild(raw);
-    mismatchListEl.appendChild(card);
-  });
 };
 
 const getTrendPoints = (historyResponse) => {
@@ -675,7 +645,6 @@ const renderResult = (data) => {
   setSummary(data);
   renderSubjects(data?.subjects || []);
   renderConfidence(data);
-  renderMismatch(data);
 };
 
 const openHistoryEntry = async (entryId) => {
@@ -872,7 +841,6 @@ window.addEventListener("resize", () => {
 
 clearTable();
 renderConfidence(null);
-renderMismatch(null);
 renderHistory();
 drawTrendChart([]);
 checkHealth();
