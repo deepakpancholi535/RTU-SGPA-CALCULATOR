@@ -29,7 +29,7 @@ const buildBadgeEl = document.getElementById("buildBadge");
 
 const HISTORY_KEY = "rtu_result_history_v1";
 const HISTORY_LIMIT = 10;
-const UI_BUILD = "v8";
+const UI_BUILD = "v10";
 const RAILWAY_API_BASE = "https://rtu-sgpa-calculator-production.up.railway.app/api/result";
 
 let currentFile = null;
@@ -47,34 +47,43 @@ const API_BASE = (() => {
   return "/api/result";
 })();
 
-const API_ENDPOINTS = {
-  calculate: `${API_BASE}/calculate`,
-  history: `${API_BASE}/history`,
-  health: `${API_BASE}/health`,
-};
-
-const FALLBACK_CALCULATE_URLS = (() => {
-  const urls = [API_ENDPOINTS.calculate];
+const API_BASES = (() => {
+  const urls = [API_BASE];
   const host = window.location.hostname || "";
   const isLocal = host.includes("localhost") || host === "127.0.0.1";
   if (!isLocal && API_BASE.startsWith("/")) {
-    urls.push(`${RAILWAY_API_BASE}/calculate`);
+    urls.push(RAILWAY_API_BASE);
   }
   return Array.from(new Set(urls));
 })();
 
-async function postCalculateWithFallback(formData) {
+let preferredApiBase = API_BASES[0];
+
+function buildApiUrl(base, path, query = "") {
+  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+  return `${base}${normalizedPath}${query}`;
+}
+
+async function fetchApiWithFallback(path, options = {}) {
+  const method = options.method || "GET";
+  const body = options.body;
+  const headers = options.headers;
+  const query = options.query || "";
+  const orderedBases = [preferredApiBase, ...API_BASES.filter((base) => base !== preferredApiBase)];
+
   let lastResponse = null;
   let lastError = null;
 
-  for (const endpoint of FALLBACK_CALCULATE_URLS) {
+  for (const base of orderedBases) {
     try {
-      const response = await fetch(endpoint, {
-        method: "POST",
-        body: formData,
+      const response = await fetch(buildApiUrl(base, path, query), {
+        method,
+        body,
+        headers,
       });
 
       if (response.ok) {
+        preferredApiBase = base;
         return response;
       }
 
@@ -91,7 +100,7 @@ async function postCalculateWithFallback(formData) {
   if (lastResponse) {
     return lastResponse;
   }
-  throw lastError || new Error("Unable to reach calculate endpoint.");
+  throw lastError || new Error("Unable to reach API endpoint.");
 }
 
 if (buildBadgeEl) {
@@ -107,6 +116,7 @@ window.__rtuDebug = {
   getCurrentFile: () => currentFile,
   getFileInputCount: () => (fileInput.files ? fileInput.files.length : 0),
   getHistoryCount: () => loadHistory().length,
+  getPreferredApiBase: () => preferredApiBase,
 };
 
 const setStatus = (message, state = "") => {
@@ -426,9 +436,9 @@ const loadTrend = async (rollNo) => {
   trendStatusEl.textContent = "Loading trend...";
 
   try {
-    const response = await fetch(
-      `${API_ENDPOINTS.history}?rollNo=${encodeURIComponent(rollNo)}&limit=8`
-    );
+    const response = await fetchApiWithFallback("/history", {
+      query: `?rollNo=${encodeURIComponent(rollNo)}&limit=8`,
+    });
     if (!response.ok) {
       throw new Error(`History request failed (${response.status})`);
     }
@@ -694,10 +704,11 @@ const exportHistoryEntryPdf = (entryId) => {
 const checkHealth = async () => {
   if (!healthDotEl) return;
   try {
-    const response = await fetch(API_ENDPOINTS.health);
+    const response = await fetchApiWithFallback("/health");
     if (!response.ok) throw new Error("Health endpoint failed");
     const payload = await response.json();
-    healthDotEl.textContent = "API: Live";
+    const usingFallback = preferredApiBase !== API_BASES[0];
+    healthDotEl.textContent = usingFallback ? "API: Live (Fallback)" : "API: Live";
     healthDotEl.dataset.state = "ok";
     if (buildBadgeEl) {
       const version = payload?.version ? `API ${payload.version}` : "API ?";
@@ -773,7 +784,10 @@ analyzeBtn.addEventListener("click", async (event) => {
     const formData = new FormData();
     formData.append("result", currentFile);
 
-    const response = await postCalculateWithFallback(formData);
+    const response = await fetchApiWithFallback("/calculate", {
+      method: "POST",
+      body: formData,
+    });
 
     if (!response.ok) {
       let message = `Request failed with ${response.status}`;
