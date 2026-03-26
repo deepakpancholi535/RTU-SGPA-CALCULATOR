@@ -28,7 +28,7 @@ const buildBadgeEl = document.getElementById("buildBadge");
 
 const HISTORY_KEY = "rtu_result_history_v1";
 const HISTORY_LIMIT = 10;
-const UI_BUILD = "v12";
+const UI_BUILD = "v13";
 const RAILWAY_API_BASE = "https://rtu-sgpa-calculator-production.up.railway.app/api/result";
 
 let currentFile = null;
