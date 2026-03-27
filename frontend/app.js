@@ -30,19 +30,44 @@ const themeButtons = Array.from(document.querySelectorAll("[data-theme-choice]")
 
 const HISTORY_KEY = "rtu_result_history_v1";
 const HISTORY_LIMIT = 10;
-const UI_BUILD = "v14";
+const UI_BUILD = "v15";
 const THEME_KEY = "rtu_ui_theme_v1";
 const THEME_CHOICES = ["light", "mid", "dark"];
-const RAILWAY_API_BASE = "https://rtu-sgpa-calculator-production.up.railway.app/api/result";
+const DEFAULT_REMOTE_API_BASE = "";
 
 let currentFile = null;
 let lastResponse = null;
 let lastTrendPoints = [];
 
+function normalizeApiBase(value) {
+  if (typeof value !== "string") return "";
+  const trimmed = value.trim();
+  if (!trimmed) return "";
+  return trimmed.replace(/\/+$/, "");
+}
+
+function resolveConfiguredFallbackApiBase() {
+  const fromWindow = normalizeApiBase(
+    window.__RTU_API_FALLBACK__ ||
+      window.__RTU_FALLBACK_API_BASE__ ||
+      window.__RTU_API_BASE__
+  );
+  if (fromWindow) return fromWindow;
+
+  const fromMeta = normalizeApiBase(
+    document.querySelector('meta[name="rtu-api-fallback"]')?.getAttribute("content") || ""
+  );
+  if (fromMeta) return fromMeta;
+
+  return normalizeApiBase(DEFAULT_REMOTE_API_BASE);
+}
+
+const CONFIGURED_FALLBACK_API_BASE = resolveConfiguredFallbackApiBase();
+
 const API_BASE = (() => {
   const host = window.location.hostname || "";
   if (!host) {
-    return RAILWAY_API_BASE;
+    return CONFIGURED_FALLBACK_API_BASE || "/api/result";
   }
   if (host.includes("localhost") || host === "127.0.0.1") {
     return "http://localhost:8080/api/result";
@@ -54,8 +79,8 @@ const API_BASES = (() => {
   const urls = [API_BASE];
   const host = window.location.hostname || "";
   const isLocal = host.includes("localhost") || host === "127.0.0.1";
-  if (!isLocal && API_BASE.startsWith("/")) {
-    urls.push(RAILWAY_API_BASE);
+  if (!isLocal && API_BASE.startsWith("/") && CONFIGURED_FALLBACK_API_BASE) {
+    urls.push(CONFIGURED_FALLBACK_API_BASE);
   }
   return Array.from(new Set(urls));
 })();
@@ -76,14 +101,17 @@ async function fetchApiWithFallback(path, options = {}) {
 
   let lastResponse = null;
   let lastError = null;
+  const attempts = [];
 
   for (const base of orderedBases) {
+    const url = buildApiUrl(base, path, query);
     try {
-      const response = await fetch(buildApiUrl(base, path, query), {
+      const response = await fetch(url, {
         method,
         body,
         headers,
       });
+      attempts.push({ base, status: response.status });
 
       if (response.ok) {
         preferredApiBase = base;
@@ -91,19 +119,40 @@ async function fetchApiWithFallback(path, options = {}) {
       }
 
       lastResponse = response;
-      const retryable = response.status === 404 || response.status >= 500;
+      const retryable =
+        response.status === 404 ||
+        response.status === 408 ||
+        response.status === 429 ||
+        response.status >= 500;
       if (!retryable) {
         return response;
       }
     } catch (error) {
+      attempts.push({ base, error: error?.message || "Network error" });
       lastError = error;
     }
   }
 
   if (lastResponse) {
+    const fallbackHadNetworkError = attempts.some((attempt) => typeof attempt.error === "string");
+    if (lastResponse.status === 404 && fallbackHadNetworkError) {
+      const error = new Error(
+        "Primary API returned 404 and fallback API was unreachable. Redeploy latest Vercel config."
+      );
+      error.attempts = attempts;
+      throw error;
+    }
     return lastResponse;
   }
-  throw lastError || new Error("Unable to reach API endpoint.");
+
+  if (lastError) {
+    lastError.attempts = attempts;
+    throw lastError;
+  }
+
+  const unavailable = new Error("Unable to reach API endpoint.");
+  unavailable.attempts = attempts;
+  throw unavailable;
 }
 
 if (buildBadgeEl) {
@@ -178,6 +227,8 @@ window.__rtuDebug = {
   getFileInputCount: () => (fileInput.files ? fileInput.files.length : 0),
   getHistoryCount: () => loadHistory().length,
   getPreferredApiBase: () => preferredApiBase,
+  getApiBases: () => [...API_BASES],
+  getFallbackApiBase: () => CONFIGURED_FALLBACK_API_BASE || null,
   getTheme: () => document.body.dataset.theme || null,
 };
 
@@ -188,6 +239,19 @@ const setStatus = (message, state = "") => {
   } else {
     statusEl.removeAttribute("data-state");
   }
+};
+
+const sanitizeErrorMessage = (value) => {
+  const raw = value === null || value === undefined ? "" : String(value);
+  const compact = raw.replace(/\s+/g, " ").trim();
+  if (!compact) return "";
+  if (/NOT_FOUND/i.test(compact)) {
+    return "API route not found (404). Redeploy using the latest Vercel routing config.";
+  }
+  if (compact.length > 220) {
+    return `${compact.slice(0, 217)}...`;
+  }
+  return compact;
 };
 
 const formatNumber = (value, digits = 2) => {
@@ -836,10 +900,10 @@ analyzeBtn.addEventListener("click", async (event) => {
           if (errorData?.error) {
             message = errorData.error;
           } else {
-            message = text;
+            message = sanitizeErrorMessage(text) || message;
           }
         } catch (err) {
-          message = text;
+          message = sanitizeErrorMessage(text) || message;
         }
       }
       throw new Error(message);
@@ -852,7 +916,7 @@ analyzeBtn.addEventListener("click", async (event) => {
     await loadTrend(data.rollNo || null);
     setStatus("Result parsed successfully.", "success");
   } catch (error) {
-    setStatus(error.message || "Unable to parse the result.", "error");
+    setStatus(sanitizeErrorMessage(error.message) || "Unable to parse the result.", "error");
   } finally {
     analyzeBtn.classList.remove("is-loading");
     analyzeBtn.disabled = false;
