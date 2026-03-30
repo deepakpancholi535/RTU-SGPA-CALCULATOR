@@ -30,7 +30,7 @@ const themeButtons = Array.from(document.querySelectorAll("[data-theme-choice]")
 
 const HISTORY_KEY = "rtu_result_history_v1";
 const HISTORY_LIMIT = 10;
-const UI_BUILD = "v15";
+const UI_BUILD = "v16";
 const THEME_KEY = "rtu_ui_theme_v1";
 const THEME_CHOICES = ["light", "mid", "dark"];
 const DEFAULT_REMOTE_API_BASE = "";
@@ -246,7 +246,7 @@ const sanitizeErrorMessage = (value) => {
   const compact = raw.replace(/\s+/g, " ").trim();
   if (!compact) return "";
   if (/NOT_FOUND/i.test(compact)) {
-    return "API route not found (404). Redeploy using the latest Vercel routing config.";
+    return "API route not found (404). Verify Vercel project Root Directory is repo root and redeploy.";
   }
   if (compact.length > 220) {
     return `${compact.slice(0, 217)}...`;
@@ -807,7 +807,12 @@ const checkHealth = async () => {
   if (!healthDotEl) return;
   try {
     const response = await fetchApiWithFallback("/health");
-    if (!response.ok) throw new Error("Health endpoint failed");
+    if (!response.ok) {
+      if (response.status === 404) {
+        throw new Error("API route not found (404).");
+      }
+      throw new Error("Health endpoint failed");
+    }
     const payload = await response.json();
     const usingFallback = preferredApiBase !== API_BASES[0];
     healthDotEl.textContent = usingFallback ? "API: Live (Fallback)" : "API: Live";
@@ -817,7 +822,12 @@ const checkHealth = async () => {
       buildBadgeEl.textContent = `Build ${UI_BUILD} | ${version}`;
     }
   } catch (error) {
-    healthDotEl.textContent = "API: Unreachable";
+    const msg = sanitizeErrorMessage(error.message);
+    if (msg.includes("route not found")) {
+      healthDotEl.textContent = "API: Route 404";
+    } else {
+      healthDotEl.textContent = "API: Unreachable";
+    }
     healthDotEl.dataset.state = "error";
     if (buildBadgeEl) {
       buildBadgeEl.textContent = `Build ${UI_BUILD}`;
