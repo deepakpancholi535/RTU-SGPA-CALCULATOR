@@ -33,6 +33,14 @@ function sendJson(res, status, payload) {
   res.end(JSON.stringify(payload));
 }
 
+function safeMessage(error, fallback = "Server error") {
+  if (!error) return fallback;
+  if (typeof error.message === "string" && error.message.trim()) {
+    return error.message.trim();
+  }
+  return fallback;
+}
+
 function computeRelativeMarks(extracted) {
   if (typeof extracted.totalMarks !== "number") return null;
   if (typeof extracted.maxMarks === "number" && extracted.maxMarks > 0) {
@@ -111,7 +119,17 @@ async function handleCalculate(req, res) {
     return sendJson(res, 405, { error: "Method not allowed" });
   }
 
-  await connectToDatabase();
+  const dbState = {
+    ready: false,
+    error: null
+  };
+
+  try {
+    await connectToDatabase();
+    dbState.ready = true;
+  } catch (error) {
+    dbState.error = safeMessage(error, "Database unavailable");
+  }
 
   const form = formidable({
     multiples: false,
@@ -142,6 +160,13 @@ async function handleCalculate(req, res) {
     try {
       const parsed = await extractResultData(filePath, mimetype);
       const metadata = parsed.metadata || {};
+      const warnings = [];
+
+      if (!dbState.ready) {
+        warnings.push(
+          "Database is unavailable. Results are computed in parser-only mode (no DB matching/history save)."
+        );
+      }
 
       let rollNo = metadata.rollNo || getFieldValue(fields, "rollNo").trim() || null;
       let name = metadata.name || getFieldValue(fields, "name").trim() || null;
@@ -158,30 +183,46 @@ async function handleCalculate(req, res) {
         filters.push({ semester });
       }
 
-      let masterSubjects = await Subject.find(filters.length ? { $or: filters } : {});
-      let matchResult = matchSubjects(parsed.subjects, masterSubjects);
+      let masterSubjects = [];
+      let matchResult = { matched: [], unmatched: parsed.subjects };
 
-      const coverage =
-        parsed.subjects.length > 0 ? matchResult.matched.length / parsed.subjects.length : 0;
+      if (dbState.ready) {
+        try {
+          masterSubjects = await Subject.find(filters.length ? { $or: filters } : {});
+          matchResult = matchSubjects(parsed.subjects, masterSubjects);
 
-      if (filters.length && coverage < 0.8) {
-        let fallbackSubjects = [];
-        if (branch && semester) {
-          fallbackSubjects = await Subject.find({
-            $and: [{ semester }, { $or: [{ branch }, { branch: "COMMON" }] }]
-          });
-        } else if (semester) {
-          fallbackSubjects = await Subject.find({ semester });
-        } else if (branch) {
-          fallbackSubjects = await Subject.find({ $or: [{ branch }, { branch: "COMMON" }] });
-        } else {
-          fallbackSubjects = await Subject.find({});
+          const coverage =
+            parsed.subjects.length > 0 ? matchResult.matched.length / parsed.subjects.length : 0;
+
+          if (filters.length && coverage < 0.8) {
+            let fallbackSubjects = [];
+            if (branch && semester) {
+              fallbackSubjects = await Subject.find({
+                $and: [{ semester }, { $or: [{ branch }, { branch: "COMMON" }] }]
+              });
+            } else if (semester) {
+              fallbackSubjects = await Subject.find({ semester });
+            } else if (branch) {
+              fallbackSubjects = await Subject.find({ $or: [{ branch }, { branch: "COMMON" }] });
+            } else {
+              fallbackSubjects = await Subject.find({});
+            }
+            const fallbackResult = matchSubjects(parsed.subjects, fallbackSubjects);
+            if (fallbackResult.matched.length > matchResult.matched.length) {
+              matchResult = fallbackResult;
+              masterSubjects = fallbackSubjects;
+            }
+          }
+        } catch (error) {
+          dbState.ready = false;
+          dbState.error = safeMessage(error, "Database query failed");
+          matchResult = matchSubjects(parsed.subjects, []);
+          warnings.push(
+            "Database lookup failed during subject matching. Continued with parser-only mode."
+          );
         }
-        const fallbackResult = matchSubjects(parsed.subjects, fallbackSubjects);
-        if (fallbackResult.matched.length > matchResult.matched.length) {
-          matchResult = fallbackResult;
-          masterSubjects = fallbackSubjects;
-        }
+      } else {
+        matchResult = matchSubjects(parsed.subjects, []);
       }
 
       const { matched, unmatched } = matchResult;
@@ -292,29 +333,33 @@ async function handleCalculate(req, res) {
         cloudinaryInfo = null;
       }
 
-      if (rollNo && semester) {
-        await StudentResult.findOneAndUpdate(
-          { rollNo, semester },
-          {
-            rollNo,
-            name,
-            branch,
-            semester,
-            sgpa,
-            cgpa,
-            percentage,
-            division,
-            totalCredits,
-            totalGradePoints,
-            subjects: computedSubjects,
-            sourceFile: {
-              originalName: originalname,
-              mimeType: mimetype,
-              cloudinary: cloudinaryInfo
-            }
-          },
-          { upsert: true, new: true }
-        );
+      if (dbState.ready && rollNo && semester) {
+        try {
+          await StudentResult.findOneAndUpdate(
+            { rollNo, semester },
+            {
+              rollNo,
+              name,
+              branch,
+              semester,
+              sgpa,
+              cgpa,
+              percentage,
+              division,
+              totalCredits,
+              totalGradePoints,
+              subjects: computedSubjects,
+              sourceFile: {
+                originalName: originalname,
+                mimeType: mimetype,
+                cloudinary: cloudinaryInfo
+              }
+            },
+            { upsert: true, new: true }
+          );
+        } catch (error) {
+          warnings.push("Result parsed but could not be saved to history.");
+        }
       }
 
       return sendJson(res, 200, {
@@ -331,11 +376,16 @@ async function handleCalculate(req, res) {
         subjects: computedSubjects,
         analysis,
         unmatchedSubjects: unmatchedDetails,
-        fileUrl: cloudinaryInfo ? cloudinaryInfo.secureUrl : null
+        fileUrl: cloudinaryInfo ? cloudinaryInfo.secureUrl : null,
+        runtime: {
+          database: dbState.ready ? "connected" : "unavailable",
+          databaseError: dbState.error || null
+        },
+        warnings
       });
     } catch (error) {
       const status = error.status || 500;
-      return sendJson(res, status, { error: error.message || "Server error" });
+      return sendJson(res, status, { error: safeMessage(error, "Server error") });
     } finally {
       if (filePath) {
         fs.unlink(filePath, () => {});
