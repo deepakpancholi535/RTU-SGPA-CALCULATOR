@@ -8,12 +8,12 @@ if (!cached) {
 async function connectToDatabase() {
   if (cached.conn) return cached.conn;
   if (!cached.promise) {
-    const uri = process.env.MONGODB_URI;
+    const uri = (process.env.MONGODB_URI || process.env.MONGO_URI || "").trim();
     if (!uri) {
-      throw new Error("MONGODB_URI is missing");
+      throw new Error("Mongo URI missing. Set MONGODB_URI or MONGO_URI.");
     }
-    if (!uri.startsWith("mongodb+srv://")) {
-      throw new Error("MONGODB_URI must start with mongodb+srv://");
+    if (!/^mongodb(\+srv)?:\/\//i.test(uri)) {
+      throw new Error("Mongo URI must start with mongodb:// or mongodb+srv://");
     }
     cached.promise = mongoose.connect(uri, {
       autoIndex: true,

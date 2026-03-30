@@ -30,7 +30,7 @@ const themeButtons = Array.from(document.querySelectorAll("[data-theme-choice]")
 
 const HISTORY_KEY = "rtu_result_history_v1";
 const HISTORY_LIMIT = 10;
-const UI_BUILD = "v17";
+const UI_BUILD = "v18";
 const THEME_KEY = "rtu_ui_theme_v1";
 const THEME_CHOICES = ["light", "mid", "dark"];
 const DEFAULT_REMOTE_API_BASE = "";
@@ -249,10 +249,10 @@ const sanitizeErrorMessage = (value) => {
     return "API route not found (404). Verify Vercel project Root Directory is repo root and redeploy.";
   }
   if (/FUNCTION_INVOCATION_FAILED|A server error has occurred/i.test(compact)) {
-    return "API function failed (500). Check Vercel env vars like MONGODB_URI, then redeploy.";
+    return "API function failed (500). Check Vercel env vars (MONGODB_URI or MONGO_URI), then redeploy.";
   }
-  if (/MONGODB_URI/i.test(compact)) {
-    return "MongoDB connection is not configured correctly on Vercel (MONGODB_URI).";
+  if (/MONGODB_URI|MONGO_URI/i.test(compact)) {
+    return "MongoDB connection is not configured correctly on Vercel (set MONGODB_URI or MONGO_URI).";
   }
   if (compact.length > 220) {
     return `${compact.slice(0, 217)}...`;

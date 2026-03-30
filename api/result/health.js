@@ -11,8 +11,8 @@ function handleHealth(req, res) {
     return sendJson(res, 405, { error: "Method not allowed" });
   }
 
-  const hasMongoUri =
-    typeof process.env.MONGODB_URI === "string" && process.env.MONGODB_URI.trim().length > 0;
+  const mongoUri = (process.env.MONGODB_URI || process.env.MONGO_URI || "").trim();
+  const hasMongoUri = mongoUri.length > 0;
   const hasCloudinary =
     Boolean(process.env.CLOUDINARY_CLOUD_NAME) &&
     Boolean(process.env.CLOUDINARY_API_KEY) &&
