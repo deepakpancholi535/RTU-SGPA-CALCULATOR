@@ -51,7 +51,7 @@ const LEADERBOARD_DECISIONS_KEY = "rtu_leaderboard_decisions_v1";
 const LEADERBOARD_TOP_COUNT = 3;
 const LEADERBOARD_FETCH_LIMIT = 20000;
 const LEADERBOARD_REFRESH_MS = 25000;
-const UI_BUILD = "v21";
+const UI_BUILD = "v22";
 const THEME_KEY = "rtu_ui_theme_v1";
 const THEME_CHOICES = ["light", "mid", "dark"];
 const DEFAULT_REMOTE_API_BASE = "";
@@ -612,6 +612,26 @@ const normalizeLeaderboardSemester = (value) => {
   return parsed;
 };
 
+const normalizeLeaderboardTotalMarks = (value) => {
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed) || parsed < 0) return null;
+  return Number(parsed.toFixed(2));
+};
+
+const sumLeaderboardMarksFromSubjects = (subjects) => {
+  if (!Array.isArray(subjects) || !subjects.length) return null;
+  let total = 0;
+  let found = false;
+  subjects.forEach((subject) => {
+    const marks = Number(subject?.marks);
+    if (!Number.isFinite(marks)) return;
+    total += marks;
+    found = true;
+  });
+  if (!found) return null;
+  return Number(total.toFixed(2));
+};
+
 const normalizeLeaderboardSgpa = (value) => {
   const parsed = Number(value);
   if (!Number.isFinite(parsed)) return null;
@@ -623,12 +643,16 @@ const toLeaderboardEntry = (value) => {
   const sgpa = normalizeLeaderboardSgpa(value?.sgpa);
   if (sgpa === null) return null;
   const name = normalizeLeaderboardName(value?.name || value?.leaderboardName || "Anonymous");
+  const totalMarksSum =
+    normalizeLeaderboardTotalMarks(value?.totalMarksSum) ??
+    sumLeaderboardMarksFromSubjects(value?.subjects);
   return {
     name: name || "Anonymous",
     rollNo: normalizeLeaderboardRollNo(value?.rollNo) || null,
     branch: normalizeLeaderboardBranch(value?.branch),
     semester: normalizeLeaderboardSemester(value?.semester),
     sgpa,
+    totalMarksSum,
     updatedAt: value?.updatedAt || new Date().toISOString(),
     rank: Number.isFinite(Number(value?.rank)) ? Number(value.rank) : null,
   };
@@ -661,8 +685,18 @@ const dedupeLeaderboardEntries = (entries) => {
         byIdentity.set(identity, entry);
         return;
       }
-      if (currentTime === existingTime && entry.sgpa > existing.sgpa) {
-        byIdentity.set(identity, entry);
+      if (currentTime === existingTime) {
+        if (entry.sgpa > existing.sgpa) {
+          byIdentity.set(identity, entry);
+          return;
+        }
+        if (entry.sgpa === existing.sgpa) {
+          const existingMarks = normalizeLeaderboardTotalMarks(existing.totalMarksSum) ?? -1;
+          const currentMarks = normalizeLeaderboardTotalMarks(entry.totalMarksSum) ?? -1;
+          if (currentMarks > existingMarks) {
+            byIdentity.set(identity, entry);
+          }
+        }
       }
     });
 
@@ -672,6 +706,9 @@ const dedupeLeaderboardEntries = (entries) => {
 const rankLeaderboardEntries = (entries, limit = Number.POSITIVE_INFINITY) => {
   const sorted = dedupeLeaderboardEntries(entries).sort((a, b) => {
     if (b.sgpa !== a.sgpa) return b.sgpa - a.sgpa;
+    const aMarks = normalizeLeaderboardTotalMarks(a.totalMarksSum) ?? -1;
+    const bMarks = normalizeLeaderboardTotalMarks(b.totalMarksSum) ?? -1;
+    if (bMarks !== aMarks) return bMarks - aMarks;
     return new Date(b.updatedAt || 0).getTime() - new Date(a.updatedAt || 0).getTime();
   });
   const trimmed = Number.isFinite(limit) ? sorted.slice(0, limit) : sorted;
@@ -936,6 +973,7 @@ const submitLeaderboardOptIn = async (entry) => {
         branch: normalized.branch,
         semester: normalized.semester,
         sgpa: normalized.sgpa,
+        totalMarksSum: normalized.totalMarksSum,
       }),
     });
 

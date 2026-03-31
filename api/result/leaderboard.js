@@ -39,6 +39,26 @@ function normalizeSemester(value) {
   return sem;
 }
 
+function normalizeTotalMarks(value) {
+  const marks = Number(value);
+  if (!Number.isFinite(marks) || marks < 0) return null;
+  return Number(marks.toFixed(2));
+}
+
+function sumMarksFromSubjects(subjects) {
+  if (!Array.isArray(subjects) || !subjects.length) return null;
+  let total = 0;
+  let found = false;
+  subjects.forEach((subject) => {
+    const marks = Number(subject?.marks);
+    if (!Number.isFinite(marks)) return;
+    total += marks;
+    found = true;
+  });
+  if (!found) return null;
+  return Number(total.toFixed(2));
+}
+
 function normalizeLimit(value, fallback = null) {
   if (value === null || value === undefined || value === "") return fallback;
   const parsed = Number.parseInt(value, 10);
@@ -49,6 +69,8 @@ function normalizeLimit(value, fallback = null) {
 function toLeaderboardEntry(record) {
   const sgpa = normalizeSgpa(record?.sgpa);
   if (sgpa === null) return null;
+  const totalMarksSum =
+    normalizeTotalMarks(record?.leaderboardTotalMarks) ?? sumMarksFromSubjects(record?.subjects);
   return {
     id: record?._id ? String(record._id) : null,
     name: normalizeName(record?.leaderboardName || record?.name || "Anonymous"),
@@ -56,6 +78,7 @@ function toLeaderboardEntry(record) {
     branch: normalizeBranch(record?.branch),
     semester: normalizeSemester(record?.semester),
     sgpa,
+    totalMarksSum,
     updatedAt: record?.updatedAt || null
   };
 }
@@ -81,8 +104,18 @@ function dedupeEntries(entries) {
       byIdentity.set(key, entry);
       return;
     }
-    if (currentTime === existingTime && entry.sgpa > existing.sgpa) {
-      byIdentity.set(key, entry);
+    if (currentTime === existingTime) {
+      if (entry.sgpa > existing.sgpa) {
+        byIdentity.set(key, entry);
+        return;
+      }
+      if (entry.sgpa === existing.sgpa) {
+        const existingMarks = normalizeTotalMarks(existing.totalMarksSum) ?? -1;
+        const currentMarks = normalizeTotalMarks(entry.totalMarksSum) ?? -1;
+        if (currentMarks > existingMarks) {
+          byIdentity.set(key, entry);
+        }
+      }
     }
   });
   return Array.from(byIdentity.values());
@@ -92,6 +125,9 @@ function rankEntries(entries, limit) {
   const sortedBase = dedupeEntries(entries)
     .sort((a, b) => {
       if (b.sgpa !== a.sgpa) return b.sgpa - a.sgpa;
+      const aMarks = normalizeTotalMarks(a.totalMarksSum) ?? -1;
+      const bMarks = normalizeTotalMarks(b.totalMarksSum) ?? -1;
+      if (bMarks !== aMarks) return bMarks - aMarks;
       return new Date(b.updatedAt || 0).getTime() - new Date(a.updatedAt || 0).getTime();
     });
   const sorted = Number.isFinite(limit) ? sortedBase.slice(0, limit) : sortedBase;
@@ -103,6 +139,7 @@ function rankEntries(entries, limit) {
     branch: entry.branch,
     semester: entry.semester,
     sgpa: entry.sgpa,
+    totalMarksSum: entry.totalMarksSum,
     updatedAt: entry.updatedAt
   }));
 }
@@ -156,7 +193,7 @@ async function fetchLeaderboard(limit) {
     leaderboardOptIn: true,
     sgpa: { $ne: null }
   })
-    .select("leaderboardName name rollNo branch semester sgpa updatedAt")
+    .select("leaderboardName name rollNo branch semester sgpa leaderboardTotalMarks subjects.marks updatedAt")
     .lean();
 
   const entries = docs.map(toLeaderboardEntry);
@@ -193,6 +230,7 @@ async function handlePost(req, res) {
   const rollNo = normalizeRollNo(body.rollNo);
   const branch = normalizeBranch(body.branch);
   const semester = normalizeSemester(body.semester);
+  const totalMarksSum = normalizeTotalMarks(body.totalMarksSum);
 
   if (!name) {
     return sendJson(res, 400, { error: "Name is required for leaderboard" });
@@ -212,6 +250,9 @@ async function handlePost(req, res) {
   }
   if (branch) {
     baseUpdate.branch = branch;
+  }
+  if (totalMarksSum !== null) {
+    baseUpdate.leaderboardTotalMarks = totalMarksSum;
   }
 
   let savedDoc = null;
