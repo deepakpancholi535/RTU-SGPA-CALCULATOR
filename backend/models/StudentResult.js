@@ -22,6 +22,8 @@ const StudentResultSchema = new mongoose.Schema(
     cgpa: { type: Number, default: null },
     percentage: { type: Number, default: null },
     division: { type: String, default: null },
+    leaderboardOptIn: { type: Boolean, default: false, index: true },
+    leaderboardName: { type: String, default: null },
     totalCredits: { type: Number, default: null },
     totalGradePoints: { type: Number, default: null },
     subjects: { type: [SubjectResultSchema], default: [] },

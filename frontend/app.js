@@ -23,6 +23,13 @@ const matchBadgeEl = document.getElementById("matchBadge");
 const creditsBadgeEl = document.getElementById("creditsBadge");
 const trendStatusEl = document.getElementById("trendStatus");
 const trendChartEl = document.getElementById("trendChart");
+const leaderboardStatusEl = document.getElementById("leaderboardStatus");
+const leaderboardBodyEl = document.getElementById("leaderboardBody");
+const leaderboardModalEl = document.getElementById("leaderboardModal");
+const leaderboardNameInputEl = document.getElementById("leaderboardNameInput");
+const leaderboardPromptSgpaEl = document.getElementById("leaderboardPromptSgpa");
+const leaderboardSkipBtnEl = document.getElementById("leaderboardSkipBtn");
+const leaderboardJoinBtnEl = document.getElementById("leaderboardJoinBtn");
 const healthDotEl = document.getElementById("healthDot");
 const buildBadgeEl = document.getElementById("buildBadge");
 const themeSwitchEl = document.getElementById("themeSwitch");
@@ -30,7 +37,10 @@ const themeButtons = Array.from(document.querySelectorAll("[data-theme-choice]")
 
 const HISTORY_KEY = "rtu_result_history_v1";
 const HISTORY_LIMIT = 10;
-const UI_BUILD = "v18";
+const LEADERBOARD_KEY = "rtu_leaderboard_v1";
+const LEADERBOARD_DECISIONS_KEY = "rtu_leaderboard_decisions_v1";
+const LEADERBOARD_LIMIT = 10;
+const UI_BUILD = "v19";
 const THEME_KEY = "rtu_ui_theme_v1";
 const THEME_CHOICES = ["light", "mid", "dark"];
 const DEFAULT_REMOTE_API_BASE = "";
@@ -38,6 +48,7 @@ const DEFAULT_REMOTE_API_BASE = "";
 let currentFile = null;
 let lastResponse = null;
 let lastTrendPoints = [];
+let pendingLeaderboardResult = null;
 
 function normalizeApiBase(value) {
   if (typeof value !== "string") return "";
@@ -230,6 +241,7 @@ window.__rtuDebug = {
   getApiBases: () => [...API_BASES],
   getFallbackApiBase: () => CONFIGURED_FALLBACK_API_BASE || null,
   getTheme: () => document.body.dataset.theme || null,
+  getLeaderboardEntries: () => loadLeaderboardLocal(),
 };
 
 const setStatus = (message, state = "") => {
@@ -565,6 +577,290 @@ const loadTrend = async (rollNo) => {
   }
 };
 
+const normalizeLeaderboardName = (value) => {
+  const raw = value === null || value === undefined ? "" : String(value);
+  return raw.replace(/\s+/g, " ").trim().slice(0, 60);
+};
+
+const normalizeLeaderboardRollNo = (value) => {
+  const raw = value === null || value === undefined ? "" : String(value);
+  return raw.trim().toUpperCase().slice(0, 32);
+};
+
+const normalizeLeaderboardSemester = (value) => {
+  const parsed = Number.parseInt(value, 10);
+  if (!Number.isFinite(parsed) || parsed < 1 || parsed > 12) return null;
+  return parsed;
+};
+
+const normalizeLeaderboardSgpa = (value) => {
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed)) return null;
+  if (parsed < 0 || parsed > 10) return null;
+  return Number(parsed.toFixed(2));
+};
+
+const toLeaderboardEntry = (value) => {
+  const sgpa = normalizeLeaderboardSgpa(value?.sgpa);
+  if (sgpa === null) return null;
+  const name = normalizeLeaderboardName(value?.name || value?.leaderboardName || "Anonymous");
+  return {
+    name: name || "Anonymous",
+    rollNo: normalizeLeaderboardRollNo(value?.rollNo) || null,
+    semester: normalizeLeaderboardSemester(value?.semester),
+    sgpa,
+    updatedAt: value?.updatedAt || new Date().toISOString(),
+    rank: Number.isFinite(Number(value?.rank)) ? Number(value.rank) : null,
+  };
+};
+
+const getLeaderboardIdentity = (entry) => {
+  const normalized = toLeaderboardEntry(entry);
+  if (!normalized) return "";
+  if (normalized.rollNo) {
+    return `roll:${normalized.rollNo}|sem:${
+      normalized.semester !== null ? normalized.semester : "na"
+    }`;
+  }
+  return `anon:${normalized.name.toLowerCase()}|sgpa:${normalized.sgpa.toFixed(2)}`;
+};
+
+const rankLeaderboardEntries = (entries, limit = LEADERBOARD_LIMIT) =>
+  safeArray(entries)
+    .map(toLeaderboardEntry)
+    .filter(Boolean)
+    .sort((a, b) => {
+      if (b.sgpa !== a.sgpa) return b.sgpa - a.sgpa;
+      return new Date(a.updatedAt || 0).getTime() - new Date(b.updatedAt || 0).getTime();
+    })
+    .slice(0, limit)
+    .map((entry, index) => ({
+      ...entry,
+      rank: index + 1,
+    }));
+
+const loadLeaderboardLocal = () => {
+  try {
+    const raw = localStorage.getItem(LEADERBOARD_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (error) {
+    return [];
+  }
+};
+
+const saveLeaderboardLocal = (entries) => {
+  try {
+    localStorage.setItem(LEADERBOARD_KEY, JSON.stringify(safeArray(entries)));
+  } catch (error) {
+    // Ignore storage failures.
+  }
+};
+
+const upsertLeaderboardLocal = (entry) => {
+  const normalized = toLeaderboardEntry(entry);
+  if (!normalized) return rankLeaderboardEntries(loadLeaderboardLocal());
+
+  const identity = getLeaderboardIdentity(normalized);
+  const existing = loadLeaderboardLocal().map(toLeaderboardEntry).filter(Boolean);
+  const next = [
+    { ...normalized, updatedAt: new Date().toISOString() },
+    ...existing.filter((item) => getLeaderboardIdentity(item) !== identity),
+  ];
+  saveLeaderboardLocal(next);
+  return rankLeaderboardEntries(next);
+};
+
+const renderLeaderboard = (entries, statusMessage = "") => {
+  if (!leaderboardBodyEl || !leaderboardStatusEl) return;
+
+  const ranked = rankLeaderboardEntries(entries);
+  leaderboardBodyEl.innerHTML = "";
+
+  if (!ranked.length) {
+    leaderboardBodyEl.innerHTML = `
+      <tr class="placeholder">
+        <td colspan="3">No leaderboard entries yet.</td>
+      </tr>
+    `;
+    leaderboardStatusEl.textContent = statusMessage || "Leaderboard will appear after first opt-in.";
+    return;
+  }
+
+  ranked.forEach((entry) => {
+    const row = document.createElement("tr");
+    const cells = [`#${entry.rank}`, entry.name || "Anonymous", formatNumber(entry.sgpa, 2)];
+    cells.forEach((value) => {
+      const cell = document.createElement("td");
+      cell.textContent = value;
+      row.appendChild(cell);
+    });
+    leaderboardBodyEl.appendChild(row);
+  });
+
+  leaderboardStatusEl.textContent = statusMessage || `Top ${ranked.length} students by SGPA`;
+};
+
+const getLeaderboardError = async (response, fallback) => {
+  if (!response) return fallback;
+  const text = await response.text();
+  if (!text) return fallback;
+  try {
+    const payload = JSON.parse(text);
+    return sanitizeErrorMessage(payload?.error || text) || fallback;
+  } catch (error) {
+    return sanitizeErrorMessage(text) || fallback;
+  }
+};
+
+const fetchLeaderboardFromApi = async () => {
+  const response = await fetchApiWithFallback("/leaderboard", {
+    query: `?limit=${LEADERBOARD_LIMIT}`,
+  });
+  if (!response.ok) {
+    throw new Error(await getLeaderboardError(response, `Leaderboard request failed (${response.status})`));
+  }
+  const payload = await response.json();
+  return rankLeaderboardEntries(payload?.entries || []);
+};
+
+const loadLeaderboard = async () => {
+  if (leaderboardStatusEl) {
+    leaderboardStatusEl.textContent = "Loading leaderboard...";
+  }
+
+  try {
+    const entries = await fetchLeaderboardFromApi();
+    saveLeaderboardLocal(entries);
+    renderLeaderboard(entries, "Live leaderboard");
+    return { entries, source: "api" };
+  } catch (error) {
+    const localEntries = rankLeaderboardEntries(loadLeaderboardLocal());
+    renderLeaderboard(
+      localEntries,
+      localEntries.length ? "Showing saved leaderboard" : "Leaderboard unavailable right now"
+    );
+    return { entries: localEntries, source: "local", error };
+  }
+};
+
+const submitLeaderboardOptIn = async (entry) => {
+  const normalized = toLeaderboardEntry(entry);
+  if (!normalized) {
+    throw new Error("Valid SGPA is required to join leaderboard.");
+  }
+
+  try {
+    const response = await fetchApiWithFallback("/leaderboard", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        optIn: true,
+        name: normalized.name,
+        rollNo: normalized.rollNo,
+        semester: normalized.semester,
+        sgpa: normalized.sgpa,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(await getLeaderboardError(response, `Leaderboard update failed (${response.status})`));
+    }
+
+    const payload = await response.json();
+    const entries = rankLeaderboardEntries(payload?.entries || []);
+    if (entries.length) {
+      saveLeaderboardLocal(entries);
+    }
+    return {
+      rank: Number.isFinite(Number(payload?.rank)) ? Number(payload.rank) : null,
+      entries,
+      source: "api",
+    };
+  } catch (error) {
+    const entries = upsertLeaderboardLocal(normalized);
+    const identity = getLeaderboardIdentity(normalized);
+    const rank = entries.find((item) => getLeaderboardIdentity(item) === identity)?.rank || null;
+    return {
+      rank,
+      entries,
+      source: "local",
+    };
+  }
+};
+
+const loadLeaderboardDecisions = () => {
+  try {
+    const raw = localStorage.getItem(LEADERBOARD_DECISIONS_KEY);
+    if (!raw) return {};
+    const parsed = JSON.parse(raw);
+    return parsed && typeof parsed === "object" ? parsed : {};
+  } catch (error) {
+    return {};
+  }
+};
+
+const saveLeaderboardDecisions = (value) => {
+  try {
+    localStorage.setItem(LEADERBOARD_DECISIONS_KEY, JSON.stringify(value || {}));
+  } catch (error) {
+    // Ignore storage failures.
+  }
+};
+
+const getLeaderboardDecisionKey = (result) => {
+  const rollNo = normalizeLeaderboardRollNo(result?.rollNo);
+  const semester = normalizeLeaderboardSemester(result?.semester);
+  if (rollNo) {
+    return `roll:${rollNo}|sem:${semester !== null ? semester : "na"}`;
+  }
+  const fallbackName = normalizeLeaderboardName(result?.name || "anonymous").toLowerCase();
+  const sgpa = normalizeLeaderboardSgpa(result?.sgpa);
+  return `anon:${fallbackName}|sgpa:${sgpa !== null ? sgpa.toFixed(2) : "na"}`;
+};
+
+const getLeaderboardDecision = (result) => {
+  const key = getLeaderboardDecisionKey(result);
+  const decisions = loadLeaderboardDecisions();
+  const value = decisions[key];
+  return value === "yes" || value === "no" ? value : null;
+};
+
+const setLeaderboardDecision = (result, decision) => {
+  const key = getLeaderboardDecisionKey(result);
+  const decisions = loadLeaderboardDecisions();
+  decisions[key] = decision;
+  saveLeaderboardDecisions(decisions);
+};
+
+const isLeaderboardModalOpen = () => Boolean(leaderboardModalEl && !leaderboardModalEl.hidden);
+
+const closeLeaderboardModal = () => {
+  if (!leaderboardModalEl) return;
+  leaderboardModalEl.hidden = true;
+  document.body.style.removeProperty("overflow");
+  pendingLeaderboardResult = null;
+};
+
+const openLeaderboardModal = (result) => {
+  if (!leaderboardModalEl || !leaderboardNameInputEl || !leaderboardPromptSgpaEl) return;
+  pendingLeaderboardResult = result;
+  const sgpa = normalizeLeaderboardSgpa(result?.sgpa);
+  leaderboardPromptSgpaEl.textContent = `SGPA: ${sgpa !== null ? formatNumber(sgpa, 2) : "-"}`;
+  leaderboardNameInputEl.value = normalizeLeaderboardName(result?.name || "");
+  leaderboardModalEl.hidden = false;
+  document.body.style.overflow = "hidden";
+  window.setTimeout(() => leaderboardNameInputEl.focus(), 0);
+};
+
+const maybePromptLeaderboardOptIn = (result) => {
+  const sgpa = normalizeLeaderboardSgpa(result?.sgpa);
+  if (sgpa === null) return;
+  if (getLeaderboardDecision(result)) return;
+  openLeaderboardModal(result);
+};
+
 const buildPdf = (data) => {
   if (!window.jspdf || !window.jspdf.jsPDF) {
     throw new Error("PDF library not loaded. Refresh and try again.");
@@ -841,6 +1137,65 @@ const checkHealth = async () => {
   }
 };
 
+const handleLeaderboardSkip = () => {
+  if (pendingLeaderboardResult) {
+    setLeaderboardDecision(pendingLeaderboardResult, "no");
+  }
+  closeLeaderboardModal();
+};
+
+const handleLeaderboardJoin = async () => {
+  if (!pendingLeaderboardResult || !leaderboardNameInputEl) {
+    closeLeaderboardModal();
+    return;
+  }
+
+  const displayName = normalizeLeaderboardName(
+    leaderboardNameInputEl.value || pendingLeaderboardResult.name || ""
+  );
+  if (!displayName) {
+    setStatus("Enter a display name to join leaderboard.", "error");
+    leaderboardNameInputEl.focus();
+    return;
+  }
+
+  if (leaderboardJoinBtnEl) {
+    leaderboardJoinBtnEl.classList.add("is-loading");
+    leaderboardJoinBtnEl.disabled = true;
+  }
+  if (leaderboardSkipBtnEl) {
+    leaderboardSkipBtnEl.disabled = true;
+  }
+
+  try {
+    const submission = await submitLeaderboardOptIn({
+      ...pendingLeaderboardResult,
+      name: displayName,
+    });
+    renderLeaderboard(
+      submission.entries,
+      submission.source === "api" ? "Live leaderboard" : "Showing saved leaderboard"
+    );
+    setLeaderboardDecision(pendingLeaderboardResult, "yes");
+    if (submission.rank) {
+      setStatus(`Added to leaderboard at rank #${submission.rank}.`, "success");
+    } else {
+      setStatus("Added to leaderboard.", "success");
+    }
+  } catch (error) {
+    setStatus(sanitizeErrorMessage(error.message) || "Unable to join leaderboard.", "error");
+  } finally {
+    if (leaderboardJoinBtnEl) {
+      leaderboardJoinBtnEl.classList.remove("is-loading");
+      leaderboardJoinBtnEl.disabled = false;
+    }
+    if (leaderboardSkipBtnEl) {
+      leaderboardSkipBtnEl.disabled = false;
+    }
+    closeLeaderboardModal();
+  }
+};
+
 pickBtn.addEventListener("click", () => {
   fileInput.click();
 });
@@ -930,7 +1285,9 @@ analyzeBtn.addEventListener("click", async (event) => {
     addToHistory(data, currentFile?.name || null);
     renderHistory();
     await loadTrend(data.rollNo || null);
+    await loadLeaderboard();
     setStatus("Result parsed successfully.", "success");
+    maybePromptLeaderboardOptIn(data);
   } catch (error) {
     setStatus(sanitizeErrorMessage(error.message) || "Unable to parse the result.", "error");
   } finally {
@@ -984,6 +1341,41 @@ if (feedbackBtn) {
   });
 }
 
+if (leaderboardSkipBtnEl) {
+  leaderboardSkipBtnEl.addEventListener("click", (event) => {
+    event.preventDefault();
+    handleLeaderboardSkip();
+  });
+}
+
+if (leaderboardJoinBtnEl) {
+  leaderboardJoinBtnEl.addEventListener("click", async (event) => {
+    event.preventDefault();
+    await handleLeaderboardJoin();
+  });
+}
+
+if (leaderboardNameInputEl) {
+  leaderboardNameInputEl.addEventListener("keydown", async (event) => {
+    if (event.key !== "Enter") return;
+    event.preventDefault();
+    await handleLeaderboardJoin();
+  });
+}
+
+if (leaderboardModalEl) {
+  leaderboardModalEl.addEventListener("click", (event) => {
+    if (event.target !== leaderboardModalEl) return;
+    handleLeaderboardSkip();
+  });
+}
+
+document.addEventListener("keydown", (event) => {
+  if (event.key !== "Escape") return;
+  if (!isLeaderboardModalOpen()) return;
+  handleLeaderboardSkip();
+});
+
 window.addEventListener("resize", () => {
   drawTrendChart(lastTrendPoints);
 });
@@ -993,5 +1385,6 @@ renderConfidence(null);
 renderHistory();
 initThemeToggle();
 drawTrendChart([]);
+loadLeaderboard();
 checkHealth();
 window.setInterval(checkHealth, 60000);

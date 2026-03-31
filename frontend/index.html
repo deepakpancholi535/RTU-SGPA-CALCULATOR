@@ -11,7 +11,7 @@
       href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=IBM+Plex+Serif:wght@500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css?v=18" />
+    <link rel="stylesheet" href="styles.css?v=19" />
   </head>
   <body data-theme="mid">
     <div class="aurora" aria-hidden="true"></div>
@@ -171,6 +171,29 @@
             <canvas id="trendChart" width="640" height="220"></canvas>
           </div>
 
+          <div class="leaderboard-panel">
+            <div class="leaderboard-head">
+              <h3>Leaderboard</h3>
+              <span id="leaderboardStatus">Loading leaderboard...</span>
+            </div>
+            <div class="leaderboard-table-wrap">
+              <table class="leaderboard-table">
+                <thead>
+                  <tr>
+                    <th>Rank</th>
+                    <th>Name</th>
+                    <th>SGPA</th>
+                  </tr>
+                </thead>
+                <tbody id="leaderboardBody">
+                  <tr class="placeholder">
+                    <td colspan="3">No leaderboard entries yet.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
           <div class="actions">
             <button type="button" class="primary" id="pdfBtn">Download PDF</button>
           </div>
@@ -210,13 +233,45 @@
           Feedback
         </button>
         <div class="status-dot" id="healthDot">API: Checking...</div>
-        <div class="build-badge" id="buildBadge">Build v18</div>
+        <div class="build-badge" id="buildBadge">Build v19</div>
       </div>
     </footer>
 
+    <div class="leaderboard-modal" id="leaderboardModal" hidden>
+      <div
+        class="leaderboard-modal-card"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="leaderboardModalTitle"
+      >
+        <h3 id="leaderboardModalTitle">Join the Leaderboard?</h3>
+        <p>
+          Want to show your SGPA on the leaderboard? If yes, enter your display name.
+          If no, you can still view the current leaderboard.
+        </p>
+        <div class="leaderboard-modal-preview">
+          <span class="preview-pill" id="leaderboardPromptSgpa">SGPA: -</span>
+        </div>
+        <label for="leaderboardNameInput">Display Name</label>
+        <input
+          type="text"
+          id="leaderboardNameInput"
+          maxlength="60"
+          placeholder="Enter your name"
+          autocomplete="name"
+        />
+        <div class="leaderboard-modal-actions">
+          <button type="button" class="ghost" id="leaderboardSkipBtn">No, Keep Private</button>
+          <button type="button" class="primary leaderboard-confirm-btn" id="leaderboardJoinBtn">
+            Yes, Add Me
+          </button>
+        </div>
+      </div>
+    </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
-    <script src="app.js?v=18"></script>
+    <script src="app.js?v=19"></script>
   </body>
 </html>
 
