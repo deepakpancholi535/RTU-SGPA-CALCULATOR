@@ -5,24 +5,56 @@ if (!cached) {
   cached = global.__mongoose = { conn: null, promise: null };
 }
 
-async function connectToDatabase() {
+function getMongoUri() {
+  return (process.env.MONGODB_URI || process.env.MONGO_URI || "").trim();
+}
+
+function sanitizeDbErrorMessage(error) {
+  const raw = typeof error?.message === "string" ? error.message.trim() : "";
+  if (!raw) return "Database unavailable.";
+  if (/MONGODB_URI|MONGO_URI/i.test(raw)) return "Database unavailable.";
+  return raw;
+}
+
+async function connectToDatabase(options = {}) {
+  const { required = true } = options;
+
   if (cached.conn) return cached.conn;
+
+  const uri = getMongoUri();
+  if (!uri) {
+    if (required) {
+      throw new Error("Database unavailable.");
+    }
+    return null;
+  }
+
+  if (!/^mongodb(\+srv)?:\/\//i.test(uri)) {
+    if (required) {
+      throw new Error("Database unavailable.");
+    }
+    return null;
+  }
+
   if (!cached.promise) {
-    const uri = (process.env.MONGODB_URI || process.env.MONGO_URI || "").trim();
-    if (!uri) {
-      throw new Error("Mongo URI missing. Set MONGODB_URI or MONGO_URI.");
-    }
-    if (!/^mongodb(\+srv)?:\/\//i.test(uri)) {
-      throw new Error("Mongo URI must start with mongodb:// or mongodb+srv://");
-    }
     cached.promise = mongoose.connect(uri, {
       autoIndex: true,
       tls: true,
       tlsAllowInvalidCertificates: false
     });
   }
-  cached.conn = await cached.promise;
-  return cached.conn;
+
+  try {
+    cached.conn = await cached.promise;
+    return cached.conn;
+  } catch (error) {
+    cached.conn = null;
+    cached.promise = null;
+    throw new Error(sanitizeDbErrorMessage(error));
+  }
 }
 
-module.exports = { connectToDatabase };
+module.exports = {
+  connectToDatabase,
+  getMongoUri
+};

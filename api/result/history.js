@@ -1,5 +1,5 @@
 const StudentResult = require("../../backend/models/StudentResult");
-const { connectToDatabase } = require("../_lib/db");
+const { connectToDatabase, getMongoUri } = require("../_lib/db");
 
 function sendJson(res, status, payload) {
   res.statusCode = status;
@@ -23,7 +23,13 @@ async function handleHistory(req, res) {
   }
 
   try {
-    await connectToDatabase();
+    if (!getMongoUri()) {
+      return sendJson(res, 503, { error: "History is unavailable because database is not configured" });
+    }
+    const conn = await connectToDatabase({ required: false });
+    if (!conn) {
+      return sendJson(res, 503, { error: "History is unavailable because database is not configured" });
+    }
 
     const params = getSearchParams(req);
     const rollNoRaw = (params.get("rollNo") || "").trim();
@@ -55,7 +61,11 @@ async function handleHistory(req, res) {
       trend
     });
   } catch (error) {
-    return sendJson(res, 500, { error: error.message || "Server error" });
+    const safeError =
+      typeof error?.message === "string" && /MONGODB_URI|MONGO_URI/i.test(error.message)
+        ? "Database unavailable"
+        : error?.message || "Server error";
+    return sendJson(res, 500, { error: safeError });
   }
 }
 

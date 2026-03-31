@@ -1,7 +1,7 @@
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
-const formidable = require("formidable");
+const formidableLib = require("formidable");
 const Subject = require("../../backend/models/Subject");
 const StudentResult = require("../../backend/models/StudentResult");
 const { extractResultData } = require("../../backend/utils/pdfParser");
@@ -23,9 +23,13 @@ const {
   normalizeTitleKey
 } = require("../../backend/utils/creditCatalog");
 const { uploadResultFile } = require("../../backend/utils/cloudinary");
-const { connectToDatabase } = require("../_lib/db");
+const { connectToDatabase, getMongoUri } = require("../_lib/db");
 
 const creditCatalog = loadCreditCatalog();
+const createFormidable =
+  typeof formidableLib === "function"
+    ? formidableLib
+    : formidableLib.formidable || formidableLib.default;
 
 function sendJson(res, status, payload) {
   res.statusCode = status;
@@ -36,7 +40,11 @@ function sendJson(res, status, payload) {
 function safeMessage(error, fallback = "Server error") {
   if (!error) return fallback;
   if (typeof error.message === "string" && error.message.trim()) {
-    return error.message.trim();
+    const message = error.message.trim();
+    if (/MONGODB_URI|MONGO_URI/i.test(message)) {
+      return "Database unavailable";
+    }
+    return message;
   }
   return fallback;
 }
@@ -125,13 +133,25 @@ async function handleCalculate(req, res) {
   };
 
   try {
-    await connectToDatabase();
-    dbState.ready = true;
+    const hasMongoUri = Boolean(getMongoUri());
+    if (hasMongoUri) {
+      const conn = await connectToDatabase({ required: false });
+      dbState.ready = Boolean(conn);
+      if (!dbState.ready) {
+        dbState.error = "Database unavailable";
+      }
+    } else {
+      dbState.error = "Database unavailable";
+    }
   } catch (error) {
     dbState.error = safeMessage(error, "Database unavailable");
   }
 
-  const form = formidable({
+  if (typeof createFormidable !== "function") {
+    return sendJson(res, 500, { error: "Upload parser is unavailable on this runtime" });
+  }
+
+  const form = createFormidable({
     multiples: false,
     keepExtensions: true,
     uploadDir: os.tmpdir(),
