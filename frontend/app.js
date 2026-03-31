@@ -51,7 +51,7 @@ const LEADERBOARD_DECISIONS_KEY = "rtu_leaderboard_decisions_v1";
 const LEADERBOARD_TOP_COUNT = 3;
 const LEADERBOARD_FETCH_LIMIT = 20000;
 const LEADERBOARD_REFRESH_MS = 25000;
-const UI_BUILD = "v20";
+const UI_BUILD = "v21";
 const THEME_KEY = "rtu_ui_theme_v1";
 const THEME_CHOICES = ["light", "mid", "dark"];
 const DEFAULT_REMOTE_API_BASE = "";
@@ -61,7 +61,7 @@ let lastResponse = null;
 let lastTrendPoints = [];
 let pendingLeaderboardResult = null;
 let leaderboardEntriesCache = [];
-let leaderboardSection = "overall";
+let leaderboardSection = "semester";
 
 function normalizeApiBase(value) {
   if (typeof value !== "string") return "";
@@ -745,7 +745,7 @@ const syncLeaderboardSectionUI = () => {
 };
 
 const setLeaderboardSection = (section) => {
-  if (!["overall", "semester", "branch"].includes(section)) return;
+  if (!["semester", "branch"].includes(section)) return;
   leaderboardSection = section;
   syncLeaderboardSectionUI();
   renderLeaderboard(leaderboardEntriesCache);
@@ -795,29 +795,23 @@ const syncLeaderboardFilters = (entries) => {
 
 const getLeaderboardEntriesForCurrentSection = (entries) => {
   const deduped = dedupeLeaderboardEntries(entries);
-  if (leaderboardSection === "semester") {
-    const semester = normalizeLeaderboardSemester(leaderboardSemesterSelectEl?.value);
-    if (semester === null) return [];
-    return deduped.filter((entry) => entry.semester === semester);
-  }
   if (leaderboardSection === "branch") {
     const branch = normalizeLeaderboardBranch(leaderboardBranchSelectEl?.value);
     if (!branch) return [];
     return deduped.filter((entry) => normalizeLeaderboardBranch(entry.branch) === branch);
   }
-  return deduped;
+  const semester = normalizeLeaderboardSemester(leaderboardSemesterSelectEl?.value);
+  if (semester === null) return [];
+  return deduped.filter((entry) => entry.semester === semester);
 };
 
 const getLeaderboardSectionLabel = () => {
-  if (leaderboardSection === "semester") {
-    const semester = normalizeLeaderboardSemester(leaderboardSemesterSelectEl?.value);
-    return semester !== null ? `Semester ${semester}` : "Semester wise";
-  }
   if (leaderboardSection === "branch") {
     const branch = normalizeLeaderboardBranch(leaderboardBranchSelectEl?.value);
     return branch || "Branch wise";
   }
-  return "Overall";
+  const semester = normalizeLeaderboardSemester(leaderboardSemesterSelectEl?.value);
+  return semester !== null ? `Semester ${semester}` : "Semester wise";
 };
 
 const renderLeaderboardPodium = (ranked) => {
