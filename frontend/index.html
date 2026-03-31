@@ -11,7 +11,7 @@
       href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=IBM+Plex+Serif:wght@500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css?v=19" />
+    <link rel="stylesheet" href="styles.css?v=20" />
   </head>
   <body data-theme="mid">
     <div class="aurora" aria-hidden="true"></div>
@@ -176,6 +176,50 @@
               <h3>Leaderboard</h3>
               <span id="leaderboardStatus">Loading leaderboard...</span>
             </div>
+            <div class="leaderboard-controls">
+              <div class="leaderboard-sections" id="leaderboardSections">
+                <button type="button" class="leaderboard-section-btn is-active" data-section="overall">
+                  Overall
+                </button>
+                <button type="button" class="leaderboard-section-btn" data-section="semester">
+                  Semester Wise
+                </button>
+                <button type="button" class="leaderboard-section-btn" data-section="branch">
+                  Branch Wise
+                </button>
+              </div>
+              <div class="leaderboard-filters">
+                <label class="leaderboard-select-wrap" id="semesterFilterWrap" hidden>
+                  <span>Semester</span>
+                  <select id="leaderboardSemesterSelect">
+                    <option value="">Select semester</option>
+                  </select>
+                </label>
+                <label class="leaderboard-select-wrap" id="branchFilterWrap" hidden>
+                  <span>Branch</span>
+                  <select id="leaderboardBranchSelect">
+                    <option value="">Select branch</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+            <div class="leaderboard-podium" id="leaderboardPodium">
+              <div class="podium-card" data-rank="1">
+                <div class="podium-rank">#1</div>
+                <div class="podium-name">-</div>
+                <div class="podium-sgpa">SGPA -</div>
+              </div>
+              <div class="podium-card" data-rank="2">
+                <div class="podium-rank">#2</div>
+                <div class="podium-name">-</div>
+                <div class="podium-sgpa">SGPA -</div>
+              </div>
+              <div class="podium-card" data-rank="3">
+                <div class="podium-rank">#3</div>
+                <div class="podium-name">-</div>
+                <div class="podium-sgpa">SGPA -</div>
+              </div>
+            </div>
             <div class="leaderboard-table-wrap">
               <table class="leaderboard-table">
                 <thead>
@@ -233,7 +277,7 @@
           Feedback
         </button>
         <div class="status-dot" id="healthDot">API: Checking...</div>
-        <div class="build-badge" id="buildBadge">Build v19</div>
+        <div class="build-badge" id="buildBadge">Build v20</div>
       </div>
     </footer>
 
@@ -271,7 +315,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
-    <script src="app.js?v=19"></script>
+    <script src="app.js?v=20"></script>
   </body>
 </html>
 

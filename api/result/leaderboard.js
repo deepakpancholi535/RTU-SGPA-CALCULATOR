@@ -19,6 +19,12 @@ function normalizeRollNo(value) {
   return text.toUpperCase().slice(0, 32);
 }
 
+function normalizeBranch(value) {
+  const text = typeof value === "string" ? value.trim() : "";
+  if (!text) return null;
+  return text.replace(/\s+/g, " ").toUpperCase().slice(0, 48);
+}
+
 function normalizeSgpa(value) {
   const sgpa = Number(value);
   if (!Number.isFinite(sgpa)) return null;
@@ -33,10 +39,11 @@ function normalizeSemester(value) {
   return sem;
 }
 
-function normalizeLimit(value, fallback = 10) {
+function normalizeLimit(value, fallback = null) {
+  if (value === null || value === undefined || value === "") return fallback;
   const parsed = Number.parseInt(value, 10);
   if (!Number.isFinite(parsed)) return fallback;
-  return Math.min(Math.max(parsed, 1), 50);
+  return Math.min(Math.max(parsed, 1), 20000);
 }
 
 function toLeaderboardEntry(record) {
@@ -46,25 +53,54 @@ function toLeaderboardEntry(record) {
     id: record?._id ? String(record._id) : null,
     name: normalizeName(record?.leaderboardName || record?.name || "Anonymous"),
     rollNo: record?.rollNo || null,
+    branch: normalizeBranch(record?.branch),
     semester: normalizeSemester(record?.semester),
     sgpa,
     updatedAt: record?.updatedAt || null
   };
 }
 
+function getEntryIdentity(entry) {
+  if (entry?.rollNo) return `roll:${entry.rollNo}`;
+  return `anon:${String(entry?.name || "").toLowerCase()}|branch:${entry?.branch || "NA"}`;
+}
+
+function dedupeEntries(entries) {
+  const byIdentity = new Map();
+  entries.filter(Boolean).forEach((entry) => {
+    const key = getEntryIdentity(entry);
+    const existing = byIdentity.get(key);
+    if (!existing) {
+      byIdentity.set(key, entry);
+      return;
+    }
+
+    const existingTime = new Date(existing.updatedAt || 0).getTime();
+    const currentTime = new Date(entry.updatedAt || 0).getTime();
+    if (currentTime > existingTime) {
+      byIdentity.set(key, entry);
+      return;
+    }
+    if (currentTime === existingTime && entry.sgpa > existing.sgpa) {
+      byIdentity.set(key, entry);
+    }
+  });
+  return Array.from(byIdentity.values());
+}
+
 function rankEntries(entries, limit) {
-  const sorted = entries
-    .filter(Boolean)
+  const sortedBase = dedupeEntries(entries)
     .sort((a, b) => {
       if (b.sgpa !== a.sgpa) return b.sgpa - a.sgpa;
-      return new Date(a.updatedAt || 0).getTime() - new Date(b.updatedAt || 0).getTime();
-    })
-    .slice(0, limit);
+      return new Date(b.updatedAt || 0).getTime() - new Date(a.updatedAt || 0).getTime();
+    });
+  const sorted = Number.isFinite(limit) ? sortedBase.slice(0, limit) : sortedBase;
 
   return sorted.map((entry, index) => ({
     rank: index + 1,
     name: entry.name,
     rollNo: entry.rollNo,
+    branch: entry.branch,
     semester: entry.semester,
     sgpa: entry.sgpa,
     updatedAt: entry.updatedAt
@@ -120,7 +156,7 @@ async function fetchLeaderboard(limit) {
     leaderboardOptIn: true,
     sgpa: { $ne: null }
   })
-    .select("leaderboardName name rollNo semester sgpa updatedAt")
+    .select("leaderboardName name rollNo branch semester sgpa updatedAt")
     .lean();
 
   const entries = docs.map(toLeaderboardEntry);
@@ -130,7 +166,7 @@ async function fetchLeaderboard(limit) {
 async function handleGet(req, res) {
   const base = `http://${req.headers.host || "localhost"}`;
   const url = new URL(req.url || "/api/result/leaderboard", base);
-  const limit = normalizeLimit(url.searchParams.get("limit"), 10);
+  const limit = normalizeLimit(url.searchParams.get("limit"), null);
 
   const available = await ensureDatabase(res);
   if (!available) return;
@@ -155,6 +191,7 @@ async function handlePost(req, res) {
   const name = normalizeName(body.name);
   const sgpa = normalizeSgpa(body.sgpa);
   const rollNo = normalizeRollNo(body.rollNo);
+  const branch = normalizeBranch(body.branch);
   const semester = normalizeSemester(body.semester);
 
   if (!name) {
@@ -173,9 +210,13 @@ async function handlePost(req, res) {
   if (semester !== null) {
     baseUpdate.semester = semester;
   }
+  if (branch) {
+    baseUpdate.branch = branch;
+  }
 
   let savedDoc = null;
   if (rollNo) {
+    await StudentResult.updateMany({ rollNo }, { $set: { leaderboardOptIn: false } });
     const filter = { rollNo, semester: semester !== null ? semester : null };
     const update = { ...baseUpdate, rollNo };
     savedDoc = await StudentResult.findOneAndUpdate(filter, update, {
@@ -187,13 +228,14 @@ async function handlePost(req, res) {
     savedDoc = await StudentResult.create(baseUpdate);
   }
 
-  const entries = await fetchLeaderboard(10);
+  const entries = await fetchLeaderboard(null);
   const rank = entries.find((entry) => {
-    if (rollNo && entry.rollNo) {
-      return entry.rollNo === rollNo && entry.semester === (semester !== null ? semester : null);
+    if (rollNo) {
+      return entry.rollNo === rollNo;
     }
     return (
       entry.name === name &&
+      entry.branch === (branch || null) &&
       entry.sgpa === sgpa &&
       String(entry.updatedAt || "") === String(savedDoc.updatedAt || "")
     );
