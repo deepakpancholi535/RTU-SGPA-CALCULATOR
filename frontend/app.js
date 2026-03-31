@@ -913,6 +913,25 @@ const renderLeaderboard = (entries, statusMessage = "") => {
     statusMessage || `${getLeaderboardSectionLabel()} | ${ranked.length} students listed`;
 };
 
+const resolveLeaderboardRanksForEntry = (entry, entries) => {
+  const normalized = toLeaderboardEntry(entry);
+  if (!normalized) {
+    return { overallRank: null, sectionRank: null };
+  }
+
+  const identity = getLeaderboardIdentity(normalized);
+  const overallRank =
+    rankLeaderboardEntries(entries, LEADERBOARD_FETCH_LIMIT).find(
+      (item) => getLeaderboardIdentity(item) === identity
+    )?.rank || null;
+  const sectionRank =
+    rankLeaderboardEntries(getLeaderboardEntriesForCurrentSection(entries), LEADERBOARD_FETCH_LIMIT).find(
+      (item) => getLeaderboardIdentity(item) === identity
+    )?.rank || null;
+
+  return { overallRank, sectionRank };
+};
+
 const getLeaderboardError = async (response, fallback) => {
   if (!response) return fallback;
   const text = await response.text();
@@ -1382,6 +1401,10 @@ const handleLeaderboardJoin = async () => {
   }
 
   try {
+    const joinedEntry = toLeaderboardEntry({
+      ...pendingLeaderboardResult,
+      name: displayName,
+    });
     const submission = await submitLeaderboardOptIn({
       ...pendingLeaderboardResult,
       name: displayName,
@@ -1394,8 +1417,14 @@ const handleLeaderboardJoin = async () => {
       renderLeaderboard(leaderboardEntriesCache, "Showing saved leaderboard");
     }
     setLeaderboardDecision(pendingLeaderboardResult, "yes");
-    if (submission.rank) {
-      setStatus(`Added to leaderboard at rank #${submission.rank}.`, "success");
+    const { overallRank, sectionRank } = resolveLeaderboardRanksForEntry(
+      joinedEntry,
+      leaderboardEntriesCache
+    );
+    if (sectionRank !== null) {
+      setStatus(`Added to ${getLeaderboardSectionLabel()} leaderboard at rank #${sectionRank}.`, "success");
+    } else if (overallRank !== null || submission.rank) {
+      setStatus(`Added to leaderboard. Overall rank #${overallRank || submission.rank}.`, "success");
     } else {
       setStatus("Added to leaderboard.", "success");
     }
