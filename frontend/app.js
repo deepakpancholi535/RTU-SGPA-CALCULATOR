@@ -51,7 +51,7 @@ const LEADERBOARD_DECISIONS_KEY = "rtu_leaderboard_decisions_v1";
 const LEADERBOARD_TOP_COUNT = 3;
 const LEADERBOARD_FETCH_LIMIT = 20000;
 const LEADERBOARD_REFRESH_MS = 25000;
-const UI_BUILD = "v22";
+const UI_BUILD = "v23";
 const THEME_KEY = "rtu_ui_theme_v1";
 const THEME_CHOICES = ["light", "mid", "dark"];
 const DEFAULT_REMOTE_API_BASE = "";
@@ -1067,6 +1067,15 @@ const setLeaderboardDecision = (result, decision) => {
   saveLeaderboardDecisions(decisions);
 };
 
+const isAlreadyInLeaderboard = (result, entries = leaderboardEntriesCache) => {
+  const normalized = toLeaderboardEntry(result);
+  if (!normalized) return false;
+  const identity = getLeaderboardIdentity(normalized);
+  return rankLeaderboardEntries(entries, LEADERBOARD_FETCH_LIMIT).some(
+    (entry) => getLeaderboardIdentity(entry) === identity
+  );
+};
+
 const isLeaderboardModalOpen = () => Boolean(leaderboardModalEl && !leaderboardModalEl.hidden);
 
 const closeLeaderboardModal = () => {
@@ -1091,6 +1100,10 @@ const maybePromptLeaderboardOptIn = (result) => {
   const sgpa = normalizeLeaderboardSgpa(result?.sgpa);
   if (sgpa === null) return;
   if (getLeaderboardDecision(result)) return;
+  if (isAlreadyInLeaderboard(result)) {
+    setLeaderboardDecision(result, "yes");
+    return;
+  }
   openLeaderboardModal(result);
 };
 
