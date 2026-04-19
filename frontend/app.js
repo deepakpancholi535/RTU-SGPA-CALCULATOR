@@ -44,14 +44,11 @@ const buildBadgeEl = document.getElementById("buildBadge");
 const themeSwitchEl = document.getElementById("themeSwitch");
 const themeButtons = Array.from(document.querySelectorAll("[data-theme-choice]"));
 
-const HISTORY_KEY = "rtu_result_history_v1";
 const HISTORY_LIMIT = 10;
-const LEADERBOARD_KEY = "rtu_leaderboard_v1";
-const LEADERBOARD_DECISIONS_KEY = "rtu_leaderboard_decisions_v1";
 const LEADERBOARD_TOP_COUNT = 3;
 const LEADERBOARD_FETCH_LIMIT = 20000;
 const LEADERBOARD_REFRESH_MS = 25000;
-const UI_BUILD = "v23";
+const UI_BUILD = "v24";
 const THEME_KEY = "rtu_ui_theme_v1";
 const THEME_CHOICES = ["light", "mid", "dark"];
 const DEFAULT_REMOTE_API_BASE = "";
@@ -62,6 +59,10 @@ let lastTrendPoints = [];
 let pendingLeaderboardResult = null;
 let leaderboardEntriesCache = [];
 let leaderboardSection = "semester";
+let historyEntriesCache = [];
+let leaderboardFallbackEntriesCache = [];
+let leaderboardDecisionCache = {};
+const rollTokenCache = new Map();
 
 function normalizeApiBase(value) {
   if (typeof value !== "string") return "";
@@ -110,6 +111,42 @@ const API_BASES = (() => {
 })();
 
 let preferredApiBase = API_BASES[0];
+
+function normalizeRollKey(value) {
+  if (value === null || value === undefined) return "";
+  return String(value).trim().toUpperCase();
+}
+
+function setAccessTokenForResult(result) {
+  const roll = normalizeRollKey(result?.rollNo);
+  const token = typeof result?.accessToken === "string" ? result.accessToken.trim() : "";
+  const expiresAt =
+    typeof result?.accessTokenExpiresAt === "string" ? result.accessTokenExpiresAt : null;
+
+  if (!roll || !token) return;
+
+  rollTokenCache.set(roll, {
+    token,
+    expiresAt,
+  });
+}
+
+function getAccessTokenForRoll(rollNo) {
+  const key = normalizeRollKey(rollNo);
+  if (!key) return null;
+  const entry = rollTokenCache.get(key);
+  if (!entry || !entry.token) return null;
+
+  if (entry.expiresAt) {
+    const expiry = new Date(entry.expiresAt).getTime();
+    if (!Number.isNaN(expiry) && Date.now() >= expiry) {
+      rollTokenCache.delete(key);
+      return null;
+    }
+  }
+
+  return entry.token;
+}
 
 function buildApiUrl(base, path, query = "") {
   const normalizedPath = path.startsWith("/") ? path : `/${path}`;
@@ -246,16 +283,21 @@ document.addEventListener("submit", (event) => {
   event.stopPropagation();
 });
 
-window.__rtuDebug = {
-  getCurrentFile: () => currentFile,
-  getFileInputCount: () => (fileInput.files ? fileInput.files.length : 0),
-  getHistoryCount: () => loadHistory().length,
-  getPreferredApiBase: () => preferredApiBase,
-  getApiBases: () => [...API_BASES],
-  getFallbackApiBase: () => CONFIGURED_FALLBACK_API_BASE || null,
-  getTheme: () => document.body.dataset.theme || null,
-  getLeaderboardEntries: () => loadLeaderboardLocal(),
-};
+if (
+  window.location.hostname.includes("localhost") ||
+  window.location.hostname === "127.0.0.1"
+) {
+  window.__rtuDebug = {
+    getCurrentFile: () => currentFile,
+    getFileInputCount: () => (fileInput.files ? fileInput.files.length : 0),
+    getHistoryCount: () => loadHistory().length,
+    getPreferredApiBase: () => preferredApiBase,
+    getApiBases: () => [...API_BASES],
+    getFallbackApiBase: () => CONFIGURED_FALLBACK_API_BASE || null,
+    getTheme: () => document.body.dataset.theme || null,
+    getLeaderboardEntries: () => loadLeaderboardLocal(),
+  };
+}
 
 const setStatus = (message, state = "") => {
   statusEl.textContent = message;
@@ -566,12 +608,22 @@ const loadTrend = async (rollNo) => {
     drawTrendChart([]);
     return;
   }
+  const accessToken = getAccessTokenForRoll(rollNo);
+  if (!accessToken) {
+    trendStatusEl.textContent = "Trend is locked for privacy. Re-analyze your result to refresh access.";
+    lastTrendPoints = [];
+    drawTrendChart([]);
+    return;
+  }
 
   trendStatusEl.textContent = "Loading trend...";
 
   try {
     const response = await fetchApiWithFallback("/history", {
       query: `?rollNo=${encodeURIComponent(rollNo)}&limit=8`,
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
     });
     if (!response.ok) {
       throw new Error(`History request failed (${response.status})`);
@@ -608,7 +660,7 @@ const normalizeLeaderboardBranch = (value) => {
 
 const normalizeLeaderboardSemester = (value) => {
   const parsed = Number.parseInt(value, 10);
-  if (!Number.isFinite(parsed) || parsed < 1 || parsed > 12) return null;
+  if (!Number.isFinite(parsed) || parsed < 1 || parsed > 8) return null;
   return parsed;
 };
 
@@ -664,7 +716,9 @@ const getLeaderboardIdentity = (entry) => {
   if (normalized.rollNo) {
     return `roll:${normalized.rollNo}`;
   }
-  return `anon:${normalized.name.toLowerCase()}|branch:${normalized.branch || "NA"}`;
+  return `anon:${normalized.name.toLowerCase()}|branch:${normalized.branch || "NA"}|semester:${
+    normalized.semester || "NA"
+  }`;
 };
 
 const dedupeLeaderboardEntries = (entries) => {
@@ -733,22 +787,11 @@ const getUniqueBranchOptions = (entries) =>
     .sort((a, b) => a.localeCompare(b));
 
 const loadLeaderboardLocal = () => {
-  try {
-    const raw = localStorage.getItem(LEADERBOARD_KEY);
-    if (!raw) return [];
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : [];
-  } catch (error) {
-    return [];
-  }
+  return safeArray(leaderboardFallbackEntriesCache);
 };
 
 const saveLeaderboardLocal = (entries) => {
-  try {
-    localStorage.setItem(LEADERBOARD_KEY, JSON.stringify(safeArray(entries)));
-  } catch (error) {
-    // Ignore storage failures.
-  }
+  leaderboardFallbackEntriesCache = dedupeLeaderboardEntries(safeArray(entries));
 };
 
 const upsertLeaderboardLocal = (entry) => {
@@ -980,19 +1023,21 @@ const submitLeaderboardOptIn = async (entry) => {
   if (!normalized) {
     throw new Error("Valid SGPA is required to join leaderboard.");
   }
+  const accessToken = getAccessTokenForRoll(normalized.rollNo || entry?.rollNo);
+  if (!accessToken) {
+    throw new Error("Leaderboard session expired. Re-analyze your result and try again.");
+  }
 
   try {
     const response = await fetchApiWithFallback("/leaderboard", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
       body: JSON.stringify({
         optIn: true,
         name: normalized.name,
-        rollNo: normalized.rollNo,
-        branch: normalized.branch,
-        semester: normalized.semester,
-        sgpa: normalized.sgpa,
-        totalMarksSum: normalized.totalMarksSum,
       }),
     });
 
@@ -1025,22 +1070,13 @@ const submitLeaderboardOptIn = async (entry) => {
 };
 
 const loadLeaderboardDecisions = () => {
-  try {
-    const raw = localStorage.getItem(LEADERBOARD_DECISIONS_KEY);
-    if (!raw) return {};
-    const parsed = JSON.parse(raw);
-    return parsed && typeof parsed === "object" ? parsed : {};
-  } catch (error) {
-    return {};
-  }
+  return leaderboardDecisionCache && typeof leaderboardDecisionCache === "object"
+    ? leaderboardDecisionCache
+    : {};
 };
 
 const saveLeaderboardDecisions = (value) => {
-  try {
-    localStorage.setItem(LEADERBOARD_DECISIONS_KEY, JSON.stringify(value || {}));
-  } catch (error) {
-    // Ignore storage failures.
-  }
+  leaderboardDecisionCache = value && typeof value === "object" ? { ...value } : {};
 };
 
 const getLeaderboardDecisionKey = (result) => {
@@ -1227,18 +1263,11 @@ const buildPdf = (data) => {
 };
 
 const loadHistory = () => {
-  try {
-    const raw = localStorage.getItem(HISTORY_KEY);
-    if (!raw) return [];
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : [];
-  } catch (error) {
-    return [];
-  }
+  return safeArray(historyEntriesCache);
 };
 
 const saveHistory = (entries) => {
-  localStorage.setItem(HISTORY_KEY, JSON.stringify(entries));
+  historyEntriesCache = safeArray(entries).slice(0, HISTORY_LIMIT);
 };
 
 const addToHistory = (data, fileName) => {
@@ -1253,6 +1282,7 @@ const addToHistory = (data, fileName) => {
       sgpa: data?.sgpa ?? null,
       payload: data,
     };
+    setAccessTokenForResult(data);
 
     const nextEntries = [entry, ...entries].slice(0, HISTORY_LIMIT);
     saveHistory(nextEntries);
@@ -1323,6 +1353,7 @@ const renderHistory = () => {
 
 const renderResult = (data) => {
   lastResponse = data;
+  setAccessTokenForResult(data);
   setSummary(data);
   renderSubjects(data?.subjects || []);
   renderConfidence(data);
@@ -1587,7 +1618,8 @@ if (historyListEl) {
 
 if (clearHistoryBtn) {
   clearHistoryBtn.addEventListener("click", () => {
-    localStorage.removeItem(HISTORY_KEY);
+    saveHistory([]);
+    rollTokenCache.clear();
     renderHistory();
     setStatus("History cleared.", "success");
   });

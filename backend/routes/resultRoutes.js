@@ -3,6 +3,7 @@ const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 const resultController = require("../controllers/resultController");
+const { createExpressRateLimiter } = require("../utils/rateLimit");
 
 const router = express.Router();
 
@@ -35,8 +36,22 @@ const upload = multer({
   limits: { fileSize: 10 * 1024 * 1024 }
 });
 
-router.get("/health", resultController.getHealth);
-router.get("/history", resultController.getHistory);
-router.post("/calculate", upload.single("result"), resultController.calculateResult);
+const readLimiter = createExpressRateLimiter({
+  windowMs: 60 * 1000,
+  max: 60,
+  keyPrefix: "result-read",
+  message: "Too many requests. Please try again shortly."
+});
+
+const calculateLimiter = createExpressRateLimiter({
+  windowMs: 60 * 1000,
+  max: 12,
+  keyPrefix: "result-calculate",
+  message: "Too many uploads. Please wait and try again."
+});
+
+router.get("/health", readLimiter, resultController.getHealth);
+router.get("/history", readLimiter, resultController.getHistory);
+router.post("/calculate", calculateLimiter, upload.single("result"), resultController.calculateResult);
 
 module.exports = router;

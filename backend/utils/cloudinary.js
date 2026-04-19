@@ -1,4 +1,5 @@
 const path = require("path");
+const crypto = require("crypto");
 const cloudinary = require("cloudinary").v2;
 
 function isConfigured() {
@@ -23,14 +24,16 @@ function configure() {
 async function uploadResultFile(filePath, originalName) {
   if (!configure()) return null;
 
-  const safeName = originalName
-    ? originalName.replace(/\s+/g, "_").replace(/[^a-zA-Z0-9._-]/g, "")
-    : path.basename(filePath || "result");
+  const extension = path.extname(originalName || filePath || "").replace(/[^a-zA-Z0-9]/g, "");
+  const randomId = crypto.randomBytes(12).toString("hex");
+  const generatedPublicId = extension
+    ? `result_${Date.now()}_${randomId}_${extension.toLowerCase()}`
+    : `result_${Date.now()}_${randomId}`;
 
   const result = await cloudinary.uploader.upload(filePath, {
     resource_type: "auto",
     folder: "rtu-results",
-    public_id: safeName.replace(/\.[^.]+$/, ""),
+    public_id: generatedPublicId,
     use_filename: false,
     unique_filename: true
   });

@@ -9,108 +9,126 @@ const resultRoutes = require("./routes/resultRoutes");
 
 const app = express();
 
-/* ===========================
-   🔐 ENV VALIDATION
-=========================== */
+function parseOrigins(value) {
+  return String(value || "")
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
 
-const REQUIRED_ENV = [
-  "MONGODB_URI",
-  "CLOUDINARY_CLOUD_NAME",
-  "CLOUDINARY_API_KEY",
-  "CLOUDINARY_API_SECRET"
-];
+function getAllowedOrigins() {
+  const fromEnv = parseOrigins(process.env.CORS_ALLOWED_ORIGINS || process.env.FRONTEND_ORIGIN);
+  const defaults = [
+    "http://localhost:3000",
+    "http://localhost:5500",
+    "http://localhost:8080",
+    "http://127.0.0.1:3000",
+    "http://127.0.0.1:5500",
+    "http://127.0.0.1:8080"
+  ];
+  if (process.env.VERCEL_URL) {
+    defaults.push(`https://${process.env.VERCEL_URL}`);
+  }
+  return Array.from(new Set([...fromEnv, ...defaults]));
+}
 
-const missing = REQUIRED_ENV.filter((key) => !process.env[key]);
-
-if (missing.length) {
-  console.error(
-    `❌ Missing required environment variables: ${missing.join(", ")}`
+function applySecurityHeaders(req, res, next) {
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("X-Frame-Options", "DENY");
+  res.setHeader("Referrer-Policy", "no-referrer");
+  res.setHeader(
+    "Permissions-Policy",
+    "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
   );
+  const isHttps =
+    req.secure ||
+    String(req.headers["x-forwarded-proto"] || "")
+      .toLowerCase()
+      .includes("https");
+  if (isHttps) {
+    res.setHeader("Strict-Transport-Security", "max-age=15552000; includeSubDomains");
+  }
+  next();
+}
+
+const mongoUri = (process.env.MONGODB_URI || "").trim();
+if (!mongoUri) {
+  console.error("Missing required environment variable: MONGODB_URI");
+  process.exit(1);
+}
+if (!/^mongodb(\+srv)?:\/\//i.test(mongoUri)) {
+  console.error("MONGODB_URI must start with mongodb:// or mongodb+srv://");
   process.exit(1);
 }
 
-if (!process.env.MONGODB_URI.startsWith("mongodb+srv://")) {
-  console.error("❌ MONGODB_URI must start with mongodb+srv://");
-  process.exit(1);
-}
+const allowedOrigins = getAllowedOrigins();
 
-/* ===========================
-   🧠 MIDDLEWARE
-=========================== */
+app.use(applySecurityHeaders);
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      const isDev = process.env.NODE_ENV !== "production";
+      if (allowedOrigins.includes(origin) || (isDev && /localhost|127\.0\.0\.1/.test(origin))) {
+        return callback(null, true);
+      }
+      const corsError = new Error("Origin not allowed by CORS");
+      corsError.status = 403;
+      return callback(corsError);
+    },
+    methods: ["GET", "POST", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    maxAge: 86400
+  })
+);
 
-app.use(cors({
-  origin: "*", // You can restrict to your Vercel domain later
-}));
+app.use(express.json({ limit: "1mb" }));
+app.use(express.urlencoded({ extended: true, limit: "1mb" }));
 
-app.use(express.json({ limit: "5mb" }));
-app.use(express.urlencoded({ extended: true }));
-
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-
-/* ===========================
-   🚀 ROUTES
-=========================== */
 app.get("/", (req, res) => {
   res.status(200).json({
-    status: "OK",
-    message: "RTU SGPA Backend Running"
+    status: "ok",
+    service: "rtu-result-backend",
+    timestamp: new Date().toISOString()
+  });
+});
+
+app.get("/health", (req, res) => {
+  res.status(200).json({
+    status: "ok",
+    service: "rtu-result-backend",
+    timestamp: new Date().toISOString()
   });
 });
 
 app.use("/api/result", resultRoutes);
 
-/* ===========================
-   🌍 HEALTH CHECK
-=========================== */
-
-app.get("/", (req, res) => {
-  res.json({
-    status: "RTU SGPA Backend Running 🚀",
-    timestamp: new Date().toISOString()
-  });
-});
-
-/* ===========================
-   🔎 LOADER.IO VERIFY
-=========================== */
-
-app.get("/loaderio-f44f56fedc1505e62553adba25478423.txt", (req, res) => {
-  res.status(200).send("loaderio-f44f56fedc1505e62553adba25478423");
-});
-
-/* ===========================
-   ❌ GLOBAL ERROR HANDLER
-=========================== */
-
 app.use((err, req, res, next) => {
-  console.error("Global Error:", err);
-
-  res.status(err.status || 500).json({
-    error: err.message || "Internal Server Error"
-  });
+  const status = err?.status && Number.isInteger(err.status) ? err.status : 500;
+  if (status >= 500) {
+    console.error("Global Error:", err);
+  }
+  const message = status >= 500 ? "Internal server error" : err.message || "Request failed";
+  res.status(status).json({ error: message });
 });
-
-/* ===========================
-   🟢 START SERVER FIRST
-=========================== */
 
 const PORT = process.env.PORT || 8080;
 
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-});
+async function startServer() {
+  try {
+    await mongoose.connect(mongoUri, {
+      autoIndex: true,
+      tls: true,
+      tlsAllowInvalidCertificates: false
+    });
+    console.log("MongoDB connected");
+    app.listen(PORT, "0.0.0.0", () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error("Failed to connect to MongoDB. Server aborted.");
+    process.exit(1);
+  }
+}
 
-/* ===========================
-   🗄 CONNECT MONGODB (NON-BLOCKING)
-=========================== */
-
-mongoose
-  .connect(process.env.MONGODB_URI, {
-    autoIndex: true
-  })
-  .then(() => {
-    console.log("✅ MongoDB Connected");
-  })
-  .catch((err) => {
-    console.error("❌ MongoDB Connection Error:", err.message);
-  });
+startServer();

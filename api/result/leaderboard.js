@@ -1,22 +1,17 @@
 const StudentResult = require("../../backend/models/StudentResult");
 const { connectToDatabase, getMongoUri } = require("../_lib/db");
-
-function sendJson(res, status, payload) {
-  res.statusCode = status;
-  res.setHeader("Content-Type", "application/json");
-  res.end(JSON.stringify(payload));
-}
+const { sendJson } = require("../_lib/http");
+const {
+  verifyResultAccessToken,
+  extractBearerTokenFromHeaders,
+  normalizeRollNo
+} = require("../../backend/utils/accessToken");
+const { consumeRateLimit, getClientIp } = require("../../backend/utils/rateLimit");
 
 function normalizeName(value) {
   const text = typeof value === "string" ? value.trim() : "";
   if (!text) return "";
   return text.replace(/\s+/g, " ").slice(0, 60);
-}
-
-function normalizeRollNo(value) {
-  const text = typeof value === "string" ? value.trim() : "";
-  if (!text) return "";
-  return text.toUpperCase().slice(0, 32);
 }
 
 function normalizeBranch(value) {
@@ -35,7 +30,7 @@ function normalizeSgpa(value) {
 function normalizeSemester(value) {
   if (value === null || value === undefined || value === "") return null;
   const sem = Number.parseInt(value, 10);
-  if (!Number.isFinite(sem) || sem < 1 || sem > 12) return null;
+  if (!Number.isFinite(sem) || sem < 1 || sem > 8) return null;
   return sem;
 }
 
@@ -74,7 +69,7 @@ function toLeaderboardEntry(record) {
   return {
     id: record?._id ? String(record._id) : null,
     name: normalizeName(record?.leaderboardName || record?.name || "Anonymous"),
-    rollNo: record?.rollNo || null,
+    rollNo: normalizeRollNo(record?.rollNo),
     branch: normalizeBranch(record?.branch),
     semester: normalizeSemester(record?.semester),
     sgpa,
@@ -85,7 +80,9 @@ function toLeaderboardEntry(record) {
 
 function getEntryIdentity(entry) {
   if (entry?.rollNo) return `roll:${entry.rollNo}`;
-  return `anon:${String(entry?.name || "").toLowerCase()}|branch:${entry?.branch || "NA"}`;
+  return `anon:${String(entry?.name || "").toLowerCase()}|branch:${entry?.branch || "NA"}|semester:${
+    entry?.semester || "NA"
+  }`;
 }
 
 function dedupeEntries(entries) {
@@ -150,20 +147,33 @@ async function readJsonBody(req) {
     try {
       return JSON.parse(req.body);
     } catch (error) {
-      throw new Error("Invalid JSON body");
+      const badRequest = new Error("Invalid JSON body");
+      badRequest.status = 400;
+      throw badRequest;
     }
   }
 
+  const MAX_BODY_BYTES = 64 * 1024;
   const chunks = [];
+  let totalBytes = 0;
   for await (const chunk of req) {
-    chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
+    const part = Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk);
+    totalBytes += part.length;
+    if (totalBytes > MAX_BODY_BYTES) {
+      const error = new Error("Request body too large");
+      error.status = 413;
+      throw error;
+    }
+    chunks.push(part);
   }
   if (!chunks.length) return {};
 
   try {
     return JSON.parse(Buffer.concat(chunks).toString("utf8"));
   } catch (error) {
-    throw new Error("Invalid JSON body");
+    const badRequest = new Error("Invalid JSON body");
+    badRequest.status = 400;
+    throw badRequest;
   }
 }
 
@@ -171,8 +181,9 @@ function safeErrorMessage(error) {
   if (!error) return "Server error";
   const message = typeof error.message === "string" ? error.message.trim() : "";
   if (!message) return "Server error";
+  if (error.status && error.status < 500) return message;
   if (/MONGODB_URI|MONGO_URI/i.test(message)) return "Database unavailable";
-  return message;
+  return "Server error";
 }
 
 async function ensureDatabase(res) {
@@ -200,6 +211,23 @@ async function fetchLeaderboard(limit) {
   return rankEntries(entries, limit);
 }
 
+function sanitizeLeaderboardEntries(entries) {
+  return entries.map((entry) => ({
+    rank: entry.rank,
+    name: entry.name,
+    branch: entry.branch,
+    semester: entry.semester,
+    sgpa: entry.sgpa,
+    totalMarksSum: entry.totalMarksSum,
+    updatedAt: entry.updatedAt
+  }));
+}
+
+function getAuthorizedClaims(req) {
+  const token = extractBearerTokenFromHeaders(req.headers || {});
+  return verifyResultAccessToken(token);
+}
+
 async function handleGet(req, res) {
   const base = `http://${req.headers.host || "localhost"}`;
   const url = new URL(req.url || "/api/result/leaderboard", base);
@@ -211,7 +239,7 @@ async function handleGet(req, res) {
   const entries = await fetchLeaderboard(limit);
   return sendJson(res, 200, {
     count: entries.length,
-    entries
+    entries: sanitizeLeaderboardEntries(entries)
   });
 }
 
@@ -219,18 +247,26 @@ async function handlePost(req, res) {
   const available = await ensureDatabase(res);
   if (!available) return;
 
+  const claims = getAuthorizedClaims(req);
+  if (!claims || !claims.rollNo) {
+    return sendJson(res, 401, { error: "Unauthorized leaderboard request" });
+  }
+
   const body = await readJsonBody(req);
   const optIn = body.optIn !== false;
   if (!optIn) {
+    await StudentResult.updateMany(
+      { rollNo: claims.rollNo },
+      { $set: { leaderboardOptIn: false } }
+    );
     return sendJson(res, 200, { ok: true, optedIn: false });
   }
 
   const name = normalizeName(body.name);
-  const sgpa = normalizeSgpa(body.sgpa);
-  const rollNo = normalizeRollNo(body.rollNo);
-  const branch = normalizeBranch(body.branch);
-  const semester = normalizeSemester(body.semester);
-  const totalMarksSum = normalizeTotalMarks(body.totalMarksSum);
+  const rollNo = claims.rollNo;
+  const sgpa = normalizeSgpa(claims.sgpa);
+  const branch = normalizeBranch(claims.branch);
+  const semester = normalizeSemester(claims.semester);
 
   if (!name) {
     return sendJson(res, 400, { error: "Name is required for leaderboard" });
@@ -238,6 +274,17 @@ async function handlePost(req, res) {
   if (sgpa === null) {
     return sendJson(res, 400, { error: "Valid SGPA (0 to 10) is required for leaderboard" });
   }
+
+  const existingResult = await StudentResult.findOne({
+    rollNo,
+    semester: semester !== null ? semester : null
+  })
+    .select("leaderboardTotalMarks subjects.marks")
+    .lean();
+
+  const totalMarksSum =
+    normalizeTotalMarks(existingResult?.leaderboardTotalMarks) ??
+    sumMarksFromSubjects(existingResult?.subjects);
 
   const baseUpdate = {
     name,
@@ -256,28 +303,20 @@ async function handlePost(req, res) {
   }
 
   let savedDoc = null;
-  if (rollNo) {
-    await StudentResult.updateMany({ rollNo }, { $set: { leaderboardOptIn: false } });
-    const filter = { rollNo, semester: semester !== null ? semester : null };
-    const update = { ...baseUpdate, rollNo };
-    savedDoc = await StudentResult.findOneAndUpdate(filter, update, {
-      upsert: true,
-      new: true,
-      setDefaultsOnInsert: true
-    });
-  } else {
-    savedDoc = await StudentResult.create(baseUpdate);
-  }
+  await StudentResult.updateMany({ rollNo }, { $set: { leaderboardOptIn: false } });
+  const filter = { rollNo, semester: semester !== null ? semester : null };
+  const update = { ...baseUpdate, rollNo };
+  savedDoc = await StudentResult.findOneAndUpdate(filter, update, {
+    upsert: true,
+    new: true,
+    setDefaultsOnInsert: true
+  });
 
   const entries = await fetchLeaderboard(null);
   const rank = entries.find((entry) => {
-    if (rollNo) {
-      return entry.rollNo === rollNo;
-    }
     return (
-      entry.name === name &&
-      entry.branch === (branch || null) &&
-      entry.sgpa === sgpa &&
+      entry.rollNo === rollNo &&
+      entry.semester === (semester !== null ? semester : null) &&
       String(entry.updatedAt || "") === String(savedDoc.updatedAt || "")
     );
   })?.rank || null;
@@ -286,12 +325,26 @@ async function handlePost(req, res) {
     ok: true,
     optedIn: true,
     rank,
-    entries
+    entries: sanitizeLeaderboardEntries(entries)
   });
 }
 
 async function handleLeaderboard(req, res) {
   try {
+    const ip = getClientIp(req);
+    const methodKey = req.method === "POST" ? "leaderboard-post" : "leaderboard-get";
+    const max = req.method === "POST" ? 20 : 60;
+    const rate = consumeRateLimit({
+      key: `${methodKey}:${ip}`,
+      windowMs: 60 * 1000,
+      max
+    });
+    if (!rate.allowed) {
+      const retryAfter = Math.max(Math.ceil((rate.resetAt - Date.now()) / 1000), 1);
+      res.setHeader("Retry-After", String(retryAfter));
+      return sendJson(res, 429, { error: "Too many requests. Please try again shortly." });
+    }
+
     if (req.method === "GET") {
       return await handleGet(req, res);
     }
@@ -300,7 +353,8 @@ async function handleLeaderboard(req, res) {
     }
     return sendJson(res, 405, { error: "Method not allowed" });
   } catch (error) {
-    return sendJson(res, 500, { error: safeErrorMessage(error) });
+    const status = error?.status && Number.isInteger(error.status) ? error.status : 500;
+    return sendJson(res, status, { error: safeErrorMessage(error) });
   }
 }
 

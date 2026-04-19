@@ -22,8 +22,14 @@ const {
   normalizeCode,
   normalizeTitleKey
 } = require("../../backend/utils/creditCatalog");
+const {
+  createResultAccessToken,
+  normalizeRollNo
+} = require("../../backend/utils/accessToken");
+const { consumeRateLimit, getClientIp } = require("../../backend/utils/rateLimit");
 const { uploadResultFile } = require("../../backend/utils/cloudinary");
 const { connectToDatabase, getMongoUri } = require("../_lib/db");
+const { sendJson } = require("../_lib/http");
 
 const creditCatalog = loadCreditCatalog();
 const createFormidable =
@@ -31,22 +37,33 @@ const createFormidable =
     ? formidableLib
     : formidableLib.formidable || formidableLib.default;
 
-function sendJson(res, status, payload) {
-  res.statusCode = status;
-  res.setHeader("Content-Type", "application/json");
-  res.end(JSON.stringify(payload));
-}
-
 function safeMessage(error, fallback = "Server error") {
   if (!error) return fallback;
   if (typeof error.message === "string" && error.message.trim()) {
     const message = error.message.trim();
+    if (error.status && error.status < 500) {
+      return message;
+    }
     if (/MONGODB_URI|MONGO_URI/i.test(message)) {
       return "Database unavailable";
     }
-    return message;
+    return fallback;
   }
   return fallback;
+}
+
+function hasPdfMagicNumber(filePath) {
+  try {
+    if (!filePath || !fs.existsSync(filePath)) return false;
+    const fd = fs.openSync(filePath, "r");
+    const chunk = Buffer.alloc(5);
+    const read = fs.readSync(fd, chunk, 0, 5, 0);
+    fs.closeSync(fd);
+    if (read < 5) return false;
+    return chunk.toString("ascii") === "%PDF-";
+  } catch (error) {
+    return false;
+  }
 }
 
 function computeRelativeMarks(extracted) {
@@ -123,6 +140,18 @@ function getUploadedFile(files) {
 }
 
 async function handleCalculate(req, res) {
+  const ip = getClientIp(req);
+  const rate = consumeRateLimit({
+    key: `calculate:${ip}`,
+    windowMs: 60 * 1000,
+    max: 12
+  });
+  if (!rate.allowed) {
+    const retryAfter = Math.max(Math.ceil((rate.resetAt - Date.now()) / 1000), 1);
+    res.setHeader("Retry-After", String(retryAfter));
+    return sendJson(res, 429, { error: "Too many uploads. Please wait and try again." });
+  }
+
   if (req.method !== "POST") {
     return sendJson(res, 405, { error: "Method not allowed" });
   }
@@ -155,12 +184,17 @@ async function handleCalculate(req, res) {
     multiples: false,
     keepExtensions: true,
     uploadDir: os.tmpdir(),
-    maxFileSize: 10 * 1024 * 1024
+    maxFileSize: 10 * 1024 * 1024,
+    maxFieldsSize: 128 * 1024
   });
 
   form.parse(req, async (err, fields, files) => {
     if (err) {
-      return sendJson(res, 400, { error: err.message || "Invalid upload" });
+      const tooLarge = /maxFileSize|maxFieldsSize|too large/i.test(String(err.message || ""));
+      const status = tooLarge ? 413 : 400;
+      return sendJson(res, status, {
+        error: tooLarge ? "Uploaded file is too large (10MB max)." : "Invalid upload payload"
+      });
     }
 
     const file = getUploadedFile(files);
@@ -176,6 +210,9 @@ async function handleCalculate(req, res) {
     if (!isPdf) {
       return sendJson(res, 400, { error: "Only PDF files are allowed" });
     }
+    if (!hasPdfMagicNumber(filePath)) {
+      return sendJson(res, 400, { error: "Uploaded file is not a valid PDF." });
+    }
 
     try {
       const parsed = await extractResultData(filePath, mimetype);
@@ -189,6 +226,7 @@ async function handleCalculate(req, res) {
       }
 
       let rollNo = metadata.rollNo || getFieldValue(fields, "rollNo").trim() || null;
+      rollNo = normalizeRollNo(rollNo);
       let name = metadata.name || getFieldValue(fields, "name").trim() || null;
       if (name) name = toTitleCase(name);
 
@@ -235,10 +273,10 @@ async function handleCalculate(req, res) {
           }
         } catch (error) {
           dbState.ready = false;
-          dbState.error = safeMessage(error, "Database query failed");
+          dbState.error = "Database unavailable";
           matchResult = matchSubjects(parsed.subjects, []);
           warnings.push(
-            "Database lookup failed during subject matching. Continued with parser-only mode."
+            "Result computed without database matching."
           );
         }
       } else {
@@ -370,7 +408,7 @@ async function handleCalculate(req, res) {
               totalGradePoints,
               subjects: computedSubjects,
               sourceFile: {
-                originalName: originalname,
+                originalName: null,
                 mimeType: mimetype,
                 cloudinary: cloudinaryInfo
               }
@@ -378,9 +416,16 @@ async function handleCalculate(req, res) {
             { upsert: true, new: true }
           );
         } catch (error) {
-          warnings.push("Result parsed but could not be saved to history.");
+          warnings.push("Result parsed but could not be saved.");
         }
       }
+
+      const tokenInfo = createResultAccessToken({
+        rollNo,
+        semester,
+        branch,
+        sgpa
+      });
 
       return sendJson(res, 200, {
         rollNo: rollNo || null,
@@ -396,13 +441,14 @@ async function handleCalculate(req, res) {
         subjects: computedSubjects,
         analysis,
         unmatchedSubjects: unmatchedDetails,
-        fileUrl: cloudinaryInfo ? cloudinaryInfo.secureUrl : null,
+        fileUploaded: Boolean(cloudinaryInfo?.publicId),
+        accessToken: tokenInfo ? tokenInfo.token : null,
+        accessTokenExpiresAt: tokenInfo ? tokenInfo.expiresAt : null,
         runtime: {
-          database: dbState.ready ? "connected" : "unavailable",
-          databaseError: dbState.error || null
+          database: dbState.ready ? "connected" : "unavailable"
         },
         warnings
-      });
+      }, { noStore: true });
     } catch (error) {
       const status = error.status || 500;
       return sendJson(res, status, { error: safeMessage(error, "Server error") });

@@ -12,6 +12,12 @@ const {
 const { normalizeBranch, parseSemester, toTitleCase } = require("../utils/textNormalizer");
 const { loadCreditCatalog, normalizeCode, normalizeTitleKey } = require("../utils/creditCatalog");
 const { uploadResultFile } = require("../utils/cloudinary");
+const {
+  createResultAccessToken,
+  extractBearerTokenFromHeaders,
+  verifyResultAccessToken,
+  normalizeRollNo
+} = require("../utils/accessToken");
 
 const creditCatalog = loadCreditCatalog();
 const APP_VERSION = process.env.APP_VERSION || "1.0.0";
@@ -81,6 +87,20 @@ function buildUnmatchedDetails(unmatched) {
   }));
 }
 
+function hasPdfMagicNumber(filePath) {
+  try {
+    if (!filePath || !fs.existsSync(filePath)) return false;
+    const fd = fs.openSync(filePath, "r");
+    const chunk = Buffer.alloc(5);
+    const read = fs.readSync(fd, chunk, 0, 5, 0);
+    fs.closeSync(fd);
+    if (read < 5) return false;
+    return chunk.toString("ascii") === "%PDF-";
+  } catch (error) {
+    return false;
+  }
+}
+
 exports.calculateResult = async (req, res, next) => {
   const cleanupPath = req.file && req.file.path ? req.file.path : null;
 
@@ -88,11 +108,15 @@ exports.calculateResult = async (req, res, next) => {
     if (!req.file) {
       return res.status(400).json({ error: "Result file is required" });
     }
+    if (!hasPdfMagicNumber(req.file.path)) {
+      return res.status(400).json({ error: "Uploaded file is not a valid PDF." });
+    }
 
     const parsed = await extractResultData(req.file.path, req.file.mimetype);
     const metadata = parsed.metadata || {};
 
     let rollNo = metadata.rollNo || (req.body.rollNo || "").trim() || null;
+    rollNo = normalizeRollNo(rollNo);
     let name = metadata.name || (req.body.name || "").trim() || null;
     if (name) name = toTitleCase(name);
 
@@ -256,7 +280,7 @@ exports.calculateResult = async (req, res, next) => {
           totalGradePoints,
           subjects: computedSubjects,
           sourceFile: {
-            originalName: req.file.originalname,
+            originalName: null,
             mimeType: req.file.mimetype,
             cloudinary: cloudinaryInfo
           }
@@ -264,6 +288,13 @@ exports.calculateResult = async (req, res, next) => {
         { upsert: true, new: true }
       );
     }
+
+    const tokenInfo = createResultAccessToken({
+      rollNo,
+      semester,
+      branch,
+      sgpa
+    });
 
     return res.json({
       rollNo: rollNo || null,
@@ -279,7 +310,9 @@ exports.calculateResult = async (req, res, next) => {
       subjects: computedSubjects,
       analysis,
       unmatchedSubjects: unmatchedDetails,
-      fileUrl: cloudinaryInfo ? cloudinaryInfo.secureUrl : null
+      fileUploaded: Boolean(cloudinaryInfo?.publicId),
+      accessToken: tokenInfo ? tokenInfo.token : null,
+      accessTokenExpiresAt: tokenInfo ? tokenInfo.expiresAt : null
     });
   } catch (err) {
     return next(err);
@@ -292,9 +325,17 @@ exports.calculateResult = async (req, res, next) => {
 
 exports.getHistory = async (req, res, next) => {
   try {
-    const rollNoRaw = (req.query.rollNo || "").toString().trim();
+    const rollNoRaw = normalizeRollNo((req.query.rollNo || "").toString().trim());
     if (!rollNoRaw) {
       return res.status(400).json({ error: "rollNo query parameter is required" });
+    }
+    const token = extractBearerTokenFromHeaders(req.headers || {});
+    const claims = verifyResultAccessToken(token);
+    if (!claims || !claims.rollNo) {
+      return res.status(401).json({ error: "Unauthorized history request" });
+    }
+    if (claims.rollNo !== rollNoRaw) {
+      return res.status(403).json({ error: "History access denied for this roll number" });
     }
 
     const limitRaw = parseInt(req.query.limit, 10);
