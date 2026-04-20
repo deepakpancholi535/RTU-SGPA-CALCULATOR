@@ -7,9 +7,6 @@ const fileMeta = document.getElementById("fileMeta");
 const subjectsBody = document.getElementById("subjectsBody");
 const pdfBtn = document.getElementById("pdfBtn");
 const feedbackBtn = document.getElementById("feedbackBtn");
-const disclaimerBtn = document.getElementById("disclaimerBtn");
-const disclaimerModalEl = document.getElementById("disclaimerModal");
-const closeDisclaimerBtnEl = document.getElementById("closeDisclaimerBtn");
 
 const rollNoEl = document.getElementById("rollNo");
 const nameEl = document.getElementById("studentName");
@@ -1635,23 +1632,6 @@ if (feedbackBtn) {
   });
 }
 
-if (disclaimerBtn && disclaimerModalEl) {
-  disclaimerBtn.addEventListener("click", (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-    disclaimerModalEl.hidden = false;
-    document.body.style.overflow = "hidden";
-  });
-}
-
-if (closeDisclaimerBtnEl && disclaimerModalEl) {
-  closeDisclaimerBtnEl.addEventListener("click", (event) => {
-    event.preventDefault();
-    disclaimerModalEl.hidden = true;
-    document.body.style.removeProperty("overflow");
-  });
-}
-
 if (leaderboardSectionsEl) {
   leaderboardSectionsEl.addEventListener("click", (event) => {
     const button = event.target.closest(".leaderboard-section-btn[data-section]");
@@ -1703,24 +1683,12 @@ if (leaderboardModalEl) {
   });
 }
 
-if (disclaimerModalEl) {
-  disclaimerModalEl.addEventListener("click", (event) => {
-    if (event.target === disclaimerModalEl) {
-      disclaimerModalEl.hidden = true;
-      document.body.style.removeProperty("overflow");
-    }
-  });
-}
+
 
 document.addEventListener("keydown", (event) => {
   if (event.key !== "Escape") return;
   if (!isLeaderboardModalOpen()) return;
   handleLeaderboardSkip();
-  
-  if (disclaimerModalEl && !disclaimerModalEl.hidden) {
-    disclaimerModalEl.hidden = true;
-    document.body.style.removeProperty("overflow");
-  }
 });
 
 window.addEventListener("resize", () => {
