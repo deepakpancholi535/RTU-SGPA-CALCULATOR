@@ -1099,6 +1099,105 @@ tbody tr:nth-child(even) {
   border: 0;
 }
 
+.disclaimer-btn:hover {
+  background: color-mix(in srgb, var(--accent-b), transparent 20%);
+  color: var(--ink);
+}
+
+.disclaimer-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgba(11, 16, 30, 0.55);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.disclaimer-modal[hidden] {
+  display: none;
+}
+
+.disclaimer-modal-card {
+  width: min(680px, 95%);
+  max-height: 90vh;
+  border-radius: 24px;
+  border: 1px solid var(--surface-border);
+  background: linear-gradient(150deg, var(--surface-1), var(--surface-2));
+  box-shadow:
+    0 28px 48px var(--surface-shadow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.26);
+  padding: 28px;
+  overflow-y: auto;
+}
+
+.disclaimer-modal-card h3 {
+  margin: 0 0 20px;
+  font-size: 1.65rem;
+  font-family: var(--font-serif);
+}
+
+.disclaimer-modal-card h4 {
+  margin: 24px 0 12px;
+  font-size: 1.22rem;
+  font-family: var(--font-serif);
+  color: var(--ink);
+}
+
+.disclaimer-modal-card h5 {
+  margin: 20px 0 10px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.disclaimer-modal-card p {
+  margin: 0 0 16px;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+.disclaimer-modal-card ul {
+  margin: 8px 0 20px 20px;
+  padding: 0;
+  list-style: disc;
+}
+
+.disclaimer-modal-card li {
+  margin: 4px 0;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.disclaimer-modal-card em {
+  color: color-mix(in srgb, var(--ink), var(--accent-a) 20%);
+  font-style: italic;
+}
+
+.disclaimer-modal-card a {
+  color: var(--accent-b);
+  text-decoration: none;
+}
+
+.disclaimer-modal-card a:hover {
+  text-decoration: underline;
+}
+
+.modal-actions {
+  margin-top: 24px;
+  text-align: right;
+}
+
+.footer-rights {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--surface-border);
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
 @media (max-width: 1040px) {
   .topbar {
     margin: 14px 14px 0;
