@@ -273,6 +273,9 @@
           </svg>
           <span class="sr-only">LinkedIn</span>
         </a>
+        <button type="button" class="feedback-btn" id="descriptionBtn" aria-haspopup="dialog" aria-controls="descriptionModal">
+          Description
+        </button>
         <button
           type="button"
           class="feedback-btn"
@@ -284,7 +287,7 @@
           Feedback
         </button>
         <div class="status-dot" id="healthDot">API: Checking...</div>
-        <div class="build-badge" id="buildBadge">Build v24</div>
+        <div class="build-badge" id="buildBadge">Build v25</div>
       </div>
     </footer>
 
@@ -320,6 +323,37 @@
       </div>
     </div>
 
+    <div class="description-modal leaderboard-modal" id="descriptionModal" hidden>
+      <div
+        class="description-modal-card leaderboard-modal-card"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="descriptionModalTitle"
+      >
+        <div class="description-modal-head">
+          <h3 id="descriptionModalTitle">Website Description</h3>
+          <button type="button" class="ghost mini-btn" id="descriptionCloseBtn" aria-label="Close description">
+            Close
+          </button>
+        </div>
+        <p class="description-summary">
+          RTU SGPA Calculator is a student utility to analyze RTU marksheet PDFs and estimate SGPA.
+        </p>
+        <ul class="description-list">
+          <li>Only text-based PDF marksheets are supported. Blurry/scanned files may fail.</li>
+          <li>Uploaded marksheet data may include personal and academic details (such as name, roll number, subjects, marks, and SGPA).</li>
+          <li>Files and processed result documents may be stored in secure bucket/cloud storage for reliability, retrieval, and operations.</li>
+          <li>Result history/trend and leaderboard features use processed data, and leaderboard participation is optional.</li>
+          <li>Analytics tools (including Google Analytics) may be used to understand traffic and improve the website.</li>
+          <li>This is an independent student tool and is not an official RTU website.</li>
+          <li>Results are auto-generated estimates; users should verify with official RTU records.</li>
+          <li>Do not upload documents that are not yours or without permission.</li>
+          <li>Policy and feature details may be updated as the service evolves.</li>
+        </ul>
+        <p class="description-rights">© 2026 All Rights Reserved.</p>
+      </div>
+    </div>
+
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
       integrity="sha384-JcnsjUPPylna1s1fvi1u12X5qjY5OL56iySh75FdtrwhO/SWXgMjoVqcKyIIWOLk"
@@ -332,7 +366,6 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
-    <script src="app.js?v=24"></script>
+    <script src="app.js?v=25"></script>
   </body>
 </html>
-

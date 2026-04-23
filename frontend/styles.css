@@ -984,6 +984,42 @@ tbody tr:nth-child(even) {
   min-width: 170px;
 }
 
+.description-modal-card {
+  width: min(760px, 100%);
+  max-height: min(84vh, 760px);
+  overflow: auto;
+}
+
+.description-modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.description-summary {
+  margin-top: 12px;
+  color: var(--muted);
+}
+
+.description-list {
+  margin: 14px 0 0;
+  padding-left: 20px;
+  display: grid;
+  gap: 8px;
+  color: color-mix(in srgb, var(--ink), var(--muted) 10%);
+  line-height: 1.5;
+  font-size: 0.92rem;
+}
+
+.description-rights {
+  margin-top: 16px;
+  margin-bottom: 0;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: color-mix(in srgb, var(--ink), var(--muted) 30%);
+}
+
 .actions {
   margin-top: 16px;
   display: flex;
@@ -1204,6 +1240,15 @@ tbody tr:nth-child(even) {
 
   .leaderboard-podium {
     grid-template-columns: 1fr;
+  }
+
+  .description-modal-head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .description-modal-head .mini-btn {
+    width: 100%;
   }
 
   #trendChart {

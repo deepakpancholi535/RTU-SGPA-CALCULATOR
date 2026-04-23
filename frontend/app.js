@@ -7,6 +7,9 @@ const fileMeta = document.getElementById("fileMeta");
 const subjectsBody = document.getElementById("subjectsBody");
 const pdfBtn = document.getElementById("pdfBtn");
 const feedbackBtn = document.getElementById("feedbackBtn");
+const descriptionBtn = document.getElementById("descriptionBtn");
+const descriptionModalEl = document.getElementById("descriptionModal");
+const descriptionCloseBtnEl = document.getElementById("descriptionCloseBtn");
 
 const rollNoEl = document.getElementById("rollNo");
 const nameEl = document.getElementById("studentName");
@@ -48,7 +51,7 @@ const HISTORY_LIMIT = 10;
 const LEADERBOARD_TOP_COUNT = 3;
 const LEADERBOARD_FETCH_LIMIT = 20000;
 const LEADERBOARD_REFRESH_MS = 25000;
-const UI_BUILD = "v24";
+const UI_BUILD = "v25";
 const THEME_KEY = "rtu_ui_theme_v1";
 const THEME_CHOICES = ["light", "mid", "dark"];
 const DEFAULT_REMOTE_API_BASE = "";
@@ -1113,11 +1116,14 @@ const isAlreadyInLeaderboard = (result, entries = leaderboardEntriesCache) => {
 };
 
 const isLeaderboardModalOpen = () => Boolean(leaderboardModalEl && !leaderboardModalEl.hidden);
+const isDescriptionModalOpen = () => Boolean(descriptionModalEl && !descriptionModalEl.hidden);
 
 const closeLeaderboardModal = () => {
   if (!leaderboardModalEl) return;
   leaderboardModalEl.hidden = true;
-  document.body.style.removeProperty("overflow");
+  if (!isDescriptionModalOpen()) {
+    document.body.style.removeProperty("overflow");
+  }
   pendingLeaderboardResult = null;
 };
 
@@ -1130,6 +1136,23 @@ const openLeaderboardModal = (result) => {
   leaderboardModalEl.hidden = false;
   document.body.style.overflow = "hidden";
   window.setTimeout(() => leaderboardNameInputEl.focus(), 0);
+};
+
+const openDescriptionModal = () => {
+  if (!descriptionModalEl) return;
+  descriptionModalEl.hidden = false;
+  document.body.style.overflow = "hidden";
+  if (descriptionCloseBtnEl) {
+    window.setTimeout(() => descriptionCloseBtnEl.focus(), 0);
+  }
+};
+
+const closeDescriptionModal = () => {
+  if (!descriptionModalEl) return;
+  descriptionModalEl.hidden = true;
+  if (!isLeaderboardModalOpen()) {
+    document.body.style.removeProperty("overflow");
+  }
 };
 
 const maybePromptLeaderboardOptIn = (result) => {
@@ -1632,6 +1655,20 @@ if (feedbackBtn) {
   });
 }
 
+if (descriptionBtn) {
+  descriptionBtn.addEventListener("click", (event) => {
+    event.preventDefault();
+    openDescriptionModal();
+  });
+}
+
+if (descriptionCloseBtnEl) {
+  descriptionCloseBtnEl.addEventListener("click", (event) => {
+    event.preventDefault();
+    closeDescriptionModal();
+  });
+}
+
 if (leaderboardSectionsEl) {
   leaderboardSectionsEl.addEventListener("click", (event) => {
     const button = event.target.closest(".leaderboard-section-btn[data-section]");
@@ -1683,10 +1720,21 @@ if (leaderboardModalEl) {
   });
 }
 
+if (descriptionModalEl) {
+  descriptionModalEl.addEventListener("click", (event) => {
+    if (event.target !== descriptionModalEl) return;
+    closeDescriptionModal();
+  });
+}
+
 
 
 document.addEventListener("keydown", (event) => {
   if (event.key !== "Escape") return;
+  if (isDescriptionModalOpen()) {
+    closeDescriptionModal();
+    return;
+  }
   if (!isLeaderboardModalOpen()) return;
   handleLeaderboardSkip();
 });
