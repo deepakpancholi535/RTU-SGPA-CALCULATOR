@@ -4,13 +4,13 @@
         "Course_Title": "Engineering Mathematics-I",
         "Credits": 4
     },
-    {   "_id": "66368c159cfc189ff18dce6a",
+    {  
         "Course_Title": "Cloud Computing",
         "code": "6IT5-12",
         "credits": 2
     },
     {
-        "_id": "66368c159cfc189ff18dce6b",
+       
         "Course_Title": "5G Communication Lab",
         "Credits": 2
     },
