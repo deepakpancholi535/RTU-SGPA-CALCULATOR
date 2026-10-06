@@ -4,7 +4,7 @@
         "Course_Title": "Engineering Mathematics-I",
         "Credits": 4
     },
-    {
+    {"Course_Title": "Cloud Computing",
     "code": "6IT5-12",
     "credits": 2
 },
@@ -778,19 +778,7 @@
         },
         "Credits": 3
     },
-    {
-        "_id": "663695689cfc189ff18dcecb",
-        "Course_Title": "Cloud Computing",
-        "Duration": 3,
-        "Marks": {
-            "L": 30,
-            "T": 0,
-            "P": 0,
-            "IA": 120,
-            "ETE": 150
-        },
-        "Credits": 2
-    },
+   
     {
         "_id": "663695689cfc189ff18dcecc",
         "Course_Title": "Professional Elective 1 (any one)",
