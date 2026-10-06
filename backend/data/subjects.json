@@ -84,7 +84,7 @@
   { "subjectName": "Web Technologies", "branch": "IT", "semester": 5, "credits": 3, "isLab": false },
   { "subjectName": "Software Engineering", "branch": "IT", "semester": 5, "credits": 3, "isLab": false },
   { "subjectName": "Web Technologies Lab", "branch": "IT", "semester": 5, "credits": 1, "isLab": true },
-  { "subjectName": "Cloud Computing", "branch": "IT", "semester": 6, "credits": 3, "isLab": false },
+  { "subjectName": "Cloud Computing", "branch": "IT", "semester": 6, "credits": 2, "isLab": false },
   { "subjectName": "Information Security", "branch": "IT", "semester": 6, "credits": 3, "isLab": false },
   { "subjectName": "Cloud Lab", "branch": "IT", "semester": 6, "credits": 1, "isLab": true },
   { "subjectName": "Industrial Training", "branch": "IT", "semester": 7, "credits": 3, "isLab": false },
