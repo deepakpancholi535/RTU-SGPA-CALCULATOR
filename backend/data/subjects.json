@@ -228,7 +228,7 @@
   { "subjectName": "Software Engineering", "branch": "CS", "semester": 5, "credits": 3, "isLab": false },
   { "subjectName": "Computer Networks Lab", "branch": "CS", "semester": 5, "credits": 1, "isLab": true },
   { "subjectName": "Artificial Intelligence", "branch": "CS", "semester": 6, "credits": 3, "isLab": false },
-  { "subjectName": "Cloud Computing", "branch": "CS", "semester": 6, "credits": 2, "isLab": false },
+  { "subjectName": "Cloud Computing", "branch": "CS", "semester": 6, "credits": 3, "isLab": false },
   { "subjectName": "Cloud Lab", "branch": "CS", "semester": 6, "credits": 1, "isLab": true },
   { "subjectName": "Industrial Training", "branch": "CS", "semester": 7, "credits": 3, "isLab": false },
   { "subjectName": "Major Project Phase I", "branch": "CS", "semester": 7, "credits": 3, "isLab": false },
